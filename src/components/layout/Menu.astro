@@ -1,0 +1,74 @@
+---
+import menuIcon from '../../assets/icons/menu-main-icon.png';
+import managementIcon from '../../assets/icons/company.png';
+import catIcon from '../../assets/icons/cat.png';
+import vetIcon from '../../assets/icons/vet.png';
+import billIcon from '../../assets/icons/bill.png';
+import checkListIcon from '../../assets/icons/checklist.png';
+---
+
+<div id="menu-container" class="bg-white overflow-hidden">
+  <div id="menu-content" class="flex justify-between items-center p-0 sm:p-0">
+    <!-- First Menu Icon -->
+    <div class="hidden sm:block">
+      <img src={menuIcon.src} alt="Menu Icon" class="w-36 h-36 mr-4" />
+    </div>
+    
+    <!-- Centered Navigation -->
+    <nav class="flex-1 flex justify-center">
+      <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-1 md:gap-4 item mt-4 sm:mt-0 items-center text-center">
+        <!-- Appointments -->
+        <a href="/modules/appointment/" class="flex items-center text-gray-600 hover:bg-slate-100 px-2 md:px-4 py-3 rounded-lg transition-colors">
+          <img src={catIcon.src} alt="Appointments" class="w-16 h-16 mr-4" />
+          <span class="text-xs md:text-sm font-semibold">Appointments</span>
+        </a>
+
+        <!-- Management -->
+        <a href="/modules/management/" class="flex items-center text-gray-600 hover:bg-slate-100  px-2 md:px-4 py-3 rounded-lg transition-colors box-border">
+          <img src={managementIcon.src} alt="Management" class="w-16 h-16 mr-2" />
+          <span class="text-xs md:text-sm font-semibold">Management</span>
+        </a>
+
+        <!-- Veterinaries -->
+        <a href="/modules/veterinaries/" class="flex items-center text-gray-600 hover:bg-slate-100  px-2 md:px-4 py-3 rounded-lg transition-colors">
+          <img src={vetIcon.src} alt="Veterinaries" class="w-16 h-16 mr-2" />
+          <span class="text-xs md:text-sm font-semibold">Veterinaries</span>
+        </a>
+
+        <!-- Inventory -->
+        <a href="/modules/inventory/" class="flex items-center text-gray-600 hover:bg-slate-100  px-2 md:px-4 py-3 rounded-lg transition-colors">
+          <img src={checkListIcon.src} alt="Inventory" class="w-16 h-16 mr-2" />
+          <span class="text-xs md:text-sm font-semibold">Inventory</span>
+        </a>
+      
+        <!-- Bills -->
+        <a href="/modules/bills/" class="flex items-center text-gray-600 hover:bg-slate-100  px-2 md:px-4 py-3 rounded-lg transition-colors">
+          <img src={billIcon.src} alt="Bills" class="w-16 h-16 mr-2" />
+          <span class="text-xs md:text-sm font-semibold">Bills</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+  <button id="menu-toggle" class="w-full text-xs text-white bg-rose-500 py-0 focus:outline-none">
+    <span id="toggle-icon">▲</span>
+  </button>
+</div>
+
+<script>
+  const menuContent = document.getElementById('menu-content');
+  const menuToggle = document.getElementById('menu-toggle');
+  const toggleIcon = document.getElementById('toggle-icon');
+  let isMenuVisible = true;
+  if (menuToggle && menuContent && toggleIcon) {
+    menuToggle.addEventListener('click', () => {
+    isMenuVisible = !isMenuVisible;
+    if (isMenuVisible) {
+      menuContent.style.display = 'flex';
+      toggleIcon.textContent = '▲';
+    } else {
+      menuContent.style.display = 'none';
+      toggleIcon.textContent = '▼';
+    }
+  });
+  }
+</script>

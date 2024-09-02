@@ -1,0 +1,45 @@
+---
+import logoImage from '../../assets/logo-pet-care-suite.png';
+
+---
+<header class="bg-white p-2  border-b-rose-500 border-b-2">
+    <div class="flex items-center justify-between">
+      <div class="flex-grow">
+        <a href="/modules/dashboard">
+          <img src={logoImage.src} alt="Background" class="max-h-10 ml-1" />
+        </a>
+      </div>
+      <div class="relative">
+        <button class="flex items-center justify-center w-10 h-10 rounded-full bg-rose-500 text-white" onclick="toggleMenu()">
+          <div>O</div>
+        </button>
+  
+        <div id="menu" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+          <ul class="py-1">
+            <li>
+              <a href="/profile" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                Profile Settings
+              </a>
+            </li>
+            <li>
+              <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+   
+  </header>
+
+<script type="text/javascript" is:inline>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      if (menu) {
+        menu.classList.toggle('hidden');
+      }
+    }
+  </script>

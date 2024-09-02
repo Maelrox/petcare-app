@@ -1,0 +1,9 @@
+---
+import Appointments from "../../../components/modules/appointment/Appointments";
+import AppLayout from "../../../layouts/AppLayout.astro";
+
+---
+
+<AppLayout title="Roles" includeMenu={false}>
+	<Appointments client:load />
+</AppLayout>

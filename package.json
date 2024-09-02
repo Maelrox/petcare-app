@@ -10,8 +10,30 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.14.5",
     "@astrojs/check": "^0.9.3",
+    "@astrojs/node": "^8.3.3",
+    "@astrojs/react": "^3.6.2",
+    "@astrojs/tailwind": "^5.1.0",
+    "@nanostores/react": "^0.7.3",
+    "@tanstack/react-table": "^8.20.5",
+    "@tsparticles/react": "^3.0.0",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "astro": "^4.14.5",
+    "astro-icon": "^1.1.1",
+    "chart.js": "^4.4.4",
+    "dayjs": "^1.11.13",
+    "nanostores": "^0.11.3",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "react-google-recaptcha-v3": "^1.10.1",
+    "react-toastify": "^10.0.5",
+    "tailwindcss": "^3.4.10",
+    "tsparticles": "^3.5.0",
     "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@iconify-json/mdi": "^1.1.68"
   }
 }

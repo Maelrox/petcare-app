@@ -1,0 +1,8 @@
+---
+import Permissions from '../../../components/modules/management/Permissions';
+import AppLayout from '../../../layouts/AppLayout.astro';
+---
+
+<AppLayout title="Roles" includeMenu={false}>
+	<Permissions client:load />
+</AppLayout>
