@@ -8,21 +8,30 @@ import { Icon } from 'astro-icon/components';
     <h2 class="text-3xl text-skyblue_dark font-extrabold mb-6">Management</h2>
     <p class="text-gray-700 mb-8">Select an option below to manage different aspects of the application.</p>
     <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <a href="/modules/owner" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center border-2 border-blue_brand transition duration-300 ease-in-out hover:bg-aqua_brand">
+        <Icon name="mdi:account" class="text-4xl mb-2 text-skyblue_dark hover:text-white transition duration-300 ease-in-out" />
+        <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Owners</h3>
+      </a>
+      <a href="/modules/patient" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center border-2 border-blue_brand transition duration-300 ease-in-out hover:bg-aqua_brand">
+        <Icon name="mdi:paw" class="text-4xl mb-2 text-skyblue_dark hover:text-white transition duration-300 ease-in-out" />
+        <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Patients</h3>
+      </a>
       <a href="/modules/management/company" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center border-2 border-blue_brand transition duration-300 ease-in-out hover:bg-aqua_brand">
         <Icon name="mdi:office-building" class="text-4xl mb-2 text-skyblue_dark hover:text-white transition duration-300 ease-in-out" />
-        <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Company</h3>
+        <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Business Info</h3>
+      </a>
+  
+      <a href="/modules/employee" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center border-2 border-blue_brand transition duration-300 ease-in-out hover:bg-aqua_brand">
+        <Icon name="mdi:medication-outline" class="text-4xl mb-2 text-skyblue_dark hover:text-white transition duration-300 ease-in-out" />
+        <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Employee Accounts</h3>
       </a>
       <a href="/modules/management/role" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center border-2 border-blue_brand transition duration-300 ease-in-out hover:bg-aqua_brand">
         <Icon name="mdi:account-group" class="text-4xl mb-2 text-skyblue_dark hover:text-white transition duration-300 ease-in-out" />
         <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Roles</h3>
-      </a>      
+      </a>   
       <a href="/modules/management/permission" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center border-2 border-blue_brand transition duration-300 ease-in-out hover:bg-aqua_brand">
         <Icon name="mdi:lock" class="text-4xl mb-2 text-skyblue_dark hover:text-white transition duration-300 ease-in-out" />
         <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Permissions</h3>
-      </a>
-      <a href="/company" class="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center border-2 border-blue_brand transition duration-300 ease-in-out hover:bg-aqua_brand">
-        <Icon name="mdi:settings" class="text-4xl mb-2 text-skyblue_dark hover:text-white transition duration-300 ease-in-out" />
-        <h3 class="text-base font-semibold text-skyblue_dark hover:text-white transition duration-300 ease-in-out">Actions</h3>
       </a>
     </div>
   </div>

@@ -14,7 +14,8 @@ export default {
 		  coral: '#fd9901',
 		  teal: '#629dab',
 		  orange: '#f96501',
-		  color_brand: '#0c2a34'
+		  color_brand: '#0c2a34',
+		  gray_light: '#e9ecef',
 		},
 		backgroundImage: {
 		  'skyblue-gradient': 'linear-gradient(to right, #50b0ec, #4a81ad)',

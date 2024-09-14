@@ -5,10 +5,10 @@ import type { PaginatedResponse, PaginationParams, PermissionRoles } from "../ty
 import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
-const PATH_ROLE = "/role"
-const PATH_PERMISSION = "/permission"
-const PATH_MODULE = "/module"
-const PATH_PERMISSION_MODULE_ACTIONS = "/permission/module-actions"
+const PATH_ROLE = "/management/role"
+const PATH_PERMISSION = "/management/permission"
+const PATH_MODULE = "/management/module"
+const PATH_PERMISSION_MODULE_ACTIONS = "/management/permission/module-actions"
 
 export const getAllModules = async (): Promise<Module[] | undefined> => {
   const options = generateRequestOptions("GET")

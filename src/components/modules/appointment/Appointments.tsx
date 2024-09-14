@@ -1,100 +1,222 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
+import Select from 'react-select';
+import { CalendarDays, LayoutGrid, CalendarPlus } from 'lucide-react';
 import type { Appointment } from '../../../types/AppointmentType';
 import type { Veterinary } from '../../../types/VeterinaryType';
 import '../../../styles/Calendar.css';
 import Calendar from '../../common/calendar/Calendar';
+import { createAppointment, search } from '../../../hooks/useAppointment';
+import FormModal from '../FormModal';
+import { appointmentFields } from '../../../types/FormFieldConfig';
+import { fetchVeterinaries } from '../../../hooks/useVeterinary';
 
-interface AppointmentsProps {
+interface VetOption {
+  value: number;
+  label: string;
 }
 
-const dummyAppointments: Appointment[] = [
-  { patient_id: 1, vet_id: 1, appointment_date: "2024-09-02T10:00:00Z", reason: "Check-up", status: "Pending" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-02T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-02T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-03T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-04T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-05T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-06T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-07T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-08T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-  { patient_id: 2, vet_id: 2, appointment_date: "2024-09-09T11:00:00Z", reason: "Vaccination Natsu Emilio Tibursio", status: "Confirmed" },
-];
-
-const dummyVeterinaries: Veterinary[] = [
-  { vet_id: 1, identification: "V001", name: "Dr. Smith", phone: "123-456-7890", specialization: "General" },
-  { vet_id: 2, identification: "V002", name: "Dr. Johnson", phone: "098-765-4321", specialization: "Surgery" },
-];
-
 const Appointments: React.FC = () => {
-  const [appointments, setAppointments] = useState<Appointment[]>(dummyAppointments);
-  const [veterinaries, setVeterinaries] = useState<Veterinary[]>(dummyVeterinaries);
-  const [selectedVet, setSelectedVet] = useState<number | null>(null);
-  const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [appointments, setAppointments] = useState<Appointment[] | undefined>([]);
+  const [veterinaries, setVeterinaries] = useState<Veterinary[]>();
+  const [selectedVet, setSelectedVet] = useState<VetOption | null>(null);
+  const [filteredAppointments, setFilteredAppointments] = useState<Appointment[] | undefined>([]);
+  const [initialDate, setInitialDate] = useState<string>('');
+  const [finalDate, setFinalDate] = useState<string>('');
+  const [viewMode, setViewMode] = useState<'cards' | 'calendar'>('cards');
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
+
+  const emptyAppointment: Appointment = {
+    id: 0,
+    patientId: 0,
+    vetId: 0,
+    initialDate: '',
+    finalDate: '',
+    reason: '',
+    status: '',
+    appointmentDate: ''
+  };
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const fetchedAppointments = await search(emptyAppointment);
+        setAppointments(fetchedAppointments);
+        setFilteredAppointments(fetchedAppointments);
+      } catch (err) {
+        console.error('Error fetching appointments:', err);
+      }
+    };
+    fetchAppointments();
+
+    const fetchVets = async () => {
+      try {
+        const fetchedVeterinaries = await fetchVeterinaries();
+        setVeterinaries(fetchedVeterinaries);
+      } catch (err) {
+        console.error('Error fetching veterinaries:', err);
+      }
+    };
+    fetchVets();
+  }, []);
 
   useEffect(() => {
     filterAppointments();
-  }, [selectedVet]);
+  }, [selectedVet, appointments, initialDate, finalDate]);
 
   const filterAppointments = () => {
-    if (selectedVet !== null) {
-      setFilteredAppointments(
-        appointments.filter(app => app.vet_id === selectedVet)
-      );
-    } else {
-      setFilteredAppointments(appointments);
+    if (appointments) {
+      let filtered = appointments;
+
+      if (selectedVet) {
+        filtered = filtered.filter(app => app.vetId === selectedVet.value);
+      }
+
+      if (initialDate) {
+        filtered = filtered.filter(app => dayjs(app.appointmentDate).isSameOrAfter(initialDate));
+      }
+
+      if (finalDate) {
+        filtered = filtered.filter(app => dayjs(app.appointmentDate).isSameOrBefore(finalDate));
+      }
+
+      setFilteredAppointments(filtered);
     }
   };
 
-  const handleVetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedVet(Number(e.target.value));
+  const handleVetChange = (selectedOption: VetOption | null) => {
+    setSelectedVet(selectedOption);
   };
 
   const handleDateClick = (date: dayjs.Dayjs) => {
     setSelectedDate(date);
-    const appointmentsOnDate = appointments.filter(app =>
-      dayjs(app.appointment_date).isSame(date, 'day')
-    );
-    setFilteredAppointments(appointmentsOnDate);
+    if (appointments) {
+      const appointmentsOnDate = appointments.filter(app =>
+        dayjs(app.appointmentDate).isSame(date, 'day')
+      );
+      setFilteredAppointments(appointmentsOnDate);
+    }
+  };
+
+  const vetOptions: VetOption[] = [
+    { value: 0, label: 'All Veterinaries' },
+    ...(veterinaries && veterinaries.length > 0
+      ? veterinaries.map(vet => ({
+          value: vet.vetId,
+          label: `${vet.name} - ${vet.specialization}`
+        }))
+      : [])
+  ];
+
+  const toggleViewMode = () => {
+    setViewMode(prevMode => prevMode === 'cards' ? 'calendar' : 'cards');
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedAppointment(null);
+  };
+
+  const handleAddClick = () => {
+    setSelectedAppointment(null);
+    setIsModalOpen(true);
+  };
+
+  const handleSubmit = async (data: Appointment) => {
+    const responseMessage = data.id
+      ? await createAppointment(data)
+      : await createAppointment(data);
+    if (responseMessage) {
+      console.log("update")
+    }
+    return responseMessage;
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-center mt-4 text-color_brand font-bold">Appointments Calendar</h2>
+    <><div className="p-4 pt-0">
+      <h2 className="text-center text-color_brand font-bold">Appointments</h2>
 
-      <div className="my-4">
-        <label htmlFor="vet-select" className="block text-sm font-medium text-gray-700">Filter by Veterinary</label>
-        <select
-          id="vet-select"
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          onChange={handleVetChange}
-        >
-          <option value="">All Veterinaries</option>
-          {veterinaries.map(vet => (
-            <option key={vet.vet_id} value={vet.vet_id}>
-              {vet.name} - {vet.specialization}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <Calendar
-        appointments={filteredAppointments}
-        onDateClick={handleDateClick}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-        {filteredAppointments.map(app => (
-          <div key={app.patient_id + app.appointment_date} className="p-4 border rounded-lg shadow-md bg-white">
-            <h3 className="text-lg font-semibold">{dayjs(app.appointment_date).format('MMM D, YYYY')}</h3>
-            <p className="text-sm text-gray-600">Time: {dayjs(app.appointment_date).format('h:mm A')}</p>
-            <p className="text-sm">Reason: {app.reason}</p>
-            <p className="text-sm">Status: <span className={`font-semibold ${app.status === 'Confirmed' ? 'text-green-500' : 'text-red-500'}`}>{app.status}</span></p>
+      <div className="bg-gray_light p-2">
+        <div className="flex flex-wrap -mx-2 items-end">
+          <div className="w-full sm:w-1/2 md:w-1/4 px-2 mb-2">
+            <label htmlFor="vet-select" className="block text-sm font-medium text-color_brand mb-1">Veterinary</label>
+            <Select
+              id="vet-select"
+              options={vetOptions}
+              value={selectedVet}
+              onChange={handleVetChange}
+              className="w-full"
+              classNamePrefix="select"
+              isClearable
+              placeholder="Select a vet..." />
           </div>
-        ))}
+          <div className="w-full sm:w-1/2 md:w-1/4 px-2 mb-2">
+            <label htmlFor="initial-date" className="block text-sm font-medium text-color_brand mb-1">Initial Date</label>
+            <input
+              id="initial-date"
+              type="date"
+              className="w-full p-1 text-color_brand"
+              value={initialDate}
+              onChange={(e) => setInitialDate(e.target.value)} />
+          </div>
+          <div className="w-full sm:w-1/2 md:w-1/4 px-2 mb-2">
+            <label htmlFor="final-date" className="block text-sm font-medium text-color_brand mb-1">Final Date</label>
+            <input
+              id="final-date"
+              type="date"
+              className="w-full p-1 text-color_brand"
+              value={finalDate}
+              onChange={(e) => setFinalDate(e.target.value)} />
+          </div>
+          <div className="w-16 px-2 mb-2 pr-4 pt-4 md:pr-8">
+            <button
+              className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
+              onClick={handleAddClick}
+            >
+              <CalendarPlus size={24} />
+            </button>
+          </div>
+          <div className="w-16 px-2 mb-2 justify-end pr-4 pt-4 md:pr-8">
+            <button
+              onClick={toggleViewMode}
+              className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
+            >
+              {viewMode === 'cards' ? <CalendarDays size={24} /> : <LayoutGrid size={24} />}
+            </button>
+          </div>
+        </div>
       </div>
+
+      {viewMode === 'calendar' && (
+        <Calendar
+          appointments={filteredAppointments}
+          onDateClick={handleDateClick} />
+      )}
+
+      {viewMode === 'cards' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+          {filteredAppointments && filteredAppointments.map(app => (
+            <div key={app.patientId + app.appointmentDate} className="p-4 border rounded-lg shadow-md bg-white">
+              <h3 className="text-lg font-semibold">{dayjs(app.appointmentDate).format('MMM D, YYYY')}</h3>
+              <p className="text-sm text-color_brand">Time: {dayjs(app.appointmentDate).format('h:mm A')}</p>
+              <p className="text-sm">Reason: {app.reason}</p>
+              <p className="text-sm">Status: <span className={`font-semibold ${app.status === 'Confirmed' ? 'text-green-500' : 'text-red-500'}`}>{app.status}</span></p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
+    <FormModal<Appointment>
+        initialData={selectedAppointment || emptyAppointment}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmit}
+        fields={appointmentFields}
+        title={selectedAppointment ? "Edit Appointment" : "Create Appointment"}
+        description="Scheduled appointment" /></>
   );
 };
 

@@ -1,9 +1,12 @@
 export interface Appointment {
-    patient_id: number;
-    vet_id: number;
-    appointment_date: string; // ISO date format
+    id?: number;
+    patientId: number;
+    vetId: number;
+    appointmentDate: string;
     reason: string;
     status: string;
+    initialDate?: string;
+    finalDate?: string;
   }
-  
  
+  

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import searchIcon from "../../../assets/icons/table-search.png";
 import ButtonIcon from "../buttons/ButtonIcon";
+import { PlusSquareIcon, SearchCodeIcon, TextSearch } from 'lucide-react';
 
 interface FilterControlsProps {
   addFilter: (column: string, value: string) => void;
@@ -27,7 +28,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    <div className="flex flex-wrap items-center p-0 lg:pl-4 pt-4">
+    <div className="flex flex-wrap items-center p-0 lg:pl-4">
       <select
         value={selectedFilter}
         onChange={(e) => setSelectedFilter(e.target.value)}
@@ -48,8 +49,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({
         className="border p-2 rounded focus:border-orange focus:ring-0 w-full md:max-w-48 mt-4 ml-2 mr-2 md:mt-0 md:ml-0 md:mr-0"
       />
       <div className="mt-4 md:mt-0 align-baseline">
-        <ButtonIcon onClick={handleAddFilter} icon={searchIcon.src}>
-          Add Filter
+        <ButtonIcon text="Add Filter" onClick={handleAddFilter}>
+          <TextSearch/>
         </ButtonIcon>
       </div>  
       <div className="flex flex-wrap ">

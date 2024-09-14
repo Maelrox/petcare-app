@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import type { Appointment } from "../../../types/AppointmentType";
 
 interface CalendarProps {
-  appointments: Appointment[];
+  appointments: Appointment[] | undefined;
   onDateClick: (date: dayjs.Dayjs) => void;
 }
 
@@ -29,7 +29,7 @@ const Calendar: React.FC<CalendarProps> = ({ appointments, onDateClick }) => {
 
   return (
     <div className="calendar">
-      <div className="calendar-header">
+      <div className="calendar-header bg-color_brand text-white">
         <button
           onClick={() => setCurrentDate(currentDate.subtract(1, "month"))}
         >
@@ -41,14 +41,14 @@ const Calendar: React.FC<CalendarProps> = ({ appointments, onDateClick }) => {
         </button>
       </div>
       <div className="calendar-grid">
-        {days.map((day) => {
+        {appointments && days.map((day) => {
           const dayAppointments = appointments.filter((app) =>
-            dayjs(app.appointment_date).isSame(day, "day")
+            dayjs(app.appointmentDate).isSame(day, "day")
           );
           return (
             <div
               key={day.toString()}
-              className={`calendar-day md:pt-10 min-h-16 max-h-16 md:min-h-24 ${
+              className={`calendar-day md:pt-0 min-h-16 max-h-16 md:min-h-24 ${
                 dayAppointments.length > 0 ? "has-appointments" : ""
               }`}
               onClick={() => handleDateClick(day)}
@@ -58,15 +58,15 @@ const Calendar: React.FC<CalendarProps> = ({ appointments, onDateClick }) => {
               </div>
               {dayAppointments.slice(0, 2).map((app, index) => (
                 <>
-                  <div key={index} className="appointment-card  hidden md:flex">
+                  <div key={index} className="appointment-card bg-rose-600 md:bg-white b rounded-sm flex-col w-full md:flex-row max-h-4 md:max-h-10 hidden md:flex">
                     <p className="appointment-time">
-                      {dayjs(app.appointment_date).format("h:mm A")}
+                      {dayjs(app.appointmentDate).format("h:mm A")}
                     </p>
-                    <p className="appointment-reason text-white">{app.reason}</p>
+                    <p className="appointment-reason text-white md:text-color_brand">{app.reason}</p>
                   </div>
-                  <div key={index} className="appointment-card mt-0.5 pl-0.5 pr-0.5 text-white flex md:hidden">
+                  <div key={index} className="appointment-card mt-0.5 pl-0.5 pr-0.5 bg-rose-600 md:bg-white w-full text-white md:text-blue_brand flex md:hidden">
                     <p className="appointment-reason max-w-12">
-                        {app.reason.slice(0, 9)}
+                        {app.reason.slice(0, 11)}
                     </p>
                     {dayAppointments.length > 2 && (
                       <p className="appointment-reason bg-gray-200 text-teal p-l-0.5 rounded-sm mt-0.5 max-w-12">more...</p>
