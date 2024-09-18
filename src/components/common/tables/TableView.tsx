@@ -1,8 +1,6 @@
 import { flexRender, type Table } from "@tanstack/react-table";
-import editIcon from "../../../assets/icons/table-edit.png";
-import trashIcon from "../../../assets/icons/table-remove.png";
-import additionalIcon from "../../../assets/icons/associate-permission.png";
-import moduleActionIcon from "../../../assets/icons/module-action.png";
+import { EditIcon, SettingsIcon, TrashIcon } from "lucide-react";
+import ButtonIcon from "../buttons/ButtonIcon";
 
 type TableViewProps<T> = {
   table: Table<T>;
@@ -10,6 +8,7 @@ type TableViewProps<T> = {
   handleDelete: (rowData: T) => void;
   handleAdditionalAction?: (rowData: T) => void;
   handleAdditionalAction2?: (rowData: T) => void;
+  handleSelect?: (rowData: T) => void;
 };
 
 function TableView<T>({
@@ -18,6 +17,7 @@ function TableView<T>({
   handleDelete,
   handleAdditionalAction,
   handleAdditionalAction2,
+  handleSelect,
 }: TableViewProps<T>) {
   return (
     <div className="hidden md:block">
@@ -38,7 +38,7 @@ function TableView<T>({
                       )}
                 </th>
               ))}
-              <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+              <th className="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider text-center">
                 Actions
               </th>
             </tr>
@@ -49,6 +49,7 @@ function TableView<T>({
             const rowData = row.original as T;
             return (
               <tr
+                onClick={handleSelect ? () => handleSelect(rowData) : undefined}
                 key={row.id}
                 className={`${
                   rowIndex % 2 === 0 ? "bg-white" : "bg-gray-100"
@@ -62,35 +63,43 @@ function TableView<T>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
-                <td className="px-6 py-1 whitespace-nowrap flex space-x-2">
-                  <img
-                    src={editIcon.src}
-                    alt="Edit"
-                    className="w-6 h-6 cursor-pointer"
+                <td className="px-6 py-1 whitespace-nowrap flex space-x-2 justify-center">
+                  <ButtonIcon
+                    text=""
                     onClick={() => handleEdit(rowData)}
-                  />
-                  <img
-                    src={trashIcon.src}
-                    alt="Delete"
-                    className="w-6 h-6 cursor-pointer"
+                    bgColor="bg-gray-100"
+                  >
+                    <EditIcon size={12} />
+                  </ButtonIcon>
+                  <ButtonIcon
+                    text=""
                     onClick={() => handleDelete(rowData)}
-
-                  />
+                    bgColor="bg-rose-600"
+                    color="text-white"
+                  >
+                    <TrashIcon size={12} />
+                  </ButtonIcon>
                   {handleAdditionalAction && (
-                    <img
-                      src={additionalIcon.src}
-                      alt="Assign Permission"
-                      className="w-6 h-6 cursor-pointer"
-                      onClick={() => handleAdditionalAction(rowData)}
-                    />
+                    <>
+                      <ButtonIcon
+                        bgColor="bg-gray-100"
+                        text=""
+                        onClick={() => handleAdditionalAction(rowData)}
+                      >
+                        <SettingsIcon size={12} />
+                      </ButtonIcon>
+                    </>
                   )}
                   {handleAdditionalAction2 && (
-                    <img
-                      src={moduleActionIcon.src}
-                      alt="Assign Permission"
-                      className="w-6 h-6 cursor-pointer"
-                      onClick={() => handleAdditionalAction2(rowData)}
-                    />
+                    <>
+                      <ButtonIcon
+                        text=""
+                        bgColor="bg-gray-100"
+                        onClick={() => handleAdditionalAction2(rowData)}
+                      >
+                        <SettingsIcon size={12} />
+                      </ButtonIcon>
+                    </>
                   )}
                 </td>
               </tr>

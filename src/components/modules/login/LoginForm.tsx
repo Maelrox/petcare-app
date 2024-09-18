@@ -37,7 +37,6 @@ const LoginFormInner: React.FC = () => {
         sessionStorage.setItem("userData", JSON.stringify(data));
       }
     } catch (err) {
-      console.log("failed")
       console.log(err);
     }
   };

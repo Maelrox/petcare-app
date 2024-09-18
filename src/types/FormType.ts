@@ -4,7 +4,19 @@ interface FormField<T> {
   type: string;
   required?: boolean;
   validators?: Validator;
+  searchTable?: any;
+  displaySelect?: string;
+  dependsOn?: string;
+  dependantId?: string;
+  fetch?: T[] | (() => Promise<T[]>);
+  fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]>;
 }
+
+  interface SelectOption {
+    value: number;
+    label: string;
+    dependantName: string;
+  }
 
 interface Validator {
   maxLength?: number;

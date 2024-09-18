@@ -1,0 +1,8 @@
+---
+import Patients from '../../../components/modules/patient/Patients';
+import AppLayout from '../../../layouts/AppLayout.astro';
+---
+
+<AppLayout title="Veterinaries" includeMenu={false}>
+	<Patients client:load />
+</AppLayout>

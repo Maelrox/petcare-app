@@ -37,19 +37,19 @@ export function useFormValidation<T extends Record<string, any>>({
       if (required && !value) {
         return "This field is required";
       }
-      if (maxLength !== undefined && value.length > maxLength) {
+      if (maxLength !== undefined && value && value.length > maxLength) {
         return `Maximum length is ${maxLength} characters`;
       }
-      if (minLength !== undefined && value.length < minLength) {
+      if (minLength !== undefined && value && value.length < minLength) {
         return `Minimum length is ${minLength} characters`;
       }
-      if (pattern && !pattern.test(value)) {
+      if (value && pattern && !pattern.test(value)) {
         return "Invalid format";
       }
-      if (minDate && new Date(value) < minDate) {
+      if (minDate && value && new Date(value) < minDate) {
         return `Date must be on or after ${minDate.toDateString()}`;
       }
-      if (maxDate && new Date(value) > maxDate) {
+      if (maxDate && value && new Date(value) > maxDate) {
         return `Date must be on or before ${maxDate.toDateString()}`;
       }
     }

@@ -18,7 +18,6 @@ function PermissionModulesForm({ permission }: PermissionsFormProps) {
     const fetchModules = async () => {
       try {
         const fetchedModules = await getAllModules();
-        console.log("Fetched modules:", fetchedModules);
         const initializedModules = fetchedModules?.map((module) => ({
           ...module,
           modulesActions: module.modulesActions.map((action) => ({
@@ -46,8 +45,6 @@ function PermissionModulesForm({ permission }: PermissionsFormProps) {
   const checkModuleActions = async (module: Module) => {
     try {
       const permissionActions = await getModuleActions(permission.id!, module.id);
-      console.log("Permission actions:", permissionActions);
-      console.log("Module actions before update:", module.modulesActions);
 
       if (!permissionActions) {
         console.error("No permission actions returned from getModuleActions");
@@ -59,7 +56,6 @@ function PermissionModulesForm({ permission }: PermissionsFormProps) {
         selected: permissionActions.some((pa) => pa.id === action.id),
       }));
 
-      console.log("Module actions after update:", updatedModuleActions);
 
       setSelectedModule({
         ...module,
@@ -96,7 +92,6 @@ function PermissionModulesForm({ permission }: PermissionsFormProps) {
           name: permission.name,
           modulesAction: selectedModule.modulesActions.filter((action) => action.selected),
         };
-        console.log("Submitting data:", JSON.stringify(permissionModuleActions));
         await updatePermissionActionsModule(permissionModuleActions);
         addToast("Roles assigned successfully!");
       } catch (error) {

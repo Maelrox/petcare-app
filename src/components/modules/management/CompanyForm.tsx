@@ -22,7 +22,6 @@ const CompanyAdminForm: React.FC = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     // Handle form submission
-    console.log('Form Data:', formData);
   };
 
   return (

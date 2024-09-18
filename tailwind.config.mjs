@@ -26,6 +26,7 @@ export default {
 		  'aqua-brand-gradient': 'linear-gradient(to right, #b3eefe, #85c9fe)',
 		  'jshine-gradient': 'linear-gradient(to right, #12c2e9, #c471ed, #f64f59)',
 		  'timber-gradient': 'linear-gradient(to right, #fc00ff, #00dbde)',
+		  'neuromancer-gradient': 'linear-gradient(to right, #00B4DB, #0083B0)',
 		},
 	  },
 	},

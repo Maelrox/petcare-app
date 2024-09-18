@@ -4,10 +4,10 @@ import type { Appointment } from "../../../types/AppointmentType";
 
 interface CalendarProps {
   appointments: Appointment[] | undefined;
-  onDateClick: (date: dayjs.Dayjs) => void;
+  onAppointmentClick: (appointmentId: number) => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ appointments, onDateClick }) => {
+const Calendar: React.FC<CalendarProps> = ({ appointments, onAppointmentClick }) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
 
   const startOfMonth = currentDate.startOf("month");
@@ -23,10 +23,6 @@ const Calendar: React.FC<CalendarProps> = ({ appointments, onDateClick }) => {
     day = day.add(1, "day");
   }
 
-  const handleDateClick = (date: dayjs.Dayjs) => {
-    onDateClick(date);
-  };
-
   return (
     <div className="calendar">
       <div className="calendar-header bg-color_brand text-white">
@@ -41,42 +37,54 @@ const Calendar: React.FC<CalendarProps> = ({ appointments, onDateClick }) => {
         </button>
       </div>
       <div className="calendar-grid">
-        {appointments && days.map((day) => {
-          const dayAppointments = appointments.filter((app) =>
-            dayjs(app.appointmentDate).isSame(day, "day")
-          );
-          return (
-            <div
-              key={day.toString()}
-              className={`calendar-day md:pt-0 min-h-16 max-h-16 md:min-h-24 ${
-                dayAppointments.length > 0 ? "has-appointments" : ""
-              }`}
-              onClick={() => handleDateClick(day)}
-            >
-              <div className="text-xs md:text-base mb-0 font-bold ">
-                {day.date()}
-              </div>
-              {dayAppointments.slice(0, 2).map((app, index) => (
-                <>
-                  <div key={index} className="appointment-card bg-rose-600 md:bg-white b rounded-sm flex-col w-full md:flex-row max-h-4 md:max-h-10 hidden md:flex">
-                    <p className="appointment-time">
-                      {dayjs(app.appointmentDate).format("h:mm A")}
-                    </p>
-                    <p className="appointment-reason text-white md:text-color_brand">{app.reason}</p>
-                  </div>
-                  <div key={index} className="appointment-card mt-0.5 pl-0.5 pr-0.5 bg-rose-600 md:bg-white w-full text-white md:text-blue_brand flex md:hidden">
-                    <p className="appointment-reason max-w-12">
+        {appointments &&
+          days.map((day) => {
+            const dayAppointments = appointments.filter((app) =>
+              dayjs(app.appointmentDate).isSame(day, "day")
+            );
+            return (
+              <div
+                key={day.toString()}
+                className={`calendar-day md:pt-0 min-h-16 max-h-16 md:min-h-24 ${
+                  dayAppointments.length > 0 ? "has-appointments" : ""
+                }`}
+              >
+                <div className="text-xs md:text-base mb-0 font-bold ">
+                  {day.date()}
+                </div>
+                {dayAppointments.slice(0, 2).map((app, index) => (
+                  <>
+                    <div
+                      key={index}
+                      className="appointment-card bg-rose-600 md:bg-white b rounded-sm flex-col w-full md:flex-row max-h-4 md:max-h-10 hidden md:flex"
+                      onClick={() => onAppointmentClick(app.appointmentId || 0)}
+                    >
+                      <p className="appointment-time">
+                        {dayjs(app.appointmentDate).format("h:mm A")}
+                      </p>
+                      <p className="appointment-reason text-white md:text-color_brand">
+                        {app.reason}
+                      </p>
+                    </div>
+                    <div
+                      key={index}
+                      className="appointment-card mt-0.5 pl-0.5 pr-0.5 bg-rose-600 md:bg-white w-full text-white md:text-blue_brand flex md:hidden"
+                      onClick={() => onAppointmentClick(app.appointmentId || 0)}
+                    >
+                      <p className="appointment-reason max-w-12">
                         {app.reason.slice(0, 11)}
-                    </p>
-                    {dayAppointments.length > 2 && (
-                      <p className="appointment-reason bg-gray-200 text-teal p-l-0.5 rounded-sm mt-0.5 max-w-12">more...</p>
-                    )}
-                  </div>
-                </>
-              ))}
-            </div>
-          );
-        })}
+                      </p>
+                      {dayAppointments.length > 2 && (
+                        <p className="appointment-reason bg-gray-200 text-teal p-l-0.5 rounded-sm mt-0.5 max-w-12">
+                          more...
+                        </p>
+                      )}
+                    </div>
+                  </>
+                ))}
+              </div>
+            );
+          })}
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import type { Role } from "../../../types/AuthType";
 import FormModal from "../FormModal";
 import { roleFields } from "../../../types/FormFieldConfig";
 import { addToast } from "../../utils/toasterStore";
+import { PlusIcon } from "lucide-react";
 
 // simple CRUD
 function Roles() {
@@ -80,7 +81,7 @@ function Roles() {
 
   return (
     <>
-      <h2 className="text-center mt-4 text-color_brand font-bold">Roles</h2>
+      <h2 className="text-center text-color_brand font-bold">Roles</h2>
       <div className="flex flex-col md:flex-row md:justify-between mb-0">
         <div className="w-full lg:w-2/3 md:pr-2 md:mb-0">
           <FilterControls
@@ -91,13 +92,13 @@ function Roles() {
             filters={filters}
           />
         </div>
-        <div className="w-full md:w-1/3 pt-4 flex lg:justify-end max-h-16">
+        <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
           <ButtonIcon
             type="submit"
+            text="New Role"
             onClick={() => handleAddClick()}
-            icon={addIcon.src}
           >
-            New Role
+            <PlusIcon size={24}/>
           </ButtonIcon>
         </div>
       </div>

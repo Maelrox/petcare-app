@@ -1,5 +1,7 @@
+import type { Owner } from "./OwnerType";
+
 export interface Appointment {
-    id?: number;
+    appointmentId?: number;
     patientId: number;
     vetId: number;
     appointmentDate: string;
@@ -7,6 +9,9 @@ export interface Appointment {
     status: string;
     initialDate?: string;
     finalDate?: string;
+    owner?: Owner;
+    ownerId?: number;
+
   }
  
   

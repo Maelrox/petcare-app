@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
 import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
-import addIcon from "../../../assets/icons/table-add.png";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
-import { roleFields, veterinaryFields } from "../../../types/FormFieldConfig";
+import { veterinaryFields } from "../../../types/FormFieldConfig";
 import { createVeterinary, searchVeterinaries, updateVeterinary } from "../../../hooks/useVeterinary";
 import type { Veterinary } from "../../../types/VeterinaryType";
+import { PlusIcon } from "lucide-react";
 
-// simple CRUD
 function Veterinaries() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVeterinary, setSelectedVeterinary] = useState<Veterinary | null>(null);
@@ -98,9 +97,9 @@ function Veterinaries() {
           <ButtonIcon
             type="submit"
             onClick={() => handleAddClick()}
-            icon={addIcon.src}
+            text="New Veterinary"
           >
-            New Veterinary
+            <PlusIcon size={24}/>
           </ButtonIcon>
         </div>
       </div>

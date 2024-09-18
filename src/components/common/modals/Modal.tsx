@@ -5,9 +5,10 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   title: string;
+  maxSize?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
+  const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, maxSize = 'max-w-md' }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div ref={modalRef} className="relative bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div ref={modalRef} className={`${maxSize} relative bg-white rounded-lg shadow-xl w-full`}>
         <div className="bg-skyblue_dark text-white px-4 py-2 rounded-t-lg flex justify-between items-center">
           <span className="font-semibold">{title}</span>
           <button

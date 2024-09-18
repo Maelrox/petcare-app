@@ -1,6 +1,10 @@
+import Owners from "../components/modules/owner/Owners";
+import { fetchPatientOptions } from "../hooks/usePatient";
+import { fetchVeterinaries } from "../hooks/useVeterinary";
 import type { Appointment } from "./AppointmentType";
 import type { Permission, Role } from "./AuthType";
 import type { Owner } from "./OwnerType";
+import type { Patient } from "./PatientType";
 import type { Veterinary } from "./VeterinaryType";
 
 export const roleFields: FormField<Role>[] = [
@@ -95,21 +99,72 @@ export const ownerFields: FormField<Owner>[] = [
   },
 ];
 
-
-export const appointmentFields: FormField<Appointment>[] = [
+export const patientFields: FormField<Patient>[] = [
   {
-    name: "patientId",
-    label: "Patient",
+    name: "name",
+    label: "Full Name",
     type: "text",
     required: true,
     validators: { maxLength: 64 },
   },
   {
-    name: "vetId",
-    label: "Veterinary",
+    name: "breed",
+    label: "Breed",
     type: "text",
     required: true,
+  },
+  {
+    name: "age",
+    label: "Age",
+    type: "number",
+    required: true,
+  },
+  {
+    name: "species",
+    label: "Specie",
+    type: "text",
+    required: true,
+    validators: { maxLength: 32 },
+  },
+  {
+    name: "owner",
+    label: "Owner",
+    type: "select",
+    required: true,
+    searchTable: Owners,
+    displaySelect: "name",
+  },
+];
+
+
+export const appointmentFields: FormField<Appointment>[] = [
+  {
+    name: "owner",
+    label: "Owner",
+    type: "text",
+    required: true,
+    searchTable: Owners,
+    displaySelect: "name",
+  },
+  {
+    name: "patientId",
+    label: "Patient",
+    type: "select-dependant",
+    required: true,
+    dependsOn: "owner",
     validators: { maxLength: 64 },
+    identifier: true,
+    dependantId: "ownerId",
+    fetchDependant: fetchPatientOptions,
+  },
+  {
+    name: "vetId",
+    label: "Veterinary",
+    type: "select",
+    required: true,
+    dependantId: "vetId",
+    validators: { maxLength: 64 },
+    fetch: fetchVeterinaries,
   },
   {
     name: "appointmentDate",
@@ -132,4 +187,6 @@ export const appointmentFields: FormField<Appointment>[] = [
     required: true,
     validators: { maxLength: 16 },
   },
+  
 ];
+

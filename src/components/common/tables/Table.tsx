@@ -21,6 +21,7 @@ type DataTableProps<T> = {
   handleAdditionalAction?: (rowData: T) => void;
   handleAdditionalAction2?: (rowData: T) => void;
   isLoading: boolean;
+  handleSelect?: (rowData: T) => void;
 };
 
 type AccessorFn<T> = (data: T) => any;
@@ -61,7 +62,8 @@ function DataTable<T>({
   handleDelete,
   handleAdditionalAction,
   handleAdditionalAction2,
-  isLoading
+  isLoading,
+  handleSelect
 }: DataTableProps<T>) {
   const { data, columns } = React.useMemo(
     () => generateTableColumns(dataSource),
@@ -104,6 +106,7 @@ function DataTable<T>({
             handleDelete={handleDelete}
             handleAdditionalAction={handleAdditionalAction}
             handleAdditionalAction2={handleAdditionalAction2}
+            handleSelect={handleSelect}
           />
           <TableCardView table={table} />
           <Pagination table={table} />

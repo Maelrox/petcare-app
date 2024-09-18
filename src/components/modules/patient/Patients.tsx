@@ -4,32 +4,15 @@ import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
-import type { Owner } from "../../../types/OwnerType";
-import { ownerFields } from "../../../types/FormFieldConfig";
-import {
-  createOwner,
-  searchOwners,
-  updateOwner,
-} from "../../../hooks/useOwner";
 import { PlusSquareIcon } from "lucide-react";
+import type { Patient } from "../../../types/PatientType";
+import { createPatient, searchPatients, updatePatient } from "../../../hooks/usePatient";
+import { patientFields } from "../../../types/FormFieldConfig";
 
-type OwnerProps<T> = {
-  handleSelect?: (rowData: T) => void;
-}
-
-function Owners<T>({ handleSelect }: OwnerProps<T>) {
+function Patients() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOwner, setSelectedOwner] = useState<Owner | null>(null);
-  const paginatedData = usePaginatedData(searchOwners);
-
-  const owner: Owner = {
-    ownerId: 0,
-    identification: "",
-    identificationTypeId: 0,
-    name: "",
-    phone: "",
-    address: "",
-  };
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const paginatedData = usePaginatedData(searchPatients);
 
   useEffect(() => {
     setRefresh(true);
@@ -48,15 +31,15 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
     isLoading,
   } = paginatedData;
 
-  const handleEdit = (owner: Owner) => {
-    setSelectedOwner(owner);
+  const handleEdit = (patient: Patient) => {
+    setSelectedPatient(patient);
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (owner: Owner) => {
-    if (owner.ownerId) {
+  const handleDelete = async (patient: Patient) => {
+    if (patient.patientId) {
       const isConfirmed = window.confirm(
-        `Are you sure you want to delete the owner "${owner.name}"?`
+        `Are you sure you want to delete the patient "${patient.name}"?`
       );
       if (isConfirmed) {
         const responseMessage = "TODO"; //await deleteOwner(owner.vetId);
@@ -69,19 +52,19 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
   };
 
   const handleAddClick = () => {
-    setSelectedOwner(null);
+    setSelectedPatient(null);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedOwner(null);
+    setSelectedPatient(null);
   };
 
-  const handleSubmit = async (data: Owner) => {
-    const responseMessage = data.ownerId
-      ? await updateOwner(data)
-      : await createOwner(data);
+  const handleSubmit = async (data: Patient) => {
+    const responseMessage = data.patientId
+      ? await updatePatient(data)
+      : await createPatient(data);
     if (responseMessage) {
       setRefresh(true);
     }
@@ -90,8 +73,8 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
 
   return (
     <>
-      <h2 className="text-center text-color_brand font-bold">Owners</h2>
-      <div className="flex flex-col items-center md:flex-row md:justify-between mb-0">
+      <h2 className="text-center text-color_brand font-bold">Patients</h2>
+      <div className="flex flex-col p-0 items-center md:flex-row md:justify-between mb-0">
         <div className="w-full lg:w-2/3 md:pr-2 md:mb-0">
           <FilterControls
             setRefresh={setRefresh}
@@ -104,7 +87,7 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
         <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
           <ButtonIcon
             type="submit"
-            text="New Owner"
+            text="New Patient"
             onClick={() => handleAddClick()}
           >
             <PlusSquareIcon />
@@ -119,30 +102,30 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
           onPaginationChange={handlePaginationChange}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
-          handleSelect={handleSelect}
           isLoading={isLoading}
         />
       </div>
-      <FormModal<Owner>
-        initialData={
-          selectedOwner || {
-            ownerId: 0,
-            identification: "",
-            identificationTypeId: 0,
-            name: "",
-            phone: "",
-            address: "",
+      {isModalOpen && (
+        <FormModal<Patient>
+          initialData={
+            selectedPatient || {
+              patientId: 0,
+              breed: "",
+              species: "",
+              name: "",
+              age: 0,
+              ownerId: null,
+            }
           }
-        }
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleSubmit}
-        fields={ownerFields}
-        title={selectedOwner ? "Edit Owner" : "Create Owner"}
-        description="Specialist in animal health"
-      />
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSubmit={handleSubmit}
+          fields={patientFields}
+          title={selectedPatient ? "Edit Patient" : "Create Patient"}
+        />
+      )}
     </>
   );
 }
 
-export default Owners;
+export default Patients;

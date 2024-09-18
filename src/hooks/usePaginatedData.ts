@@ -54,7 +54,6 @@ function usePaginatedData<T extends Record<string, any>>(
             : [];
         availableFilters.current = keys;
         setData(response.data);
-        console.log(response.data);
       } catch (err: any) {
         console.log(err.message);
         addToast(err.message);
