@@ -6,7 +6,12 @@ import type { Appointment } from "../../../types/AppointmentType";
 import type { Veterinary } from "../../../types/VeterinaryType";
 import "../../../styles/Calendar.css";
 import Calendar from "../../common/calendar/Calendar";
-import { createAppointment, getAppointment, searchAppointment, updateAppointment } from "../../../hooks/useAppointment";
+import {
+  createAppointment,
+  getAppointment,
+  searchAppointment,
+  updateAppointment,
+} from "../../../hooks/useAppointment";
 import FormModal from "../FormModal";
 import { appointmentFields } from "../../../types/FormFieldConfig";
 import { fetchVeterinaries } from "../../../hooks/useVeterinary";
@@ -24,7 +29,8 @@ const Appointments: React.FC = () => {
   const [initialDate, setInitialDate] = useState<string>("");
   const [finalDate, setFinalDate] = useState<string>("");
   const [viewMode, setViewMode] = useState<"cards" | "calendar">("cards");
-  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<Appointment | null>(null);
 
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
 
@@ -102,8 +108,8 @@ const Appointments: React.FC = () => {
   const handleAppointmentClick = async (appointmentId: number) => {
     const appointmentToEdit = await getAppointment(appointmentId);
     if (appointmentToEdit) {
-      setSelectedAppointment(appointmentToEdit)
-      setIsModalOpen(true)
+      setSelectedAppointment(appointmentToEdit);
+      setIsModalOpen(true);
     }
   };
 
@@ -132,14 +138,11 @@ const Appointments: React.FC = () => {
   };
 
   const handleSubmit = async (data: Appointment) => {
-    const formattedDate = dayjs().format('YYYY-MM-DDTHH:mm');
+    const formattedDate = dayjs().format("YYYY-MM-DDTHH:mm");
     data.appointmentDate = formattedDate;
     const responseMessage = !data.appointmentId
       ? await createAppointment(data)
       : await updateAppointment(data);
-    if (responseMessage) {
-      console.log("update");
-    }
     return responseMessage;
   };
 

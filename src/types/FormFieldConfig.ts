@@ -1,5 +1,6 @@
 import Owners from "../components/modules/owner/Owners";
-import { fetchPatientOptions } from "../hooks/usePatient";
+import { fetchPatientOptions, fetchPatients } from "../hooks/usePatient";
+import { fetchSpecies } from "../hooks/useSpecie";
 import { fetchVeterinaries } from "../hooks/useVeterinary";
 import type { Appointment } from "./AppointmentType";
 import type { Permission, Role } from "./AuthType";
@@ -101,6 +102,14 @@ export const ownerFields: FormField<Owner>[] = [
 
 export const patientFields: FormField<Patient>[] = [
   {
+    name: "owner",
+    label: "Owner",
+    type: "text",
+    required: true,
+    searchTable: Owners,
+    displaySelect: "name",
+  },
+  {
     name: "name",
     label: "Full Name",
     type: "text",
@@ -120,19 +129,13 @@ export const patientFields: FormField<Patient>[] = [
     required: true,
   },
   {
-    name: "species",
+    name: "specie",
     label: "Specie",
-    type: "text",
-    required: true,
-    validators: { maxLength: 32 },
-  },
-  {
-    name: "owner",
-    label: "Owner",
     type: "select",
     required: true,
-    searchTable: Owners,
-    displaySelect: "name",
+    validators: { maxLength: 32 },
+    fetch: fetchSpecies,
+    dependantId: "id",
   },
 ];
 
@@ -144,6 +147,7 @@ export const appointmentFields: FormField<Appointment>[] = [
     type: "text",
     required: true,
     searchTable: Owners,
+    placeHolder: true,
     displaySelect: "name",
   },
   {

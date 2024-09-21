@@ -111,6 +111,7 @@ function Roles() {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           isLoading={isLoading}
+          configFields={roleFields}
         />
       </div>
       <FormModal<Role>

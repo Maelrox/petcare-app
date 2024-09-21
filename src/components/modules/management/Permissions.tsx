@@ -142,6 +142,7 @@ function Permissions() {
           handleAdditionalAction={handleAssignRole}
           handleAdditionalAction2={handleAssignModule}
           isLoading={isLoading}
+          configFields={permissionFields}
         />
       </div>
       <FormModal<Permission>

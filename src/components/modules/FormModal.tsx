@@ -7,7 +7,6 @@ import { SearchIcon } from "lucide-react";
 import ButtonIcon from "../common/buttons/ButtonIcon";
 import Select from "react-select";
 
-
 interface FormModalProps<T> {
   initialData: T;
   isOpen: boolean;
@@ -28,18 +27,21 @@ function FormModal<T extends Record<string, any>>({
   description,
 }: FormModalProps<T>) {
   const [formData, setFormData] = useState<T>(initialData);
-  const [activeSearchModal, setActiveSearchModal] = useState<keyof T | null>(null);
-  const [selectedElements, setSelectedElements] = useState<Record<string, any>>({});
-  const [dropdownOptions, setDropdownOptions] = useState<Record<string, SelectOption[]>>({});
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, SelectOption[]>>({});
+  const [activeSearchModal, setActiveSearchModal] = useState<keyof T | null>(
+    null
+  );
+  const [selectedElements, setSelectedElements] = useState<Record<string, any>>(
+    {}
+  );
+  const [dropdownOptions, setDropdownOptions] = useState<
+    Record<string, SelectOption[]>
+  >({});
+  const [selectedOptions, setSelectedOptions] = useState<
+    Record<string, SelectOption[]>
+  >({});
 
-  const { errors, validateField, validateForm, clearFieldError } = useFormValidation<T>({ fields });
-
-  const submissionData = {
-    ...formData,
-    ...selectedElements,
-    ...selectedOptions,
-  };
+  const { errors, validateField, validateForm, clearFieldError } =
+    useFormValidation<T>({ fields });
 
   useEffect(() => {
     setFormData(initialData);
@@ -49,15 +51,15 @@ function FormModal<T extends Record<string, any>>({
   useEffect(() => {
     const loadInitialOptions = async () => {
       for (const field of fields) {
-        if (field.type === 'select') {
-          if (field.fetch && typeof field.fetch === 'function') {
+        if (field.type === "select") {
+          if (field.fetch && typeof field.fetch === "function") {
             const fetchedObjects = await field.fetch();
             const identifierField = field.dependantId;
             const options = fetchedObjects.map((opt: any) => ({
               value: identifierField ? opt[identifierField] : opt[field.name],
               label: String(opt.name),
             }));
-            setDropdownOptions(prev => ({ ...prev, [field.name]: options }));
+            setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
           }
         }
       }
@@ -78,10 +80,27 @@ function FormModal<T extends Record<string, any>>({
   };
 
   const handleInputChange = async (name: keyof T, value: any) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const currentValue = prev[name];
+      const newValue =
+        currentValue && typeof currentValue === "object" && "id" in currentValue
+          ? { ...currentValue, id: value }
+          : value;
+      return { ...prev, [name]: newValue };
+    });
+
     clearFieldError(name);
     validateForm({ ...formData, [name]: value });
-    setSelectedOptions((prev) => ({ ...prev, [name]: value }));
+    const field = fields.find((f) => f.name === name);
+    if (
+      field &&
+      (field.type === "select" || field.type === "select-dependant")
+    ) {
+      const selectedOption = dropdownOptions[name]?.find(
+        (option) => option.value === value
+      );
+      setSelectedOptions((prev) => ({ ...prev, [name]: selectedOption }));
+    }
   };
 
   const handleClickSearch = (fieldName: keyof T) => {
@@ -95,64 +114,112 @@ function FormModal<T extends Record<string, any>>({
   const handleSelectElement = async (fieldName: string, selected: any) => {
     setSelectedElements((prev) => ({ ...prev, [fieldName]: selected }));
     const field = fields.find((f) => f.name === fieldName);
-
-    if (field && field.displaySelect && typeof selected === 'object' && selected !== null) {
+    if (
+      field &&
+      field.displaySelect &&
+      typeof selected === "object" &&
+      selected !== null
+    ) {
       const displayValue = selected[field.displaySelect];
       if (displayValue !== undefined) {
         setFormData((prev) => ({
           ...prev,
-          [fieldName]: displayValue,
+          [fieldName]: field.placeHolder ? displayValue : selected, //Set the object or just the display value
         }));
       }
     }
 
-    // Call the dependant function
-    const dependentFields = fields.filter(f => f.dependsOn === fieldName);
+    // After selection fetch the dependant select using the selected element id
+    const dependentFields = fields.filter((f) => f.dependsOn === fieldName);
     for (const dependentField of dependentFields) {
-      setFormData(prev => ({ ...prev, [dependentField.name]: undefined }));
-      setSelectedElements(prev => ({ ...prev, [dependentField.name]: undefined }));
-      setSelectedOptions(prev => ({ ...prev, [dependentField.name]: undefined }));
+      setFormData((prev) => ({ ...prev, [dependentField.name]: undefined }));
+      setSelectedElements((prev) => ({
+        ...prev,
+        [dependentField.name]: undefined,
+      }));
+      setSelectedOptions((prev) => ({
+        ...prev,
+        [dependentField.name]: undefined,
+      }));
       if (dependentField.fetchDependant && dependentField.dependantId) {
         const dependantId = selected[dependentField.dependantId];
-        const options = await dependentField.fetchDependant(dependantId, dependentField.name as string);
-        setDropdownOptions(prev => ({ ...prev, [dependentField.name]: options }));
+        const options = await dependentField.fetchDependant(
+          dependantId,
+          dependentField.name as string
+        );
+        setDropdownOptions((prev) => ({
+          ...prev,
+          [dependentField.name]: options,
+        }));
       }
     }
 
     handleCloseSearch();
   };
 
-  
   const prepopulateSelectFields = async () => {
     for (const field of fields) {
-      if (field.type === 'select' && initialData[field.name]) {
-        if (field.fetch && typeof field.fetch === 'function') {
+      if (field.type === "select" && initialData[field.name]) {
+        if (field.fetch && typeof field.fetch === "function") {
           const fetchedObjects = await field.fetch();
           const identifierField = field.dependantId;
-          const selectedOption = fetchedObjects.find((opt: any) => 
-            identifierField ? opt[identifierField] === initialData[field.name] : opt[field.name] === initialData[field.name]
+
+          const initialValue = initialData[field.name];
+          const compareValue =
+            typeof initialValue === "object" && initialValue !== null
+              ? initialValue.id
+              : initialValue;
+          const selectedOption = fetchedObjects.find((opt: any) =>
+            identifierField
+              ? opt[identifierField] === compareValue
+              : opt[field.name] === compareValue
           );
-          
+
           if (selectedOption) {
             const option = {
-              value: identifierField ? selectedOption[identifierField] : selectedOption[field.name],
+              value: identifierField
+                ? selectedOption[identifierField]
+                : selectedOption[field.name],
               label: String(selectedOption.name),
             };
-            setSelectedOptions(prev => ({ ...prev, [field.name]: option }));
-            setFormData(prev => ({ ...prev, [field.name]: option.value }));
+            setSelectedOptions((prev) => ({ ...prev, [field.name]: option }));
+            const formDataValue = typeof initialValue === 'object' && initialValue !== null
+              ? { ...initialValue, id: option.value }
+              : option.value;
+            setFormData((prev) => ({ ...prev, [field.name]: formDataValue }));
           }
         }
-      } else if (field.type === 'select-dependant' && initialData[field.name] && field.dependantId) {
-        const dependentOn = fields.find(f => f.name === field.dependsOn);
-        if (dependentOn && initialData[field.dependantId] && field.fetchDependant && field.dependantId) {
-          const options = await field.fetchDependant(initialData[field.dependantId], field.name as string);
-          setDropdownOptions(prev => ({ ...prev, [field.name]: options }));
-          
-          const selectedOption = options.find((opt: any) => opt.value === initialData[field.name]);
+      } else if (
+        field.type === "select-dependant" &&
+        initialData[field.name] &&
+        field.dependantId
+      ) {
+        const dependentOn = fields.find((f) => f.name === field.dependsOn);
+        if (
+          dependentOn &&
+          initialData[field.dependantId] &&
+          field.fetchDependant &&
+          field.dependantId
+        ) {
+          const options = await field.fetchDependant(
+            initialData[field.dependantId],
+            field.name as string
+          );
+          setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
+
+          const selectedOption = options.find(
+            (opt: any) => opt.value === initialData[field.name]
+          );
           if (selectedOption) {
-            setSelectedOptions(prev => ({ ...prev, [field.name]: selectedOption }));
-            setFormData(prev => ({ ...prev, [field.name]: selectedOption.value }));
-            handleInputChange(field.dependsOn, selectedOption.dependantName)
+            setSelectedOptions((prev) => ({
+              ...prev,
+              [field.name]: selectedOption,
+            }));
+            setFormData((prev) => ({
+              ...prev,
+              [field.name]: selectedOption.value,
+            }));
+            handleInputChange(field.dependsOn, selectedOption.dependantName);
           }
         }
       }
@@ -160,16 +227,17 @@ function FormModal<T extends Record<string, any>>({
   };
 
   const renderField = (field: FormField<T>) => {
-    if (field.type === 'select-dependant' || field.type === 'select') {
+    if (field.type === "select-dependant" || field.type === "select") {
       const options = dropdownOptions[field.name] || [];
       const isDisabled = field.dependsOn && !formData[field.dependsOn];
       const value = selectedOptions[field.name] || null;
-      console.log(value)
       return (
         <Select
           options={options}
           value={value}
-          onChange={(selected) => handleInputChange(field.name, selected?.value)}
+          onChange={(selected) =>
+            handleInputChange(field.name, selected?.value)
+          }
           isDisabled={isDisabled}
           isClearable={false}
           placeholder="Select..."
@@ -178,12 +246,17 @@ function FormModal<T extends Record<string, any>>({
     }
 
     if (field.searchTable) {
+      const fieldValue = formData[field.name];
+      const displayValue =
+        fieldValue && typeof fieldValue === "object" && "name" in fieldValue
+          ? fieldValue.name
+          : fieldValue || "";
       return (
         <div className="flex items-center">
           <input
             type="text"
             id={field.name as string}
-            value={formData[field.name] || ''}
+            value={displayValue}
             onChange={(e) => handleInputChange(field.name, e.target.value)}
             required={field.required}
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
@@ -194,7 +267,10 @@ function FormModal<T extends Record<string, any>>({
             bgColor="bg-gray-300"
             onClick={() => handleClickSearch(field.name)}
           >
-            <SearchIcon className="text-color_brand hover:animate-pulse" size={24} />
+            <SearchIcon
+              className="text-color_brand hover:animate-pulse"
+              size={24}
+            />
           </ButtonIcon>
         </div>
       );
@@ -204,7 +280,7 @@ function FormModal<T extends Record<string, any>>({
       <input
         type={field.type}
         id={field.name as string}
-        value={formData[field.name] || ''}
+        value={formData[field.name] || ""}
         onChange={(e) => handleInputChange(field.name, e.target.value)}
         required={field.required}
         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
@@ -239,7 +315,7 @@ function FormModal<T extends Record<string, any>>({
       {activeSearchModal && (
         <Modal
           maxSize="max-w-full min-h-200"
-          title={fields.find((f) => f.name === activeSearchModal)?.label || ''}
+          title={fields.find((f) => f.name === activeSearchModal)?.label || ""}
           isOpen={true}
           onClose={handleCloseSearch}
         >

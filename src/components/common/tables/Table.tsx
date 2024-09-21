@@ -22,22 +22,26 @@ type DataTableProps<T> = {
   handleAdditionalAction2?: (rowData: T) => void;
   isLoading: boolean;
   handleSelect?: (rowData: T) => void;
+  configFields: FormField<T>[];
 };
 
 type AccessorFn<T> = (data: T) => any;
 
 function createAccessorFn<T>(key: keyof T): AccessorFn<T> {
-  return (data: T) => data[key];
+  return (data: T) => {
+    const value = data[key];
+    if (typeof value === 'object' && value !== null && 'name' in value) {
+      return (value as any).name;
+    }
+    return value;
+  };
 }
-
-function generateTableColumns<T>(data: T[]): {
+/*function generateTableColumns<T>(data: T[]): {
   data: T[];
   columns: ColumnDef<T, any>[];
 } {
   const columnHelper = createColumnHelper<T>();
-  const columnNames = Object.keys(data[0] || {}).filter(
-    (key) => typeof (data[0] as any)[key] !== "object"
-  ) as (keyof T)[];
+  const columnNames = Object.keys(data[0] || {}) as (keyof T)[];
   const columns: ColumnDef<T, any>[] = columnNames.map((key) => {
     const accessorFn = createAccessorFn(key);
     return columnHelper.accessor(accessorFn, {
@@ -46,6 +50,23 @@ function generateTableColumns<T>(data: T[]): {
         typeof key === "string"
           ? key.charAt(0).toUpperCase() + key.slice(1)
           : key.toString(),
+      cell: (info) => info.getValue(),
+      footer: (info) => info.column.id,
+    });
+  });
+  return { data, columns };
+}*/
+
+function generateTableColumns<T>(data: T[], configFields: FormField<T>[]): {
+  data: T[];
+  columns: ColumnDef<T, any>[];
+} {
+  const columnHelper = createColumnHelper<T>();
+  const columns: ColumnDef<T, any>[] = configFields.map((field) => {
+    const accessorFn = createAccessorFn(field.name);
+    return columnHelper.accessor(accessorFn, {
+      id: field.name as string,
+      header: field.label,
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
     });
@@ -63,11 +84,12 @@ function DataTable<T>({
   handleAdditionalAction,
   handleAdditionalAction2,
   isLoading,
-  handleSelect
+  handleSelect,
+  configFields
 }: DataTableProps<T>) {
   const { data, columns } = React.useMemo(
-    () => generateTableColumns(dataSource),
-    [dataSource]
+    () => generateTableColumns(dataSource, configFields),
+    [dataSource, configFields]
   );
   const table = useReactTable({
     data,

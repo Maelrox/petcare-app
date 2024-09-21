@@ -112,6 +112,7 @@ function Veterinaries() {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           isLoading={isLoading}
+          configFields={veterinaryFields}
         />
       </div>
       <FormModal<Veterinary>

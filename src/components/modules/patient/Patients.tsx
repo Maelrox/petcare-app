@@ -103,6 +103,7 @@ function Patients() {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           isLoading={isLoading}
+          configFields={patientFields}
         />
       </div>
       {isModalOpen && (
@@ -111,7 +112,7 @@ function Patients() {
             selectedPatient || {
               patientId: 0,
               breed: "",
-              species: "",
+              specie: {id:0, name:""},
               name: "",
               age: 0,
               ownerId: null,

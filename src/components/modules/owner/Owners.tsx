@@ -121,6 +121,7 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
           handleDelete={handleDelete}
           handleSelect={handleSelect}
           isLoading={isLoading}
+          configFields={ownerFields}
         />
       </div>
       <FormModal<Owner>

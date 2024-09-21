@@ -8,6 +8,7 @@ interface FormField<T> {
   displaySelect?: string;
   dependsOn?: string;
   dependantId?: string;
+  placeHolder?: boolean;
   fetch?: T[] | (() => Promise<T[]>);
   fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]>;
 }
