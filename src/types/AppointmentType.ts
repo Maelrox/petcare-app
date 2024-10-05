@@ -11,7 +11,7 @@ export interface Appointment {
     finalDate?: string;
     owner?: Owner;
     ownerId?: number;
-
+    specieName?: string;
   }
  
   

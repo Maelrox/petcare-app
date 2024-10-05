@@ -15,6 +15,7 @@ import {
 import FormModal from "../FormModal";
 import { appointmentFields } from "../../../types/FormFieldConfig";
 import { fetchVeterinaries } from "../../../hooks/useVeterinary";
+import CalendarGrid from "../../common/calendar/CalendarGrid";
 
 const Appointments: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -138,7 +139,7 @@ const Appointments: React.FC = () => {
   };
 
   const handleSubmit = async (data: Appointment) => {
-    const formattedDate = dayjs().format("YYYY-MM-DDTHH:mm");
+    const formattedDate = dayjs(data.appointmentDate).format("YYYY-MM-DDTHH:mm");
     data.appointmentDate = formattedDate;
     const responseMessage = !data.appointmentId
       ? await createAppointment(data)
@@ -225,44 +226,17 @@ const Appointments: React.FC = () => {
             </div>
           </div>
         </div>
-
         {viewMode === "calendar" && (
           <Calendar
             appointments={filteredAppointments}
             onAppointmentClick={handleAppointmentClick}
           />
         )}
-
         {viewMode === "cards" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-            {filteredAppointments &&
-              filteredAppointments.map((app) => (
-                <div
-                  key={app.patientId + app.appointmentDate}
-                  className="p-4 border rounded-lg shadow-md bg-white"
-                >
-                  <h3 className="text-lg font-semibold">
-                    {dayjs(app.appointmentDate).format("MMM D, YYYY")}
-                  </h3>
-                  <p className="text-sm text-color_brand">
-                    Time: {dayjs(app.appointmentDate).format("h:mm A")}
-                  </p>
-                  <p className="text-sm">Reason: {app.reason}</p>
-                  <p className="text-sm">
-                    Status:{" "}
-                    <span
-                      className={`font-semibold ${
-                        app.status === "Confirmed"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {app.status}
-                    </span>
-                  </p>
-                </div>
-              ))}
-          </div>
+          <CalendarGrid
+          appointments={filteredAppointments}
+          onAppointmentClick={handleAppointmentClick}
+          />
         )}
       </div>
       {isModalOpen && (
