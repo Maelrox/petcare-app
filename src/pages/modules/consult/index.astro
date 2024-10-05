@@ -1,0 +1,9 @@
+---
+import Consults from "../../../components/modules/consult/Consults";
+import AppLayout from "../../../layouts/AppLayout.astro";
+
+---
+
+<AppLayout title="Consults" includeMenu={false}>
+	<Consults client:load />
+</AppLayout>

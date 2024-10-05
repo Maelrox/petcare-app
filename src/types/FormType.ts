@@ -11,6 +11,7 @@ interface FormField<T> {
   placeHolder?: boolean;
   fetch?: T[] | (() => Promise<T[]>);
   fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]>;
+  identifier?: boolean;
 }
 
   interface SelectOption {

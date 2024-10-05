@@ -5,14 +5,24 @@ import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { PlusSquareIcon } from "lucide-react";
-import type { Patient } from "../../../types/PatientType";
-import { createPatient, searchPatients, updatePatient } from "../../../hooks/usePatient";
-import { patientFields } from "../../../types/FormFieldConfig";
+import { consultFields } from "../../../types/FormFieldConfig";
+import { createConsult, searchConsult, updateConsult } from "../../../hooks/useConsult";
+import type { Consult } from "../../../types/ConsultType";
 
 function Consults() {
+  const emptyFilter: Consult = {
+    patientId: 0,
+    vetId: 0,
+    initialDate: "",
+    finalDate: "",
+    reason: "",
+    status: "",
+    appointmentDate: "",
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const paginatedData = usePaginatedData(searchPatients);
+  const [selectedPatient, setSelectedPatient] = useState<Consult | null>(null);
+  const paginatedData = usePaginatedData(searchConsult);
 
   useEffect(() => {
     setRefresh(true);
@@ -31,15 +41,15 @@ function Consults() {
     isLoading,
   } = paginatedData;
 
-  const handleEdit = (patient: Patient) => {
-    setSelectedPatient(patient);
+  const handleEdit = (consult: Consult) => {
+    setSelectedPatient(consult);
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (patient: Patient) => {
-    if (patient.patientId) {
+  const handleDelete = async (consult: Consult) => {
+    if (consult.consultationId) {
       const isConfirmed = window.confirm(
-        `Are you sure you want to delete the consult "${patient.name}"?`
+        `Are you sure you want to delete the consult "${consult.consultationId}"?`
       );
       if (isConfirmed) {
         const responseMessage = "TODO";
@@ -61,10 +71,10 @@ function Consults() {
     setSelectedPatient(null);
   };
 
-  const handleSubmit = async (data: Patient) => {
+  const handleSubmit = async (data: Consult) => {
     const responseMessage = data.patientId
-      ? await updatePatient(data)
-      : await createPatient(data);
+      ? await updateConsult(data)
+      : await createConsult(data);
     if (responseMessage) {
       setRefresh(true);
     }
@@ -73,7 +83,7 @@ function Consults() {
 
   return (
     <>
-      <h2 className="text-center text-color_brand font-bold">Patients</h2>
+      <h2 className="text-center text-color_brand font-bold">Patient Consult</h2>
       <div className="flex flex-col p-0 items-center md:flex-row md:justify-between mb-0">
         <div className="w-full lg:w-2/3 md:pr-2 md:mb-0">
           <FilterControls
@@ -87,7 +97,7 @@ function Consults() {
         <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
           <ButtonIcon
             type="submit"
-            text="New Patient"
+            text="Attend Patient"
             onClick={() => handleAddClick()}
           >
             <PlusSquareIcon />
@@ -103,30 +113,21 @@ function Consults() {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           isLoading={isLoading}
-          configFields={patientFields}
+          configFields={consultFields}
         />
       </div>
       {isModalOpen && (
-        <FormModal<Patient>
-          initialData={
-            selectedPatient || {
-              patientId: 0,
-              breed: "",
-              specie: {id:0, name:""},
-              name: "",
-              age: 0,
-              ownerId: null,
-            }
-          }
+        <FormModal<Consult>
+          initialData={selectedPatient}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onSubmit={handleSubmit}
-          fields={patientFields}
-          title={selectedPatient ? "Edit Patient" : "Create Patient"}
+          fields={consultFields}
+          title={selectedPatient ? "Edit Consult" : "Create Consult"}
         />
       )}
     </>
   );
 }
 
-export default Patients;
+export default Consults;

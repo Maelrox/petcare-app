@@ -4,6 +4,7 @@ import { fetchSpecies } from "../hooks/useSpecie";
 import { fetchVeterinaries } from "../hooks/useVeterinary";
 import type { Appointment } from "./AppointmentType";
 import type { Permission, Role } from "./AuthType";
+import type { Consult } from "./ConsultType";
 import type { Owner } from "./OwnerType";
 import type { Patient } from "./PatientType";
 import type { Veterinary } from "./VeterinaryType";
@@ -139,7 +140,6 @@ export const patientFields: FormField<Patient>[] = [
   },
 ];
 
-
 export const appointmentFields: FormField<Appointment>[] = [
   {
     name: "owner",
@@ -191,6 +191,76 @@ export const appointmentFields: FormField<Appointment>[] = [
     required: true,
     validators: { maxLength: 16 },
   },
-  
+
 ];
 
+export const consultFields: FormField<Consult>[] = [
+  {
+    name: "owner",
+    label: "Owner",
+    type: "text",
+    required: true,
+    searchTable: Owners,
+    placeHolder: true,
+    displaySelect: "name",
+  },
+  {
+    name: "patientId",
+    label: "Patient",
+    type: "select-dependant",
+    required: true,
+    dependsOn: "owner",
+    validators: { maxLength: 64 },
+    identifier: true,
+    dependantId: "ownerId",
+    fetchDependant: fetchPatientOptions,
+  },
+  {
+    name: "vetId",
+    label: "Veterinary",
+    type: "select",
+    required: true,
+    dependantId: "vetId",
+    validators: { maxLength: 64 },
+    fetch: fetchVeterinaries,
+  }, {
+    name: "consultationDate",
+    label: "Date",
+    type: "datetime-local",
+    required: true,
+    validators: { maxLength: 64 },
+  },
+  {
+    name: "reason",
+    label: "Reason",
+    type: "text",
+    required: true,
+    validators: { maxLength: 256 },
+  },
+  {
+    name: "status",
+    label: "Status",
+    type: "text",
+    required: true,
+    validators: { maxLength: 16 },
+  }, {
+    name: "treatment",
+    label: "Treatment",
+    type: "text",
+    required: true,
+    validators: { maxLength: 16 },
+  }, {
+    name: "notes",
+    label: "Notes",
+    type: "text",
+    required: true,
+    validators: { maxLength: 16 },
+  }, {
+    name: "diagnosis",
+    label: "Diagnosis",
+    type: "text",
+    required: true,
+    validators: { maxLength: 16 },
+  },
+
+];
