@@ -8,6 +8,7 @@ import "../../../styles/Calendar.css";
 import Calendar from "../../common/calendar/Calendar";
 import {
   createAppointment,
+  deleteAppointment,
   getAppointment,
   searchAppointment,
   updateAppointment,
@@ -106,12 +107,20 @@ const Appointments: React.FC = () => {
     setSelectedVet(selectedOption);
   };
 
-  const handleAppointmentClick = async (appointmentId: number) => {
+  const handleAppointmentEdit = async (appointmentId: number) => {
     const appointmentToEdit = await getAppointment(appointmentId);
     if (appointmentToEdit) {
       setSelectedAppointment(appointmentToEdit);
       setIsModalOpen(true);
     }
+  };
+
+  const handleAppointmentDelete = async (appointmentId: number) => {
+    await deleteAppointment(appointmentId);
+  };
+
+  const handleAppointmentAttend = async (appointmentId: number) => {
+    await deleteAppointment(appointmentId);
   };
 
   const vetOptions: SelectOption[] = [
@@ -229,13 +238,15 @@ const Appointments: React.FC = () => {
         {viewMode === "calendar" && (
           <Calendar
             appointments={filteredAppointments}
-            onAppointmentClick={handleAppointmentClick}
+            onAppointmentClick={handleAppointmentEdit}
           />
         )}
         {viewMode === "cards" && (
           <CalendarGrid
           appointments={filteredAppointments}
-          onAppointmentClick={handleAppointmentClick}
+          onEditAppointment={handleAppointmentEdit}
+          onDeleteAppointment={handleAppointmentDelete}
+          onAttendAppointment={handleAppointmentAttend}
           />
         )}
       </div>

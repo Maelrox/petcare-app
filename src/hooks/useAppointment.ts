@@ -41,3 +41,11 @@ export const updateAppointment = async (appointment: Appointment): Promise<strin
     return undefined
   }
 };
+
+export const deleteAppointment = async (appointmentId: number): Promise<Appointment | undefined> => {
+  const options = generateRequestOptions("DELETE", )
+  const url = BASE_URL + PATH_APPOINTMENT + "/" + appointmentId
+  if (options) {
+    return await useFetchData<Appointment>(url, options)
+  }
+};

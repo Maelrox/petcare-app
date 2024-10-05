@@ -16,7 +16,7 @@ interface FormField<T> {
   interface SelectOption {
     value: number;
     label: string;
-    dependantName: string;
+    dependantName?: string;
   }
 
 interface Validator {

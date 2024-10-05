@@ -15,10 +15,14 @@ import lizardIcon from "../../../assets/patients/lizard.png";
 import pigIcon from "../../../assets/patients/pig.png";
 import sheepIcon from "../../../assets/patients/sheep.png";
 import turtleIcon from "../../../assets/patients/turtle.png";
+import { Edit, EditIcon, Trash2, TrashIcon, UserCheck } from "lucide-react";
+import ButtonIcon from "../buttons/ButtonIcon";
 
 interface CalendarGridProps {
   appointments: Appointment[] | undefined;
-  onAppointmentClick: (appointmentId: number) => void;
+  onEditAppointment: (appointmentId: number) => void;
+  onDeleteAppointment: (appointmentId: number) => void;
+  onAttendAppointment: (appointmentId: number) => void;
 }
 
 const speciesIcons = {
@@ -40,7 +44,9 @@ const speciesIcons = {
 
 const CalendarGrid: React.FC<CalendarGridProps> = ({
   appointments,
-  onAppointmentClick,
+  onEditAppointment,
+  onDeleteAppointment,
+  onAttendAppointment,
 }) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
 
@@ -50,39 +56,63 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-4 mt-4">
       {appointments &&
         appointments.map((app) => (
           <div
             key={app.patientId + app.appointmentDate}
-            className="border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 hover:cursor-pointer"
-            onClick={() => onAppointmentClick(app.appointmentId || 0)}
+            className="border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 flex flex-col h-full relative"
           >
-            <div className="p-4 flex justify-between items-start">
-              <div className="flex-grow">
-                <h3 className="text-lg font-semibold">
-                  {dayjs(app.appointmentDate).format("MMM D, YYYY")}
-                </h3>
-                <p className="text-sm text-color_brand">
-                  Time: {dayjs(app.appointmentDate).format("h:mm A")}
-                </p>
-                <p className="text-sm">Reason: {app.reason}</p>
-                <p className="text-sm">
-                  Status:{" "}
-                  <span
-                    className={`font-semibold ${
-                      app.status === "Confirmed" ? "text-green-500" : "text-red-500"
+            <div className="p-4 flex-grow">
+              <h3 className="text-lg font-semibold">
+                {dayjs(app.appointmentDate).format("MMM D, YYYY")}
+              </h3>
+              <p className="text-sm text-color_brand">
+                Time: {dayjs(app.appointmentDate).format("h:mm A")}
+              </p>
+              <p className="text-sm">Reason: {app.reason}</p>
+              <p className="text-sm">
+                Status:{" "}
+                <span
+                  className={`font-semibold ${app.status === "Confirmed" ? "text-green-500" : "text-red-500"
                     }`}
-                  >
-                    {app.status}
-                  </span>
-                </p>
-                <p className="text-sm">Specie: {app.specieName}</p>
-              </div>
+                >
+                  {app.status}
+                </span>
+              </p>
+              <p className="text-sm">Specie: {app.specieName}</p>
+            </div>
+            <div className="pb-4 flex space-x-2">
+              
+              <ButtonIcon
+                text=""
+                onClick={() => onAttendAppointment(app.appointmentId || 0)}
+                bgColor="bg-gray-100"
+              >
+                <UserCheck size={12} />
+              </ButtonIcon>
+              <ButtonIcon
+                text=""
+                onClick={() => onEditAppointment(app.appointmentId || 0)}
+                bgColor="bg-gray-100"
+              >
+                <EditIcon size={12} />
+              </ButtonIcon>
+              <ButtonIcon
+                text=""
+                onClick={() => onDeleteAppointment(app.appointmentId || 0)}
+                bgColor="bg-rose-600"
+                color="text-white"
+              >
+                <TrashIcon size={12} />
+              </ButtonIcon>
+
+            </div>
+            <div className="absolute bottom-0 right-0 p-2">
               <img
                 src={getSpeciesIcon(app.specieName).src}
                 alt={`${app.specieName} icon`}
-                className="w-24 h-24 object-contain ml-4"
+                className="w-12 h-12 object-contain"
               />
             </div>
           </div>
