@@ -119,6 +119,7 @@ function Roles() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
+        maxSize="max-w-md"
         fields={roleFields}
         title={selectedRole ? "Edit Role" : "Create Role"}
         description="A role contains multiple modules and actions, which can be assigned to users"

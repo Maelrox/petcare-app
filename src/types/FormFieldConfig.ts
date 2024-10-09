@@ -1,4 +1,5 @@
 import Owners from "../components/modules/owner/Owners";
+import { fetchAppointmentOptions } from "../hooks/useConsult";
 import { fetchPatientOptions, fetchPatients } from "../hooks/usePatient";
 import { fetchSpecies } from "../hooks/useSpecie";
 import { fetchVeterinaries } from "../hooks/useVeterinary";
@@ -214,6 +215,17 @@ export const consultFields: FormField<Consult>[] = [
     identifier: true,
     dependantId: "ownerId",
     fetchDependant: fetchPatientOptions,
+  },
+  {
+    name: "appointmentId",
+    label: "Appointment",
+    type: "select-dependant",
+    required: true,
+    dependsOn: "patientId",
+    validators: { maxLength: 64 },
+    identifier: true,
+    dependantId: "patientId",
+    fetchDependant: fetchAppointmentOptions,
   },
   {
     name: "vetId",

@@ -15,6 +15,7 @@ interface FormModalProps<T> {
   fields: FormField<T>[];
   title: string;
   description?: string;
+  maxSize: string;
 }
 
 function FormModal<T extends Record<string, any>>({
@@ -25,6 +26,7 @@ function FormModal<T extends Record<string, any>>({
   fields,
   title,
   description,
+  maxSize
 }: FormModalProps<T>) {
   const [formData, setFormData] = useState<T>(initialData);
   const [activeSearchModal, setActiveSearchModal] = useState<keyof T | null>(
@@ -100,6 +102,26 @@ function FormModal<T extends Record<string, any>>({
         (option) => option.value === value
       );
       setSelectedOptions((prev) => ({ ...prev, [name]: selectedOption }));
+
+      // Handle dependent fields
+      const dependentFields = fields.filter((f) => f.dependsOn === name);
+      for (const dependentField of dependentFields) {
+        setFormData((prev) => ({ ...prev, [dependentField.name]: undefined }));
+        setSelectedOptions((prev) => ({
+          ...prev,
+          [dependentField.name]: undefined,
+        }));
+        if (dependentField.fetchDependant && dependentField.dependantId) {
+          const options = await dependentField.fetchDependant(
+            value,
+            dependentField.name as string
+          );
+          setDropdownOptions((prev) => ({
+            ...prev,
+            [dependentField.name]: options,
+          }));
+        }
+      }
     }
   };
 
@@ -291,7 +313,7 @@ function FormModal<T extends Record<string, any>>({
   const isFormValid = Object.keys(errors).length === 0;
 
   return (
-    <Modal title={title} isOpen={isOpen} onClose={onClose}>
+    <Modal title={title} isOpen={isOpen} onClose={onClose} maxSize={maxSize}>
       {description && <p className="mb-4 text-sm">{description}</p>}
       <form onSubmit={handleSubmit}>
         {fields.map((field) => (

@@ -139,6 +139,7 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
         fields={ownerFields}
+        maxSize="max-w-md"
         title={selectedOwner ? "Edit Owner" : "Create Owner"}
         description="Specialist in animal health"
       />

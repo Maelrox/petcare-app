@@ -49,3 +49,11 @@ export const deleteAppointment = async (appointmentId: number): Promise<Appointm
     return await useFetchData<Appointment>(url, options)
   }
 };
+
+export const fetchAppointments= async (patientId: number): Promise<Appointment[] | undefined> => {
+  const options = generateRequestOptions("GET")
+  let url = BASE_URL + PATH_APPOINTMENT + `/patient/${patientId}`
+  if (options) {
+    return await useFetchData<Appointment[]>(url, options)
+  }
+};

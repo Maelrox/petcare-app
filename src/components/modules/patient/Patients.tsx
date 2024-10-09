@@ -122,6 +122,7 @@ function Patients() {
           onClose={handleCloseModal}
           onSubmit={handleSubmit}
           fields={patientFields}
+          maxSize="max-w-md"
           title={selectedPatient ? "Edit Patient" : "Create Patient"}
         />
       )}

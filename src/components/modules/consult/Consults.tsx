@@ -1,28 +1,32 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { PlusSquareIcon } from "lucide-react";
 import { consultFields } from "../../../types/FormFieldConfig";
-import { createConsult, searchConsult, updateConsult } from "../../../hooks/useConsult";
+import { createConsult, getConsult, searchConsult, updateConsult } from "../../../hooks/useConsult";
 import type { Consult } from "../../../types/ConsultType";
+import usePaginatedDataFilter from "../../../hooks/usePaginatedDataFilter";
 
 function Consults() {
-  const emptyFilter: Consult = {
+
+  const emptyConsult: Consult = {
     patientId: 0,
     vetId: 0,
-    initialDate: "",
     finalDate: "",
     reason: "",
     status: "",
-    appointmentDate: "",
+    appointmentId: 0,
+    consultationDate: "",
+    treatment: "",
+    notes: "",
+    diagnosis: ""
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState<Consult | null>(null);
-  const paginatedData = usePaginatedData(searchConsult);
+  const [selectedConsult, setSelectedConsult] = useState<Consult | null>(null);
+  const paginatedData = usePaginatedDataFilter(searchConsult);
 
   useEffect(() => {
     setRefresh(true);
@@ -41,9 +45,12 @@ function Consults() {
     isLoading,
   } = paginatedData;
 
-  const handleEdit = (consult: Consult) => {
-    setSelectedPatient(consult);
-    setIsModalOpen(true);
+  const handleEdit = async (consult: Consult) => {
+    const consultToEdit = await getConsult(consult.consultationId || 0);
+    if (consultToEdit) {
+      setSelectedConsult(consultToEdit);
+      setIsModalOpen(true);
+    }
   };
 
   const handleDelete = async (consult: Consult) => {
@@ -62,17 +69,17 @@ function Consults() {
   };
 
   const handleAddClick = () => {
-    setSelectedPatient(null);
+    setSelectedConsult(null);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedPatient(null);
+    setSelectedConsult(null);
   };
 
   const handleSubmit = async (data: Consult) => {
-    const responseMessage = data.patientId
+    const responseMessage = data.consultationId
       ? await updateConsult(data)
       : await createConsult(data);
     if (responseMessage) {
@@ -85,15 +92,7 @@ function Consults() {
     <>
       <h2 className="text-center text-color_brand font-bold">Patient Consult</h2>
       <div className="flex flex-col p-0 items-center md:flex-row md:justify-between mb-0">
-        <div className="w-full lg:w-2/3 md:pr-2 md:mb-0">
-          <FilterControls
-            setRefresh={setRefresh}
-            addFilter={addFilter}
-            removeFilter={removeFilter}
-            availableFilters={availableFilters.current}
-            filters={filters}
-          />
-        </div>
+        
         <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
           <ButtonIcon
             type="submit"
@@ -118,12 +117,13 @@ function Consults() {
       </div>
       {isModalOpen && (
         <FormModal<Consult>
-          initialData={selectedPatient}
+          initialData={selectedConsult || emptyConsult}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onSubmit={handleSubmit}
           fields={consultFields}
-          title={selectedPatient ? "Edit Consult" : "Create Consult"}
+          maxSize="max-w-full"
+          title={selectedConsult ? "Edit Consult" : "Attend Consult"}
         />
       )}
     </>

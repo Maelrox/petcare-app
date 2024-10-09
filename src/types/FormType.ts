@@ -14,11 +14,11 @@ interface FormField<T> {
   identifier?: boolean;
 }
 
-  interface SelectOption {
-    value: number;
-    label: string;
-    dependantName?: string;
-  }
+interface SelectOption {
+  value: number;
+  label: string;
+  dependantName?: string;
+}
 
 interface Validator {
   maxLength?: number;

@@ -125,7 +125,6 @@ function Permissions() {
           <ButtonIcon
             type="submit"
             onClick={() => handleAddClick()}
-            icon={addIcon.src}
           >
             New Permission
           </ButtonIcon>
@@ -150,6 +149,7 @@ function Permissions() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
+        maxSize="max-w-md"
         fields={permissionFields}
         title={selectedPermission ? "Edit Permission" : "Create Permission"}
         description="A permission contains multiple actions for different modules"
@@ -158,6 +158,7 @@ function Permissions() {
       <Modal
         isOpen={isModalAssignRolesOpen}
         onClose={handleCloseModalAssignRole}
+        maxSize="max-w-md"
         title="Add roles to permission "
         children={
           selectedPermission && (
@@ -167,6 +168,7 @@ function Permissions() {
       ></Modal>
       <Modal
         isOpen={isModalAssignModulesOpen}
+        maxSize="max-w-md"
         onClose={handleCloseModalAssignModule}
         title="Add modules to permission "
         children={

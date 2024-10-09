@@ -121,6 +121,7 @@ function Veterinaries() {
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
         fields={veterinaryFields}
+        maxSize="max-w-md"
         title={selectedVeterinary ? "Edit Veterinary" : "Create Veterinary"}
         description="Specialist in animal health"
       />

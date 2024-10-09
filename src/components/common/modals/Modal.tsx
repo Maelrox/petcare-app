@@ -5,10 +5,10 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   title: string;
-  maxSize?: string;
+  maxSize: string;
 }
 
-  const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, maxSize = 'max-w-md' }) => {
+  const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, maxSize }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

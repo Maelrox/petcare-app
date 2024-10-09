@@ -257,6 +257,7 @@ const Appointments: React.FC = () => {
           onClose={handleCloseModal}
           onSubmit={handleSubmit}
           fields={appointmentFields}
+          maxSize="max-w-md"
           title={
             selectedAppointment ? "Edit Appointment" : "Create Appointment"
           }
