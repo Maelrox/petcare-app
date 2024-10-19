@@ -36,26 +36,6 @@ function createAccessorFn<T>(key: keyof T): AccessorFn<T> {
     return value;
   };
 }
-/*function generateTableColumns<T>(data: T[]): {
-  data: T[];
-  columns: ColumnDef<T, any>[];
-} {
-  const columnHelper = createColumnHelper<T>();
-  const columnNames = Object.keys(data[0] || {}) as (keyof T)[];
-  const columns: ColumnDef<T, any>[] = columnNames.map((key) => {
-    const accessorFn = createAccessorFn(key);
-    return columnHelper.accessor(accessorFn, {
-      id: key as string,
-      header:
-        typeof key === "string"
-          ? key.charAt(0).toUpperCase() + key.slice(1)
-          : key.toString(),
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-    });
-  });
-  return { data, columns };
-}*/
 
 function generateTableColumns<T>(data: T[], configFields: FormField<T>[]): {
   data: T[];
@@ -130,7 +110,12 @@ function DataTable<T>({
             handleAdditionalAction2={handleAdditionalAction2}
             handleSelect={handleSelect}
           />
-          <TableCardView table={table} />
+          <TableCardView handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            handleAdditionalAction={handleAdditionalAction}
+            handleAdditionalAction2={handleAdditionalAction2}
+            handleSelect={handleSelect}
+            table={table} />
           <Pagination table={table} />
         </>
       )}

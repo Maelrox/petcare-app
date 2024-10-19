@@ -17,6 +17,7 @@ export const roleFields: FormField<Role>[] = [
     type: "text",
     required: true,
     validators: { maxLength: 50 },
+    includeFilter: true,
   }
 ];
 
@@ -73,12 +74,14 @@ export const ownerFields: FormField<Owner>[] = [
     type: "text",
     required: true,
     validators: { maxLength: 64 },
+    includeFilter: true,
   },
   {
     name: "identification",
     label: "Identification",
     type: "text",
     required: true,
+    includeFilter: true,
   },
   {
     name: "identificationTypeId",
@@ -92,6 +95,7 @@ export const ownerFields: FormField<Owner>[] = [
     type: "text",
     required: true,
     validators: { maxLength: 32 },
+    includeFilter: true,
   },
   {
     name: "address",
@@ -110,19 +114,23 @@ export const patientFields: FormField<Patient>[] = [
     required: true,
     searchTable: Owners,
     displaySelect: "name",
+    includeFilter: true,
+    filterName: "ownerName"
   },
   {
     name: "name",
-    label: "Full Name",
+    label: "Name",
     type: "text",
     required: true,
     validators: { maxLength: 64 },
+    includeFilter: true
   },
   {
     name: "breed",
     label: "Breed",
     type: "text",
     required: true,
+    includeFilter: true
   },
   {
     name: "age",
@@ -137,7 +145,7 @@ export const patientFields: FormField<Patient>[] = [
     required: true,
     validators: { maxLength: 32 },
     fetch: fetchSpecies,
-    dependantId: "id",
+    dependantId: "id"
   },
 ];
 

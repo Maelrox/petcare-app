@@ -20,7 +20,7 @@ import { PlusIcon } from "lucide-react";
 function Roles() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-  const paginatedData = usePaginatedData(getRoles);
+  const paginatedData = usePaginatedData(getRoles, roleFields);
 
   useEffect(() => {
     setRefresh(true);

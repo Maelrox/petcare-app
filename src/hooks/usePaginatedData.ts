@@ -17,7 +17,8 @@ type ServiceFunction<T> = (
 ) => Promise<FetchDataResponse<T>>;
 
 function usePaginatedData<T extends Record<string, any>>(
-  service: ServiceFunction<T>
+  service: ServiceFunction<T>,
+  fields: FormField<T>[]
 ) {
   const [data, setData] = useState<T[]>([]);
   const [isRefresh, setRefresh] = useState<boolean>(false)
@@ -32,8 +33,7 @@ function usePaginatedData<T extends Record<string, any>>(
   const availableFilters = useRef<string[]>([]);
   const totalRows = useRef<number>(0);
 
-  //Refetch if filters or pagination changes
-  //Todo refetch if refresh on demand
+  // Call api and configure pagination and filters
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,13 +46,12 @@ function usePaginatedData<T extends Record<string, any>>(
           pageSize: pagination.pageSize,
         });
         totalRows.current = response.pagination.totalPages;
-        const keys =
-          response.data.length > 0
-            ? Object.keys(response.data[0] as Record<string, any>).filter(
-                (key) => !Array.isArray(response.data[0][key])
-              )
-            : [];
-        availableFilters.current = keys;
+       
+        // filters by isFilter FormField<T>
+        availableFilters.current = fields
+          .filter((field) => field.includeFilter)
+          .map((field) => (field.filterName || field.name) as string);
+
         setData(response.data);
       } catch (err: any) {
         console.log(err.message);
@@ -64,7 +63,7 @@ function usePaginatedData<T extends Record<string, any>>(
       fetchData();
       setRefresh(false)
     }
-  }, [filters, pagination, isRefresh]);
+  }, [filters, pagination, fields, isRefresh]);
 
   const addFilter = (column: string, value: string) => {
     if (column && value) {

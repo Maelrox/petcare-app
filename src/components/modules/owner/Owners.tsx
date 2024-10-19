@@ -20,7 +20,7 @@ type OwnerProps<T> = {
 function Owners<T>({ handleSelect }: OwnerProps<T>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOwner, setSelectedOwner] = useState<Owner | null>(null);
-  const paginatedData = usePaginatedData(searchOwners);
+  const paginatedData = usePaginatedData(searchOwners, ownerFields);
 
   const owner: Owner = {
     ownerId: 0,

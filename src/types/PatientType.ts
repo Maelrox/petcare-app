@@ -9,4 +9,5 @@ export interface Patient {
     age: number;
     ownerId: number | null;
     owner?: Owner;
+
   }

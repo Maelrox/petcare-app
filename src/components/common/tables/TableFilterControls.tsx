@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ButtonIcon from "../buttons/ButtonIcon";
 import { TextSearch } from "lucide-react";
+import { camelCaseToCapitalizedWithSpace } from "../../utils/stringUtils";
 
 interface FilterControlsProps {
   addFilter: (column: string, value: string) => void;
@@ -36,7 +37,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
           <option value="">Select filter</option>
           {availableFilters.map((filter) => (
             <option key={filter} value={filter}>
-              {filter}
+              {camelCaseToCapitalizedWithSpace(filter)}
             </option>
           ))}
         </select>
@@ -57,7 +58,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
         {Object.entries(filters).map(([key, value]) => (
           <span
             key={key}
-            className="mr-2 mb-2 p-2 bg-neuromancer-gradient text-white rounded-lg shadow-lg flex items-center mt-4 md:mt-0 ml-2"
+            className="mr-2 p-2 bg-rose-600 text-white shadow-lg flex items-center mb-2 md:mb-0 mt-0 md:mt-0 ml-2"
           >
             <span className="font-semibold">
               {key}: {value}

@@ -12,6 +12,8 @@ interface FormField<T> {
   fetch?: T[] | (() => Promise<T[]>);
   fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]>;
   identifier?: boolean;
+  includeFilter?: boolean;
+  filterName?: string;
 }
 
 interface SelectOption {

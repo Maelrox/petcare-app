@@ -12,7 +12,7 @@ import { patientFields } from "../../../types/FormFieldConfig";
 function Patients() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const paginatedData = usePaginatedData(searchPatients);
+  const paginatedData = usePaginatedData(searchPatients, patientFields);
 
   useEffect(() => {
     setRefresh(true);
