@@ -69,7 +69,6 @@ export const fetchAppointmentOptions = async (dependantId: number, optionIdField
       return appointments.map(appointment => ({
         value: appointment[optionIdField],
         label: appointment.appointmentDate,
-        dependantName: appointment.owner?.name,
       }));
     }
   } catch (error) {

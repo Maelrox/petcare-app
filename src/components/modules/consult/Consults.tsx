@@ -8,6 +8,7 @@ import { consultFields } from "../../../types/FormFieldConfig";
 import { createConsult, getConsult, searchConsult, updateConsult } from "../../../hooks/useConsult";
 import type { Consult } from "../../../types/ConsultType";
 import usePaginatedDataFilter from "../../../hooks/usePaginatedDataFilter";
+import dayjs from "dayjs";
 
 function Consults() {
 
@@ -79,9 +80,15 @@ function Consults() {
   };
 
   const handleSubmit = async (data: Consult) => {
-    const responseMessage = data.consultationId
-      ? await updateConsult(data)
-      : await createConsult(data);
+    let responseMessage;
+    if (data.consultationId) {
+      data.consultationDate = dayjs(data.consultationDate).format('YYYY-MM-DDTHH:mm');
+      data.followUpDate = data.followUpDate ? dayjs(data.followUpDate).format('YYYY-MM-DDTHH:mm') : undefined;
+      responseMessage = await updateConsult(data);
+    } else {
+      responseMessage = await createConsult(data);
+    }
+
     if (responseMessage) {
       setRefresh(true);
     }

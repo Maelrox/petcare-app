@@ -241,7 +241,9 @@ function FormModal<T extends Record<string, any>>({
               ...prev,
               [field.name]: selectedOption.value,
             }));
-            handleInputChange(field.dependsOn, selectedOption.dependantName);
+            if (selectedOption.dependantName) {
+              handleInputChange(field.dependsOn, selectedOption.dependantName);
+            }
           }
         }
       }
