@@ -31,12 +31,12 @@ interface ModalProps {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div ref={modalRef} className={`${maxSize} relative bg-white rounded-lg shadow-xl w-full`}>
-        <div className="bg-skyblue_dark text-white px-4 py-2 rounded-t-lg flex justify-between items-center">
+      <div ref={modalRef} className={`${maxSize} relative bg-white shadow-xl w-full`}>
+        <div className="bg-skyblue_dark text-white px-4 py-2 flex justify-between items-center">
           <span className="font-semibold">{title}</span>
           <button
             onClick={onClose}
-            className="bg-white text-skyblue_dark rounded-full p-1 hover:bg-gray-200"
+            className="bg-white text-skyblue_dark p-1 hover:bg-gray-200"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

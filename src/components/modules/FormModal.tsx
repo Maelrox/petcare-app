@@ -314,6 +314,8 @@ function FormModal<T extends Record<string, any>>({
 
   const isFormValid = Object.keys(errors).length === 0;
 
+  const identifierField = fields.find(field => field.identifier);
+
   return (
     <Modal title={title} isOpen={isOpen} onClose={onClose} maxSize={maxSize}>
       {description && <p className="mb-4 text-sm">{description}</p>}
@@ -333,7 +335,7 @@ function FormModal<T extends Record<string, any>>({
           </div>
         ))}
         <Button disabled={!isFormValid} type="submit">
-          {initialData.id ? "Update" : "Create"}
+          {identifierField && formData[identifierField.name] ? "Update" : "Create"}
         </Button>
       </form>
       {activeSearchModal && (

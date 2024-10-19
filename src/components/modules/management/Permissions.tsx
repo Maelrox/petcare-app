@@ -27,7 +27,7 @@ function Permissions() {
 
   const [selectedPermission, setSelectedPermission] =
     useState<Permission | null>(null);
-  const paginatedData = usePaginatedData(getPermissions);
+  const paginatedData = usePaginatedData(getPermissions, permissionFields);
 
   useEffect(() => {
     setRefresh(true);

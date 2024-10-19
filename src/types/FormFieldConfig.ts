@@ -12,6 +12,13 @@ import type { Veterinary } from "./VeterinaryType";
 
 export const roleFields: FormField<Role>[] = [
   {
+    name: "id",
+    label: "",
+    type: "none",
+    identifier: true,
+    includeFilter: false,
+  },
+  {
     name: "name",
     label: "Name",
     type: "text",
@@ -23,11 +30,19 @@ export const roleFields: FormField<Role>[] = [
 
 export const permissionFields: FormField<Permission>[] = [
   {
+    name: "id",
+    label: "",
+    type: "none",
+    identifier: true,
+    includeFilter: false,
+  },
+  {
     name: "name",
     label: "Permission Name",
     type: "text",
     required: true,
     validators: { maxLength: 64 },
+    includeFilter: true,
   }
 ];
 
@@ -107,6 +122,13 @@ export const ownerFields: FormField<Owner>[] = [
 ];
 
 export const patientFields: FormField<Patient>[] = [
+  {
+    name: "patientId",
+    identifier: true,
+    label: "",
+    type: "none",
+  },
+
   {
     name: "owner",
     label: "Owner",
