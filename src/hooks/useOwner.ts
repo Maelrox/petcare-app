@@ -62,3 +62,19 @@ export const deleteOwner = async (id: number): Promise<string | undefined> => {
     return undefined
   }
 };
+
+export const filterOwners = async (inputValue: String, searchByIdentification: boolean) : Promise<Owner[] | undefined> => {
+  if (inputValue.length < 3) {
+    return [];
+  }
+  const options = generateRequestOptions("GET")
+  let url = BASE_URL + PATH_OWNER
+  if (searchByIdentification === true) {
+    url += `?identification=${inputValue}`;
+  } else {
+    url += `?name=${inputValue}`;
+  }
+  if (options) {
+    return await useFetchData<Owner[]>(url, options)
+  }
+};

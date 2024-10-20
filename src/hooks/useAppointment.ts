@@ -6,7 +6,7 @@ import type { TransactionResponse } from "../types/ResponseType";
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_APPOINTMENT = "/appointments"
 
-export const searchAppointment = async (appointmentFilter: Appointment): Promise<Appointment[] | undefined> => {
+export const searchAppointment = async (appointmentFilter: Partial<Appointment>): Promise<Appointment[] | undefined> => {
   const options = generateRequestOptions("POST", appointmentFilter)
   const url = BASE_URL + PATH_APPOINTMENT + "/search"
   if (options) {
