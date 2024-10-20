@@ -71,9 +71,9 @@ const Appointments: React.FC = () => {
         vetId: selectedVet?.value || 0,
         ownerId: selectedOwner?.value || 0,
         reason: "",
-        initialDate: initialDate || undefined,
         status: "",
-        finalDate: finalDate || undefined,
+        initialDate: initialDate ? dayjs(initialDate).format("YYYY-MM-DD 00:00") : undefined,
+        finalDate: finalDate ? dayjs(finalDate).format("YYYY-MM-DD 23:59") : undefined,
       };
       const fetchedAppointments = await searchAppointment(filter);
       if (fetchedAppointments) {
@@ -171,7 +171,7 @@ const Appointments: React.FC = () => {
       <h2 className="text-center text-color_brand font-bold">Appointments</h2>
 
       
-      <div className="p-2">
+      <div className="p-2 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-end">
           <div className="w-full md:col-span-1">
             <label htmlFor="vet-select" className="block text-sm font-medium text-color_brand mb-1">
@@ -286,6 +286,7 @@ const Appointments: React.FC = () => {
           title={selectedAppointment ? "Edit Appointment" : "Create Appointment"}
         />
       )}
+      {appointments.length===0 && (<span>No appointments found</span>) }
     </div>
   );
 };

@@ -56,7 +56,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-4 mt-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-4">
       {appointments &&
         appointments.map((app) => (
           <div
