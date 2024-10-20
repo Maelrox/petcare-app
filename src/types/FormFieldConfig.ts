@@ -49,15 +49,17 @@ export const permissionFields: FormField<Permission>[] = [
 export const veterinaryFields: FormField<Veterinary>[] = [
   {
     name: "name",
-    label: "Full Name",
+    label: "Name",
     type: "text",
     required: true,
+    includeFilter: true,
     validators: { maxLength: 64 },
   },
   {
     name: "identification",
     label: "Identification",
     type: "text",
+    includeFilter: true,
     required: true,
   },
   {

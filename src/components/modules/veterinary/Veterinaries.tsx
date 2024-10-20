@@ -12,7 +12,7 @@ import { PlusIcon } from "lucide-react";
 function Veterinaries() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVeterinary, setSelectedVeterinary] = useState<Veterinary | null>(null);
-  const paginatedData = usePaginatedData(searchVeterinaries);
+  const paginatedData = usePaginatedData(searchVeterinaries, veterinaryFields);
 
   const veterinary: Veterinary = {
     vetId: 0,
