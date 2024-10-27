@@ -1,0 +1,8 @@
+---
+import Billings from '../../../components/modules/billing/Billings';
+import AppLayout from '../../../layouts/AppLayout.astro';
+---
+
+<AppLayout title="Billings" includeMenu={false}>
+	<Billings client:load />
+</AppLayout>

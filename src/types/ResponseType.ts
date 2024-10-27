@@ -1,12 +1,13 @@
 import type { PaginatedResponse } from "./RequestType";
 
 export interface TransactionResponse {
-    success: boolean;
-    message: string;
-  }
- 
+  success: boolean;
+  message: string;
+  trx?: string;
+}
+
 export const blankPaginatedResponse: PaginatedResponse<any> = {
-  data: [], 
+  data: [],
   totalPages: 0,
   currentPage: 0,
   totalElements: 0,

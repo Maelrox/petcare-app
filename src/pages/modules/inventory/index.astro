@@ -1,0 +1,8 @@
+---
+import Inventories from '../../../components/modules/inventory/Inventories';
+import AppLayout from '../../../layouts/AppLayout.astro';
+---
+
+<AppLayout title="Inventories" includeMenu={false}>
+	<Inventories client:load />
+</AppLayout>

@@ -15,6 +15,7 @@ interface Validator {
   pattern?: RegExp;
   minDate?: Date;
   maxDate?: Date;
+  minValue?: number;
 }
 
 interface ValidationErrors<T> {
@@ -29,10 +30,10 @@ export function useFormValidation<T extends Record<string, any>>({
   fields,
 }: UseFormValidationProps<T>) {
   const [errors, setErrors] = useState<ValidationErrors<T>>({});
-
+  //TODO: Technical debt refactor to avoid so many if
   const validateField = (field: FormField<T>, value: any) => {
     if (field.validators) {
-      const { required, maxLength, minLength, pattern, minDate, maxDate } = field.validators;
+      const { required, maxLength, minLength, pattern, minDate, maxDate, minValue } = field.validators;
 
       if (required && !value) {
         return "This field is required";
@@ -51,6 +52,9 @@ export function useFormValidation<T extends Record<string, any>>({
       }
       if (maxDate && value && new Date(value) > maxDate) {
         return `Date must be on or before ${maxDate.toDateString()}`;
+      }
+      if (minValue && value && value < minValue) {
+        return `Value must be greater than ${minValue}`;
       }
     }
     return "";

@@ -29,6 +29,7 @@ interface Validator {
   pattern?: RegExp;
   minDate?: Date;
   maxDate?: Date;
+  minValue?: number;
 }
 
 interface ValidationErrors<T> {

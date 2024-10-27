@@ -251,6 +251,9 @@ function FormModal<T extends Record<string, any>>({
   };
 
   const renderField = (field: FormField<T>) => {
+    if (field.type === "none") {
+      return;
+    }
     if (field.type === "select-dependant" || field.type === "select") {
       const options = dropdownOptions[field.name] || [];
       const isDisabled = field.dependsOn && !formData[field.dependsOn];

@@ -77,3 +77,11 @@ export const fetchAppointmentOptions = async (dependantId: number, optionIdField
   }
 return [];
 };
+
+export const fetchUnBilledAttentions = async (ownerId: number): Promise<Consult[] | undefined> => {
+  const options = generateRequestOptions("GET")
+  let url = BASE_URL + PATH_APPOINTMENT + `/owner/${ownerId}`
+  if (options) {
+    return await useFetchData<Consult[]>(url, options)
+  }
+};

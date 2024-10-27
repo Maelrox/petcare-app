@@ -5,7 +5,9 @@ import { fetchSpecies } from "../hooks/useSpecie";
 import { fetchVeterinaries } from "../hooks/useVeterinary";
 import type { Appointment } from "./AppointmentType";
 import type { Permission, Role } from "./AuthType";
+import type { Billing } from "./BillingType";
 import type { Consult } from "./ConsultType";
+import type { Inventory } from "./InventoryType";
 import type { Owner } from "./OwnerType";
 import type { Patient } from "./PatientType";
 import type { Veterinary } from "./VeterinaryType";
@@ -307,4 +309,64 @@ export const consultFields: FormField<Consult>[] = [
     validators: { maxLength: 16 },
   },
 
+];
+
+export const inventoryFields: FormField<Inventory>[] = [
+  {
+    name: "inventoryId",
+    label: "",
+    type: "none",
+    identifier: true,
+  },
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    required: true,
+    validators: { maxLength: 100 },
+    includeFilter: true,
+  },
+  {
+    name: "description",
+    label: "Description",
+    type: "text",
+    required: true,
+    validators: { maxLength: 100 },
+    includeFilter: false,
+  },
+  {
+    name: "quantity",
+    label: "Quantity",
+    type: "number",
+    required: true,
+    validators: { minValue: 1 },
+    includeFilter: false,
+  },{
+    name: "price",
+    label: "Price",
+    type: "number",
+    required: true,
+    validators: { minValue: 1 },
+    includeFilter: false,
+  },
+];
+
+export const billingFields: FormField<Billing>[] = [
+  {
+    name: "owner",
+    label: "Owner",
+    type: "text",
+    required: true,
+    searchTable: Owners,
+    displaySelect: "name",
+    includeFilter: true,
+    filterName: "ownerName"
+  },
+  {
+    name: "totalAmount",
+    label: "Amount",
+    type: "number",
+    required: true,
+    validators: { minValue: 1 },
+  }
 ];
