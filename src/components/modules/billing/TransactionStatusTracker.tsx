@@ -1,26 +1,30 @@
-import React from 'react';
-import { useBillingCheckTrxStatus } from '../../../hooks/useBillingCheckTrxStatus';
-
-export type TransactionStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+import React, { memo, useEffect } from 'react';
+import { useTransactionStatus } from '../../../hooks/useTransactionStatus';
 
 interface TransactionStatusTrackerProps {
     trx: string;
     onClose: () => void;
 }
 
-const TransactionStatusTracker: React.FC<TransactionStatusTrackerProps> = ({
-    trx,
-    onClose
-}) => {
-    const { status, isPolling, error, response, stopPolling } = useBillingCheckTrxStatus(trx);
+const TransactionStatusTracker: React.FC<TransactionStatusTrackerProps> = memo(
+  ({ trx, onClose }) => {
+    const { response, startPolling, stopPolling, status, isPolling, error } = useTransactionStatus({ trx: trx });
 
+    useEffect(() => {
+        startPolling();
+        return () => {
+          stopPolling();
+        };
+      }, [trx]);
+    
     const getStatusColor = () => {
         switch (status) {
-            case 'COMPLETED':
+            case 'DONE':
                 return 'bg-green-500';
             case 'FAILED':
                 return 'bg-red-500';
             case 'PROCESSING':
+            case 'IN QUEUE':
                 return 'bg-blue-500';
             default:
                 return 'bg-yellow-500';
@@ -49,51 +53,45 @@ const TransactionStatusTracker: React.FC<TransactionStatusTrackerProps> = ({
                     </div>
 
                     <div className="space-y-6">
-                        {/* Transaction ID */}
                         <div className="bg-gray-50 rounded-lg p-4">
                             <div className="text-sm text-gray-500 mb-1">Transaction ID</div>
                             <div className="font-mono text-sm">{trx}</div>
                         </div>
 
-                        {/* Status Indicator */}
                         <div className="flex items-center space-x-3">
                             <div className={`w-3 h-3 rounded-full ${getStatusColor()}`}>
-                                {isPolling && status !== 'COMPLETED' && status !== 'FAILED' && (
+                                {isPolling && status !== 'DONE' && status !== 'FAILED' && (
                                     <div className="animate-ping w-3 h-3 rounded-full bg-blue-400 opacity-75"></div>
                                 )}
                             </div>
                             <div className="text-lg font-medium">{status}</div>
                         </div>
 
-                        {/* Progress Bar */}
                         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                             <div 
                                 className={`h-full transition-all duration-500 ${getStatusColor()}`}
                                 style={{
-                                    width: status === 'COMPLETED' ? '100%' : 
+                                    width: status === 'DONE' ? '100%' : 
                                            status === 'FAILED' ? '100%' :
                                            status === 'PROCESSING' ? '66%' : '33%'
                                 }}
                             />
                         </div>
 
-                        {/* Status Message */}
                         {response && (
                             <div className="bg-gray-50 rounded-lg p-4">
                                 <div className="text-sm text-gray-600">{response}</div>
                             </div>
                         )}
 
-                        {/* Error Message */}
                         {error && (
                             <div className="bg-red-50 text-red-600 rounded-lg p-4 text-sm">
                                 {error}
                             </div>
                         )}
 
-                        {/* Action Buttons */}
                         <div className="flex justify-end space-x-3">
-                            {(status === 'COMPLETED' || status === 'FAILED') ? (
+                            {(status === 'DONE' || status === 'FAILED') ? (
                                 <button
                                     onClick={onClose}
                                     className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
@@ -114,6 +112,7 @@ const TransactionStatusTracker: React.FC<TransactionStatusTrackerProps> = ({
             </div>
         </div>
     );
-};
+  }
+);
 
 export default TransactionStatusTracker;

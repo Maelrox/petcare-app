@@ -8,6 +8,7 @@ import { PlusIcon } from "lucide-react";
 import type { Billing } from "../../../types/BillingType";
 import { createBilling, getBilling, updateBilling } from "../../../hooks/useBilling";
 import BillingModal from "./BillingModal";
+import TransactionStatusTracker from "./TransactionStatusTracker";
 
 function Billings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -127,7 +128,6 @@ function Billings() {
           onClose={() => {
             setShowStatusTracker(false);
             setCurrentTrx(undefined);
-            onClose();
           }}
         />
       )}

@@ -7,7 +7,7 @@ import { useFetchData } from "./api/useFetchData";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_BILLING = "/billing/"
-const PATH_TRANSACTION = "/transaction/"
+const PATH_TRANSACTION = "/billing/transaction/"
 
 export const getBilling = async (
     queryParams: string,
