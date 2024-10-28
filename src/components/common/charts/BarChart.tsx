@@ -6,13 +6,13 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const BarChartWidget: React.FC = () => {
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: ['Cat', 'Dog', 'Lizard', 'Chicken', 'Horse', 'Cow'],
     datasets: [
       {
-        label: 'Monthly Sales',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: '#50b0ec',
-        borderColor: '#ff9e6b',
+        label: 'Species',
+        data: [110, 94, 3, 5, 1, 0],
+        backgroundColor: '#f43f5e',
+        borderColor: '#e2e2e2',
         borderWidth: 1,
       },
     ],
@@ -26,13 +26,13 @@ const BarChartWidget: React.FC = () => {
       },
       title: {
         display: true,
-        text: 'Monthly Sales Chart',
+        text: 'Chart',
       },
     },
   };
 
   return (
-    <div className="bg-slate-50 p-4 rounded-lg shadow-md flex-1 max-h-72 lg:max-h-96">
+    <div className="bg-slate-50 p-4 rounded-lg shadow-md flex-1 max-h-200">
       <Bar data={data} options={options} />
     </div>
   );

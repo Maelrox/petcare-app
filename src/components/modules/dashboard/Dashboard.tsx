@@ -1,46 +1,79 @@
-// src/components/Dashboard.tsx
-import React, { useEffect, useState } from "react";
-import PieChartWidget from "../../common/charts/PieChart";
+import { useEffect, useState } from "react";
 import BarChartWidget from "../../common/charts/BarChart";
+import welcomeImage from "../../../assets/icons/menu-main-icon.png";
 
-const Dashboard: React.FC = () => {
-  const [userName, setUserName] = useState<string | undefined>(undefined);
+const Dashboard = () => {
+  const [userName, setUserName] = useState<string>();
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("userData");
-
     try {
       if (storedData) {
         const userData = JSON.parse(storedData);
         setUserName(userData?.userDetailsDTO?.name);
-      } else {
-        setUserName(undefined);
       }
     } catch (error) {
       console.error("Error parsing user data:", error);
-      setUserName(undefined);
     }
   }, []);
 
+  const StatCard = ({ title, value, trend }) => (
+    <div className="bg-white rounded-lg shadow-sm p-6 flex flex-col">
+      <h3 className="text-sm font-medium text-gray-600 mb-2">{title}</h3>
+      <p className="text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-xs text-gray-600 mt-1">{trend}</p>
+    </div>
+  );
+
   return (
-    <div className="w-full m-auto bg-color_brand">
-      <div className="p-4 sm:p-2">
-      <h2 className="text-3xl font-semibold mb-4 text-white">
-        Welcome{userName ? `, ${userName}` : ""}!
-      </h2>
-      <p className="text-white">
-        Free Open Source Solution 0.0.1
-      </p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Welcome{userName ? `, ${userName}` : ""}!
+              </h1>
+              <p className="text-sm text-gray-500 mt-1">
+                Free Open Source Solution 0.9.1
+              </p>
+            </div>
+            <img src={welcomeImage.src} alt="Menu Icon" className="w-24 h-24 mr-4" />
+          </div>
+        </div>
       </div>
-      <div className="mt-4 bg-white p-5">
-        <h3 className="text-xl font-semibold mb-4 text-skyblue_dark">Company Overview</h3>
-        <div className="flex justify-between items-center flex-wrap gap-12">
-            <BarChartWidget/>
-            <PieChartWidget />
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <StatCard
+            title="Total Customers"
+            value="351"
+            trend="+12.3% from last month"
+          />
+          <StatCard
+            title="Attentions"
+            value="291"
+            trend="+3.2% from last week"
+          />
+          <StatCard
+            title="Inventory Sales"
+            value="12.5M"
+            trend="Increased by 4.3%"
+          />
+          <StatCard
+            title="Today Attentions"
+            value="12"
+            trend="+2.4% from yesterday"
+          />
         </div>
 
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div className="w-full">
+            <BarChartWidget />
+          </div>
+        </div>
 
-      </div>
+      </main>
     </div>
   );
 };
