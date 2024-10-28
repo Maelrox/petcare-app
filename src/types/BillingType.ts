@@ -7,7 +7,10 @@ export interface Billing {
     paymentStatus: string;
     transactionType: string;
     transactionDate: string;
-    billingDetails: BillingDetail[],
-    owner?: Owner,
+    billingDetails: BillingDetail[];
+    owner?: Owner;
     ownerId?: number;
+    identification?: string;
+    initialDate?: string;
+    finalDate?: string;
   }

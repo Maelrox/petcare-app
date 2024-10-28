@@ -53,7 +53,7 @@ function Billings() {
   const handleDelete = async (billing: Billing) => {
     if (billing.billingId) {
       const isConfirmed = window.confirm(
-        `Are you sure you want to delete the billing "${billing.billingId}"?`
+        `Are you sure you want to cancel the billing "${billing.billingId}"?`
       );
       if (isConfirmed) {
         alert("Not implemented");
@@ -128,6 +128,8 @@ function Billings() {
           onClose={() => {
             setShowStatusTracker(false);
             setCurrentTrx(undefined);
+            handleCloseModal();
+            setRefresh(true);
           }}
         />
       )}

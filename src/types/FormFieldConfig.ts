@@ -353,14 +353,37 @@ export const inventoryFields: FormField<Inventory>[] = [
 
 export const billingFields: FormField<Billing>[] = [
   {
-    name: "owner",
-    label: "Owner",
+    name: "billingId",
+    label: "Id",
+    type: "none",
+    required: true,
+    includeFilter: true,
+    filterName: "billingId"
+  },
+  {
+    name: "paymentStatus",
+    label: "Status",
+    type: "none",
+    required: true,
+    includeFilter: true,
+    filterName: "paymentStatus"
+  },
+  {
+    name: "transactionDate",
+    label: "Date",
+    type: "datetime-local",
+    required: true,
+    includeFilter: false,
+    filterName: "Date"
+  },
+  {
+    name: "identification",
+    label: "Identification",
     type: "text",
     required: true,
-    searchTable: Owners,
-    displaySelect: "name",
+    displaySelect: "identification",
     includeFilter: true,
-    filterName: "ownerName"
+    filterName: "identification"
   },
   {
     name: "totalAmount",
