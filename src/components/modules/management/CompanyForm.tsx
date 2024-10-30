@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import type { FormEvent, ChangeEvent} from 'react';
+import React, { useState, useEffect } from 'react';
+import type { FormEvent, ChangeEvent } from 'react';
+import ButtonIcon from '../../common/buttons/ButtonIcon';
+import { SaveIcon } from 'lucide-react';
+import type { Company } from '../../../types/RegisterRequest';
+import { updateCompany, fetchCompanyData } from '../../../hooks/useCompany';
+import CountrySelect from '../../common/select/CountrySelect';
 
 interface FormData {
   country: string;
@@ -8,59 +13,120 @@ interface FormData {
 }
 
 const CompanyAdminForm: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     country: '',
     companyIdentification: '',
     name: ''
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    loadCompanyData();
+  }, []);
+
+  const loadCompanyData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const company = await fetchCompanyData();
+      if (!company) {
+        throw new Error('No company data received');
+      }
+      setFormData({
+        country: company.country || '',
+        companyIdentification: company.companyIdentification || '',
+        name: company.name || ''
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load company data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
+  const handleCountryChange = (value: string) => {
+    setFormData(prevState => ({ ...prevState, country: value }));
   };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      const companyData: Company = {
+        ...formData
+      };
+      const responseMessage = await updateCompany(companyData);
+      if (responseMessage) {
+        setSuccessMessage(responseMessage);
+        await loadCompanyData();
+      }
+    } catch (err) {
+      setError('Failed to update company information');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <div className="p-12">Loading company information...</div>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 bg-white p-12 h-full w-full">
-      	<h1 className="text-2xl text-coral font-bold mb-4">Company Admin</h1>
+      <h1 className="text-2xl text-color_brand font-bold mb-4">Company Info</h1>
 
-        <h3>
-          Register or update your company
-        </h3>
-        <div>
-            <label htmlFor="country" className="block text-skyblue_dark text-sm font-bold mb-2">
-              Country
-            </label>
-            <input
-              type="text"
-              id="country"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            />
-        </div>
+      {error && (
+        <p className="text-rose-600">{error}</p>
+      )}
 
-        <div>
-            <label htmlFor="companyIdentification" className="block max-w-64 text-skyblue_dark text-sm font-bold mb-2">
-              Company Identification
-            </label>
-            <input
-              type="text"
-              id="companyIdentification"
-              name="companyIdentification"
-              value={formData.companyIdentification}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-skyblue_dark mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            />
-        </div>
+      {successMessage && (
+        <p className="text-color_brand">{successMessage}</p>
+      )}
+
+      <h3 className="text-gray-600">
+        Update your company info
+      </h3>
 
       <div>
-        <label htmlFor="name" className="block text-skyblue_dark text-sm font-bold mb-2">
+        <label htmlFor="country" className="block text-color_brand text-sm font-bold mb-2">
+          Country
+        </label>
+        <div className="max-w-64">
+          <CountrySelect
+            value={formData.country}
+            onChange={handleCountryChange}
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="companyIdentification" className="block text-color_brand text-sm font-bold mb-2">
+          Identification
+        </label>
+        <input
+          type="text"
+          id="companyIdentification"
+          name="companyIdentification"
+          value={formData.companyIdentification}
+          onChange={handleInputChange}
+          disabled={isLoading}
+          className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline disabled:opacity-50"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="name" className="block text-color_brand text-sm font-bold mb-2">
           Name
         </label>
         <input
@@ -68,15 +134,19 @@ const CompanyAdminForm: React.FC = () => {
           id="name"
           name="name"
           value={formData.name}
-          onChange={handleChange}
-          className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          onChange={handleInputChange}
+          disabled={isLoading}
+          className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline disabled:opacity-50"
         />
       </div>
 
       <div>
-        <button type="submit" className="bg-coral hover:bg-orange text-white font-bold py-2 px-4 rounded">
-          Save
-        </button>
+        <ButtonIcon 
+          text="Save" 
+          type="submit" 
+        >
+          <SaveIcon size={24} />
+        </ButtonIcon>
       </div>
     </form>
   );

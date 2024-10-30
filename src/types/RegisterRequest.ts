@@ -11,7 +11,7 @@ export interface RegisterRequest {
 }
 
 export interface Company {
-  "name": string, //255 Max 
-  "companyIdentification": string, //100 Max
-  "country": string //Code Country 2 Chars Max
+  name: string,
+  companyIdentification: string,
+  country: string
 }
