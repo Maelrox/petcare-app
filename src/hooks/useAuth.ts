@@ -2,6 +2,10 @@ import { addToast } from "../components/utils/toasterStore";
 import handleErrorResponse from "../components/utils/errorHandler";
 import { generateRequestOptions } from "../components/utils/httpHandler";
 import type { LoginRequest, LoginResponse } from "../types/AuthType";
+import type { RegisterRequest } from "../types/RegisterRequest";
+
+const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
+const PATH_MANAGEMENT = "/management/"
 
 export const login = async (userName: string, password: string, token: string): Promise<LoginResponse | undefined> => {
   const requestPayload: LoginRequest = { userName, password, token };
@@ -29,5 +33,28 @@ export const login = async (userName: string, password: string, token: string): 
     }
   } else {
     return undefined;
+  }
+};
+
+export const register = async (registerData: RegisterRequest): Promise<void> => {
+  const options = generateRequestOptions("POST", registerData, true);
+  if (options) {
+    try {
+      const response = await fetch(BASE_URL + PATH_MANAGEMENT + '/user/register', options);
+      if (response.ok) {
+        addToast('Registration successful!');
+      } else {
+        const errorMessage = await handleErrorResponse(response, true);
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      let errorMessage;
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else {
+        errorMessage = "Unknown Error";
+      }
+      addToast(`Error: ${errorMessage}`);
+    }
   }
 };

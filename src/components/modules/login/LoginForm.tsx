@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import type { LoginResponse } from "../../../types/AuthType";
 import {
-  GoogleReCaptchaProvider,
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
 import { login } from "../../../hooks/useAuth";
+import ButtonIcon from "../../common/buttons/ButtonIcon";
+import { KeyRoundIcon, UserRoundPlusIcon } from "lucide-react";
 
-const CAPTCHA_PUBLIC_KEY = import.meta.env.PUBLIC_CAPTCHA_KEY;
+interface LoginFormProps {
+  setIsRegisterModalOpen: (isOpen: boolean) => void;
+}
 
-const LoginFormInner: React.FC = () => {
+const LoginForm: React.FC<LoginFormProps> = ({ setIsRegisterModalOpen }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [loginResponse, setLoginResponse] = useState<LoginResponse | null>(
-    null
-  );
+  const [loginResponse, setLoginResponse] = useState<LoginResponse | null>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   useEffect(() => {
@@ -42,15 +43,15 @@ const LoginFormInner: React.FC = () => {
   };
 
   return (
-    <div className="p-1 bg-aqua-brand-gradient shadow-lg transform rounded-lg">
+    <div className="transform">
       <form
         onSubmit={handleSubmit}
-        className="bg-white-brand-gradient p-4 rounded-lg"
+        className="bg-white p-4 "
       >
         <div className="mb-4">
           <label
             htmlFor="userName"
-            className="block text-teal text-sm font-bold mb-2"
+            className="block text-color_brand text-sm font-bold mb-2"
           >
             Username
           </label>
@@ -68,7 +69,7 @@ const LoginFormInner: React.FC = () => {
         <div className="mb-6">
           <label
             htmlFor="password"
-            className="block text-teal text-sm font-bold mb-2"
+            className="block text-color_brand text-sm font-bold mb-2"
           >
             Password
           </label>
@@ -79,33 +80,27 @@ const LoginFormInner: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
-        <button
-          type="submit"
-          className="bg-skyblue-brand-gradient hover:bg-orange text-white font-bold py-2 px-4 rounded hover:scale-105 transition-transform duration-300 ease-in-out"
-        >
-          Sign In
-        </button>
+        <div className="flex gap-4 items-center justify-between">
+          <ButtonIcon
+            type="submit"
+            text="Sign In"
+          >
+            <KeyRoundIcon size={24} />
+          </ButtonIcon>
+          <ButtonIcon
+            type="button"
+            text="Register"
+            onClick={() => setIsRegisterModalOpen(true)}
+          >
+            <UserRoundPlusIcon size={24} />
+          </ButtonIcon>
+        </div>
       </form>
     </div>
-  );
-};
-
-const LoginForm: React.FC = () => {
-  return (
-    <GoogleReCaptchaProvider
-      reCaptchaKey= {CAPTCHA_PUBLIC_KEY}
-      scriptProps={{
-        async: false,
-        defer: false,
-        appendTo: "head",
-      }}
-    >
-      <LoginFormInner />
-    </GoogleReCaptchaProvider>
   );
 };
 

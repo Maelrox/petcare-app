@@ -272,6 +272,18 @@ function FormModal<T extends Record<string, any>>({
       );
     }
 
+    if (field.type === "text-area") {
+      return (
+        <textarea
+          id={field.name as string}
+          value={formData[field.name] || ""}
+          onChange={(e) => handleInputChange(field.name, e.target.value)}
+          required={field.required}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+        />
+      );
+    }
+
     if (field.searchTable) {
       const fieldValue = formData[field.name];
       const displayValue =
@@ -302,6 +314,8 @@ function FormModal<T extends Record<string, any>>({
         </div>
       );
     }
+
+    
 
     return (
       <input

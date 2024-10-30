@@ -150,6 +150,15 @@ export const patientFields: FormField<Patient>[] = [
     required: true,
     validators: { maxLength: 64 },
     includeFilter: true
+  },  
+  {
+    name: "specie",
+    label: "Specie",
+    type: "select",
+    required: true,
+    validators: { maxLength: 32 },
+    fetch: fetchSpecies,
+    dependantId: "id"
   },
   {
     name: "breed",
@@ -164,15 +173,7 @@ export const patientFields: FormField<Patient>[] = [
     type: "number",
     required: true,
   },
-  {
-    name: "specie",
-    label: "Specie",
-    type: "select",
-    required: true,
-    validators: { maxLength: 32 },
-    fetch: fetchSpecies,
-    dependantId: "id"
-  },
+
 ];
 
 export const appointmentFields: FormField<Appointment>[] = [
@@ -292,21 +293,21 @@ export const consultFields: FormField<Consult>[] = [
   }, {
     name: "treatment",
     label: "Treatment",
-    type: "text",
+    type: "text-area",
     required: true,
-    validators: { maxLength: 16 },
+    validators: { maxLength: 128 },
   }, {
     name: "notes",
     label: "Notes",
-    type: "text",
+    type: "text-area",
     required: true,
-    validators: { maxLength: 16 },
+    validators: { maxLength: 128 },
   }, {
     name: "diagnosis",
     label: "Diagnosis",
-    type: "text",
+    type: "text-area",
     required: true,
-    validators: { maxLength: 16 },
+    validators: { maxLength: 256 },
   },
 
 ];
