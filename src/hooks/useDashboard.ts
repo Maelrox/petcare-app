@@ -13,6 +13,6 @@ export const getCompanyResume = async () : Promise<CompanyResume | undefined> =>
   const options = generateRequestOptions("GET")
   let url = BASE_URL + PATH_MANAGEMENT + PATH_DASHBOARD
   if (options) {
-    return await useFetchData<CompanyResume[]>(url, options)
+    return await useFetchData<CompanyResume>(url, options)
   }
 };
