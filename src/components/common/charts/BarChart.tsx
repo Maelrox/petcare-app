@@ -1,39 +1,110 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  type ChartOptions,
+} from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const BarChartWidget: React.FC = () => {
-  const data = {
-    labels: ['Cat', 'Dog', 'Lizard', 'Chicken', 'Horse', 'Cow'],
+// Interface for the chart data structure
+export interface ChartData {
+  label: string;
+  value: number;
+}
+
+interface BarChartWidgetProps {
+  data?: ChartData[];
+  title?: string;
+  color?: string;
+  datasetLabel?: string;
+}
+
+const BarChartWidget: React.FC<BarChartWidgetProps> = ({
+  data = [],
+  title = 'Chart',
+  color = '#f43f5e',
+  datasetLabel = 'Data'
+}) => {
+  const chartData = {
+    labels: data.map(item => item.label),
     datasets: [
       {
-        label: 'Species',
-        data: [110, 94, 3, 5, 1, 0],
-        backgroundColor: '#f43f5e',
+        label: datasetLabel,
+        data: data.map(item => item.value),
+        backgroundColor: color,
         borderColor: '#e2e2e2',
         borderWidth: 1,
       },
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
       },
       title: {
         display: true,
-        text: 'Chart',
+        text: title,
+        font: {
+          size: 16,
+          weight: 'bold',
+        },
+        padding: {
+          top: 10,
+          bottom: 20,
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          drawBorder: false,
+        },
+        ticks: {
+          padding: 8,
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+        ticks: {
+          padding: 8,
+        },
       },
     },
   };
 
+  if (!data || data.length === 0) {
+    return (
+      <div className="bg-slate-50 p-4 rounded-lg shadow-md flex-1 h-64 flex items-center justify-center">
+        <p className="text-gray-500">No data available</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-slate-50 p-4 rounded-lg shadow-md flex-1 max-h-200">
-      <Bar data={data} options={options} />
+    <div className="bg-slate-50 p-4 rounded-lg shadow-md flex-1" style={{ height: '400px' }}>
+      <Bar data={chartData} options={options} />
     </div>
   );
 };
