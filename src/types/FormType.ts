@@ -14,6 +14,7 @@ interface FormField<T> {
   identifier?: boolean;
   includeFilter?: boolean;
   filterName?: string;
+  hiddenOnList?: boolean;
 }
 
 interface SelectOption {

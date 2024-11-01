@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import ButtonIcon from '../../common/buttons/ButtonIcon';
 import { SaveIcon } from 'lucide-react';
-import type { Company } from '../../../types/RegisterRequest';
+import type { Company } from '../../../types/RegisterRequestType';
 import { updateCompany, fetchCompanyData } from '../../../hooks/useCompany';
 import CountrySelect from '../../common/select/CountrySelect';
 

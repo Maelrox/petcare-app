@@ -42,7 +42,7 @@ function generateTableColumns<T>(data: T[], configFields: FormField<T>[]): {
   columns: ColumnDef<T, any>[];
 } {
   const columnHelper = createColumnHelper<T>();
-  const columns: ColumnDef<T, any>[] = configFields.map((field) => {
+  const columns: ColumnDef<T, any>[] = configFields.filter(field => !field.hiddenOnList).map((field) => {
     const accessorFn = createAccessorFn(field.name);
     return columnHelper.accessor(accessorFn, {
       id: field.name as string,

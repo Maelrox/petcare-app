@@ -1,0 +1,8 @@
+---
+import Employees from '../../../components/modules/employee/Employees';
+import AppLayout from '../../../layouts/AppLayout.astro';
+---
+
+<AppLayout title="Employees" includeMenu={false}>
+	<Employees client:load />
+</AppLayout>

@@ -2,28 +2,33 @@ import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
 import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
-import addIcon from "../../../assets/icons/table-add.png";
-import {
-  createRole,
-  deleteRole,
-  getRoles,
-  updateRole,
-} from "../../../hooks/useManager";
 import FilterControls from "../../common/tables/TableFilterControls";
-import type { Role } from "../../../types/AuthType";
 import FormModal from "../FormModal";
-import { roleFields } from "../../../types/FormFieldConfig";
-import { PlusIcon } from "lucide-react";
 
-type RolesProps<T> = {
+import { PlusSquareIcon } from "lucide-react";
+import type { RegisterRequest } from "../../../types/RegisterRequestType";
+import { search, update, register } from "../../../hooks/useEmployee";
+import { registerFields } from "../../../types/FormFieldConfig";
+
+type EmployeeProps<T> = {
   handleSelect?: (rowData: T) => void;
 }
 
-// simple CRUD
-function Roles<T>({ handleSelect }: RolesProps<T>) {
+function Employees<T>({ handleSelect }: EmployeeProps<T>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-  const paginatedData = usePaginatedData(getRoles, roleFields);
+  const [selectedEmployee, setSelectedEmployee] = useState<RegisterRequest | null>(null);
+  const paginatedData = usePaginatedData(search, registerFields);
+
+  const emptyRegisterRequest: RegisterRequest = {
+    username: "",
+    name: "",
+    password: "",
+    email: "",
+    phone: "",
+    country: "",
+    roles: [],
+    token: ""
+  };
 
   useEffect(() => {
     setRefresh(true);
@@ -42,18 +47,18 @@ function Roles<T>({ handleSelect }: RolesProps<T>) {
     isLoading,
   } = paginatedData;
 
-  const handleEdit = (role: Role) => {
-    setSelectedRole(role);
+  const handleEdit = (registerRequest: RegisterRequest) => {
+    setSelectedEmployee(registerRequest);
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (role: Role) => {
-    if (role.id) {
+  const handleDelete = async (registerRequest: RegisterRequest) => {
+    if (registerRequest.username) {
       const isConfirmed = window.confirm(
-        `Are you sure you want to delete the role "${role.name}"?`
+        `Are you sure you want to disable the employee "${registerRequest.username}"?`
       );
       if (isConfirmed) {
-        const responseMessage = await deleteRole(role.id);
+        const responseMessage = "TODO"; //await deleteOwner(owner.vetId);
         if (responseMessage) {
           setRefresh(true);
         }
@@ -63,20 +68,21 @@ function Roles<T>({ handleSelect }: RolesProps<T>) {
   };
 
   const handleAddClick = () => {
-    setSelectedRole(null);
+    setSelectedEmployee(null);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedRole(null);
+    setSelectedEmployee(null);
   };
 
-  const handleSubmit = async (data: Role) => {
-    const responseMessage = data.id
-      ? await updateRole(data)
-      : await createRole(data);
+  const handleSubmit = async (data: RegisterRequest) => {
+    const responseMessage = data.username
+      ? await register(data)
+      : await update(data);
     if (responseMessage) {
+      setIsModalOpen(false);
       setRefresh(true);
     }
     return responseMessage;
@@ -84,8 +90,8 @@ function Roles<T>({ handleSelect }: RolesProps<T>) {
 
   return (
     <>
-      <h2 className="text-center text-color_brand font-bold">Roles</h2>
-      <div className="flex flex-col md:flex-row md:justify-between mb-0">
+      <h2 className="text-center text-color_brand font-bold">Employees</h2>
+      <div className="flex flex-col items-center md:flex-row md:justify-between mb-0">
         <div className="w-full lg:w-2/3 md:pr-2 md:mb-0">
           <FilterControls
             setRefresh={setRefresh}
@@ -98,10 +104,10 @@ function Roles<T>({ handleSelect }: RolesProps<T>) {
         <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
           <ButtonIcon
             type="submit"
-            text="New Role"
+            text="New Employee"
             onClick={() => handleAddClick()}
           >
-            <PlusIcon size={24}/>
+            <PlusSquareIcon />
           </ButtonIcon>
         </div>
       </div>
@@ -115,21 +121,21 @@ function Roles<T>({ handleSelect }: RolesProps<T>) {
           handleDelete={handleDelete}
           handleSelect={handleSelect}
           isLoading={isLoading}
-          configFields={roleFields}
+          configFields={registerFields}
         />
       </div>
-      <FormModal<Role>
-        initialData={selectedRole || { id: 0, name: "" }}
+      <FormModal<RegisterRequest>
+        initialData={selectedEmployee || emptyRegisterRequest}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
+        fields={registerFields}
         maxSize="max-w-md"
-        fields={roleFields}
-        title={selectedRole ? "Edit Role" : "Create Role"}
-        description="A role contains multiple modules and actions, which can be assigned to users"
+        title={selectedEmployee ? "Edit Employee" : "Create Employee"}
+        description="Register an Employee for your company"
       />
     </>
   );
 }
 
-export default Roles;
+export default Employees;

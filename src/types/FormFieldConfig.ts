@@ -1,3 +1,4 @@
+import Roles from "../components/modules/management/Roles";
 import Owners from "../components/modules/owner/Owners";
 import { fetchAppointmentOptions } from "../hooks/useConsult";
 import { fetchPatientOptions, fetchPatients } from "../hooks/usePatient";
@@ -10,6 +11,7 @@ import type { Consult } from "./ConsultType";
 import type { Inventory } from "./InventoryType";
 import type { Owner } from "./OwnerType";
 import type { Patient } from "./PatientType";
+import type { RegisterRequest } from "./RegisterRequestType";
 import type { Veterinary } from "./VeterinaryType";
 
 export const roleFields: FormField<Role>[] = [
@@ -150,7 +152,7 @@ export const patientFields: FormField<Patient>[] = [
     required: true,
     validators: { maxLength: 64 },
     includeFilter: true
-  },  
+  },
   {
     name: "specie",
     label: "Specie",
@@ -342,7 +344,7 @@ export const inventoryFields: FormField<Inventory>[] = [
     required: true,
     validators: { minValue: 1 },
     includeFilter: false,
-  },{
+  }, {
     name: "price",
     label: "Price",
     type: "number",
@@ -393,4 +395,75 @@ export const billingFields: FormField<Billing>[] = [
     required: true,
     validators: { minValue: 1 },
   }
+];
+
+export const registerFields: FormField<RegisterRequest>[] = [
+  {
+    name: "id",
+    identifier: true,
+    label: "",
+    hiddenOnList: true,
+    type: "none",
+  },
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    required: true,
+    validators: { maxLength: 256 },
+  },
+  {
+    name: "username",
+    label: "User Name",
+    type: "text",
+    required: true,
+    placeHolder: true,
+    includeFilter: true,
+    validators: { maxLength: 256 },
+    displaySelect: "name",
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: "text",
+    required: true,
+    hiddenOnList: true,
+    validators: { maxLength: 32 },
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "text",
+    required: true,
+    includeFilter: true,
+    validators: { maxLength: 256 },
+  },
+  {
+    name: "phone",
+    label: "Phone",
+    type: "text",
+    required: true,
+    validators:
+    {
+      pattern: /^\d{3}-\d{3}-\d{4}$/
+    },
+  },
+  {
+    name: "country",
+    label: "Country",
+    type: "text",
+    required: true,
+    validators: { maxLength: 2 },
+  },
+  {
+    name: "roles",
+    label: "Rol",
+    type: "text",
+    required: true,
+    placeHolder: true,
+    displaySelect: "name",
+    hiddenOnList: true,
+    searchTable: Roles,
+  }
+
 ];

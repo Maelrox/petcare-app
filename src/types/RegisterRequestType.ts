@@ -1,5 +1,6 @@
 export interface RegisterRequest {
-  userName: string;
+  id?: number;
+  username: string;
   name: string;
   password: string;
   email: string;
@@ -7,7 +8,7 @@ export interface RegisterRequest {
   country: string;
   roles: string[];
   token: string;
-  company: Company;
+  company?: Company;
 }
 
 export interface Company {

@@ -1,7 +1,7 @@
 import { useFetchData } from "./api/useFetchData"
 import { generateRequestOptions } from "../components/utils/httpHandler";
 import { type TransactionResponse } from "../types/ResponseType";
-import type { Company } from "../types/RegisterRequest";
+import type { Company } from "../types/RegisterRequestType";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_COMPANY = "/management/company"
