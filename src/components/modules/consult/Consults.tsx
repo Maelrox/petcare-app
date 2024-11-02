@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
-import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { PlusSquareIcon } from "lucide-react";
-import { consultFields } from "../../../types/FormFieldConfig";
 import { createConsult, getConsult, searchConsult, updateConsult } from "../../../hooks/useConsult";
-import type { Consult } from "../../../types/ConsultType";
+import { consultFields, type Consult } from "../../../types/ConsultType";
 import usePaginatedDataFilter from "../../../hooks/usePaginatedDataFilter";
 import dayjs from "dayjs";
+import type { Veterinary } from "../../../types/VeterinaryType";
 
 function Consults() {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedConsult, setSelectedConsult] = useState<Consult | null>(null);
+  const paginatedData = usePaginatedDataFilter(searchConsult);
 
   const emptyConsult: Consult = {
     patientId: 0,
@@ -25,21 +28,13 @@ function Consults() {
     diagnosis: ""
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedConsult, setSelectedConsult] = useState<Consult | null>(null);
-  const paginatedData = usePaginatedDataFilter(searchConsult);
-
   useEffect(() => {
     setRefresh(true);
   }, []);
 
   const {
     data,
-    filters,
-    availableFilters,
     pagination,
-    addFilter,
-    removeFilter,
     handlePaginationChange,
     totalRows,
     setRefresh,
@@ -123,7 +118,7 @@ function Consults() {
         />
       </div>
       {isModalOpen && (
-        <FormModal<Consult>
+        <FormModal<Consult, Veterinary>
           initialData={selectedConsult || emptyConsult}
           isOpen={isModalOpen}
           onClose={handleCloseModal}

@@ -4,16 +4,15 @@ import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
-import { inventoryFields } from "../../../types/FormFieldConfig";
 import { PlusIcon } from "lucide-react";
 import { createInventory, getInventory, updateInventory } from "../../../hooks/useInventory";
-import type { Inventory } from "../../../types/InventoryType";
+import { inventoryFields, type Inventory } from "../../../types/InventoryType";
 
-type InventoriesProps<T> = {
-  handleSelect?: (rowData: T) => void;
+type InventoriesProps = {
+  handleSelect?: (rowData: Inventory) => void;
 }
 
-function Inventories<T>({ handleSelect }: InventoriesProps<T>) {
+function Inventories({ handleSelect }: InventoriesProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedInventory, setSelectedInventory] = useState<Inventory | null>(null);
   const paginatedData = usePaginatedData(getInventory, inventoryFields);
@@ -107,7 +106,7 @@ function Inventories<T>({ handleSelect }: InventoriesProps<T>) {
           configFields={inventoryFields}
         />
       </div>
-      <FormModal<Inventory>
+      <FormModal<Inventory, Inventory>
         initialData={selectedInventory || { inventoryId: 0, name: "", description: "", price: 0, quantity:0 }}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

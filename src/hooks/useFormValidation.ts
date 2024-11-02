@@ -1,37 +1,17 @@
 import { useState } from "react";
+import type { ValidationErrors } from "../types/FormFieldTypes";
 
-interface FormField<T> {
-  name: keyof T;
-  label: string;
-  type: string;
-  required?: boolean;
-  validators?: Validator;
+interface UseFormValidationProps<T,U=T> {
+  fields: FormField<T, U>[];
 }
 
-interface Validator {
-  maxLength?: number;
-  minLength?: number;
-  required?: boolean;
-  pattern?: RegExp;
-  minDate?: Date;
-  maxDate?: Date;
-  minValue?: number;
-}
-
-interface ValidationErrors<T> {
-  [key: string]: string | undefined;
-}
-
-interface UseFormValidationProps<T> {
-  fields: FormField<T>[];
-}
-
-export function useFormValidation<T extends Record<string, any>>({
+export function useFormValidation<T extends Record<string, any>, U>({
   fields,
-}: UseFormValidationProps<T>) {
-  const [errors, setErrors] = useState<ValidationErrors<T>>({});
-  //TODO: Technical debt refactor to avoid so many if
-  const validateField = (field: FormField<T>, value: any) => {
+}: UseFormValidationProps<T, U>) {
+
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const validateField = (field: FormField<T, U>, value: any) => {
+
     if (field.validators) {
       const { required, maxLength, minLength, pattern, minDate, maxDate, minValue } = field.validators;
 
@@ -61,7 +41,7 @@ export function useFormValidation<T extends Record<string, any>>({
   };
 
   const validateForm = (formData: T) => {
-    const validationErrors: ValidationErrors<T> = {};
+    const validationErrors: ValidationErrors = {};
     fields.forEach((field) => {
       const value = formData[field.name];
       const error = validateField(field, value);

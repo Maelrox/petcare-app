@@ -1,3 +1,5 @@
+import type { FormConfiguration } from "./FormFieldTypes";
+
 export interface Owner {
   ownerId: number;
   identification?: string;
@@ -7,7 +9,7 @@ export interface Owner {
   address?: string;
 }
 
-export const ownerFields: FormField<Owner>[] = [
+export const ownerFields: FormConfiguration<Owner, Owner>[] = [
   {
     name: "name",
     label: "Full Name",

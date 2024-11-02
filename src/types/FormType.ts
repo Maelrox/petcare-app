@@ -6,7 +6,7 @@ interface FormField<T, U = T> {
   validators?: Validator;
   searchTable?: any;
   displaySelect?: string;
-  dependsOn?: string;
+  dependsOn?: keyof T;
   dependantId?: string;
   placeHolder?: boolean;
   fetch?: U[] | (() => Promise<U[] | undefined>);
@@ -21,6 +21,7 @@ interface SelectOption {
   value: number;
   label: string;
   dependantName?: string;
+  [key: string]: any;
 }
 
 interface Validator {
@@ -31,8 +32,4 @@ interface Validator {
   minDate?: Date;
   maxDate?: Date;
   minValue?: number;
-}
-
-interface ValidationErrors<T> {
-  [key: string]: string | undefined;
 }

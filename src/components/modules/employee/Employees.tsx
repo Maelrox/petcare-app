@@ -6,15 +6,14 @@ import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 
 import { PlusSquareIcon } from "lucide-react";
-import type { RegisterRequest } from "../../../types/RegisterRequestType";
+import { registerFields, type RegisterRequest } from "../../../types/RegisterRequestType";
 import { search, update, register } from "../../../hooks/useEmployee";
-import { registerFields } from "../../../types/FormFieldConfig";
 
-type EmployeeProps<T> = {
-  handleSelect?: (rowData: T) => void;
+type EmployeeProps = {
+  handleSelect?: (rowData: RegisterRequest) => void;
 }
 
-function Employees<T>({ handleSelect }: EmployeeProps<T>) {
+function Employees({ handleSelect }: EmployeeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<RegisterRequest | null>(null);
   const paginatedData = usePaginatedData(search, registerFields);
@@ -124,15 +123,15 @@ function Employees<T>({ handleSelect }: EmployeeProps<T>) {
           configFields={registerFields}
         />
       </div>
-      <FormModal<RegisterRequest>
-        initialData={selectedEmployee || emptyRegisterRequest}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleSubmit}
-        fields={registerFields}
-        maxSize="max-w-md"
-        title={selectedEmployee ? "Edit Employee" : "Create Employee"}
-        description="Register an Employee for your company"
+      <FormModal<RegisterRequest, RegisterRequest>
+      initialData={selectedEmployee || emptyRegisterRequest}
+      isOpen={isModalOpen}
+      onClose={handleCloseModal}
+      onSubmit={handleSubmit}
+      fields={registerFields}
+      maxSize="max-w-md"
+      title={selectedEmployee ? "Edit Employee" : "Create Employee"}
+      description="Register an Employee for your company"
       />
     </>
   );

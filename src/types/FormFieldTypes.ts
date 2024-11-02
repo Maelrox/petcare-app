@@ -1,31 +1,47 @@
-export type FormFieldType = 
-  | "none" 
-  | "text" 
-  | "number" 
-  | "select" 
-  | "select-dependant" 
-  | "datetime-local" 
-  | "text-area";
-
-export type FormField<T> = {
+export interface FormConfiguration<T, U = T> {
   name: keyof T;
   label: string;
-  type: FormFieldType;
+  type: string;
   required?: boolean;
+  validators?: Validator;
+  searchTable?: any;
+  displaySelect?: string;
+  dependsOn?: string;
+  dependantId?: string;
+  placeHolder?: boolean;
+  fetch?: U[] | (() => Promise<U[] | undefined>);
+  fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]>;
   identifier?: boolean;
   includeFilter?: boolean;
   filterName?: string;
-  validators?: {
-    maxLength?: number;
-    minValue?: number;
-    pattern?: RegExp;
-  };
-  searchComponent?: React.ComponentType<any>;
-  displaySelect?: string;
-  placeHolder?: boolean;
-  dependsOn?: string;
-  dependantId?: string;
-  fetch?: () => Promise<any[]>;
-  fetchDependant?: (id: number | string) => Promise<any[]>;
   hiddenOnList?: boolean;
-};
+}
+
+export interface SelectOption {
+  value: number;
+  label: string;
+  dependantName?: string;
+}
+
+export interface Validator {
+  maxLength?: number;
+  minLength?: number;
+  required?: boolean;
+  pattern?: RegExp;
+  minDate?: Date;
+  maxDate?: Date;
+  minValue?: number;
+}
+
+export interface ValidationErrors<> {
+  [key: string]: string | undefined;
+}
+
+export type FormFieldType =
+  | "none"
+  | "text"
+  | "number"
+  | "select"
+  | "select-dependant"
+  | "datetime-local"
+  | "text-area";

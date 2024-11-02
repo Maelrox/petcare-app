@@ -34,50 +34,55 @@ function usePaginatedDataFilter<T>(
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const response: FetchDataResponse<T> = await service(filters, {
           page: pagination.pageIndex,
           pageSize: pagination.pageSize,
         });
         totalRows.current = response.pagination.totalPages;
-        const keys =
-          response.data.length > 0
-            ? Object.keys(response.data[0] as Record<string, any>).filter(
-              (key) => !Array.isArray(response.data[0][key])
-            )
-            : [];
-        availableFilters.current = keys;
-        setData(response.data);
+
+        if (response.data.length > 0) {
+          const firstItem = response.data[0] as Record<string, any>;
+          const keys = Object.keys(firstItem).filter(
+            (key) => !Array.isArray(firstItem[key])
+          );
+          availableFilters.current = keys;
+          setData(response.data);
+        }
 
       } catch (err: any) {
         console.log(err.message);
         addToast(err.message);
       }
-      setLoading(false)
+      setLoading(false);
     };
+
     if (isRefresh) {
       fetchData();
-      setRefresh(false)
+      setRefresh(false);
     }
   }, [filters, pagination, isRefresh]);
 
   const addFilter = (column: string, value: string) => {
     if (column && value) {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        [column]: value,
-      }));
+      setFilters((prevFilters) => {
+        const updatedFilters: any = {
+          ...prevFilters,
+          [column]: value,
+        };
+        return updatedFilters;
+      });
       setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     }
   };
 
   const removeFilter = (key: string) => {
     setFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-      delete newFilters[key];
+      const newFilters = { ...((prevFilters || {}) as T) };
+      delete newFilters[key as keyof T];
       return newFilters;
     });
-    setRefresh(true)
+    setRefresh(true);
   };
 
   const handlePaginationChange = (paginationToUpdate: PaginationState) => {

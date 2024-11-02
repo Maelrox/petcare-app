@@ -16,17 +16,30 @@ export interface Permission {
   modulesAction?: ModuleAction[];
 }
 
+export const permissionFields: FormField<Permission>[] = [
+  {
+    name: "id",
+    label: "",
+    type: "none",
+    identifier: true,
+    includeFilter: false,
+  },
+  {
+    name: "name",
+    label: "Permission Name",
+    type: "text",
+    required: true,
+    validators: { maxLength: 64 },
+    includeFilter: true,
+  }
+];
+
+
 export interface PermissionModules extends Permission {
   id?: number;
   name: string;
   moduleId: string;
   modulesAction?: ModuleAction[];
-}
-
-export interface Role {
-  id?: number;
-  name: string;
-  permissions?: Permission[];
 }
 
 interface UserDetailsDTO {
@@ -51,3 +64,27 @@ export type LoginRequest = {
   password: string;
   token: string;
 };
+
+export interface Role {
+  id?: number;
+  name: string;
+  permissions?: Permission[];
+}
+
+export const roleFields: FormField<Role>[] = [
+  {
+    name: "id",
+    label: "",
+    type: "none",
+    identifier: true,
+    includeFilter: false,
+  },
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    required: true,
+    validators: { maxLength: 50 },
+    includeFilter: true,
+  }
+];

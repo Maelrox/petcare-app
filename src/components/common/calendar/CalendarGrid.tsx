@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import dayjs from "dayjs";
 import type { Appointment } from "../../../types/AppointmentType";
 import catIcon from "../../../assets/patients/cat.png";
@@ -15,7 +15,7 @@ import lizardIcon from "../../../assets/patients/lizard.png";
 import pigIcon from "../../../assets/patients/pig.png";
 import sheepIcon from "../../../assets/patients/sheep.png";
 import turtleIcon from "../../../assets/patients/turtle.png";
-import { Edit, EditIcon, Trash2, TrashIcon, UserCheck } from "lucide-react";
+import { EditIcon, TrashIcon, UserCheck } from "lucide-react";
 import ButtonIcon from "../buttons/ButtonIcon";
 
 interface CalendarGridProps {
@@ -48,11 +48,12 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   onDeleteAppointment,
   onAttendAppointment,
 }) => {
-  const [currentDate, setCurrentDate] = useState(dayjs());
+
+  type SpeciesIconKey = keyof typeof speciesIcons;
 
   const getSpeciesIcon = (specieName: string) => {
-    const formattedName = specieName.toLowerCase().replace(/\s+/g, '_');
-    return speciesIcons[formattedName] || turtleIcon;
+    const formattedName = specieName.toLowerCase().replace(/\s+/g, '_') as SpeciesIconKey
+    return speciesIcons[formattedName] || turtleIcon; 
   };
 
   return (
@@ -110,7 +111,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
             </div>
             <div className="absolute bottom-0 right-0 p-2">
               <img
-                src={getSpeciesIcon(app.specieName).src}
+                src={getSpeciesIcon(app.specieName || 'unknown').src}
                 alt={`${app.specieName} icon`}
                 className="w-12 h-12 object-contain"
               />

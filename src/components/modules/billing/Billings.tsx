@@ -3,10 +3,9 @@ import DataTable from "../../common/tables/Table";
 import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
-import { billingFields } from "../../../types/FormFieldConfig";
 import { PlusIcon } from "lucide-react";
-import type { Billing } from "../../../types/BillingType";
-import { createBilling, getBilling, updateBilling } from "../../../hooks/useBilling";
+import { billingFields, type Billing } from "../../../types/BillingType";
+import { createBilling, getBilling } from "../../../hooks/useBilling";
 import BillingModal from "./BillingModal";
 import TransactionStatusTracker from "./TransactionStatusTracker";
 
@@ -16,17 +15,6 @@ function Billings() {
   const paginatedData = usePaginatedData(getBilling, billingFields);
   const [showStatusTracker, setShowStatusTracker] = useState(false);
   const [currentTrx, setCurrentTrx] = useState<string | undefined>();
-
-  const emptyBilling: Billing = {
-    ownerId: 0,
-    totalAmount: 0,
-    transactionDate: "",
-    paymentStatus: "",
-    billingId: 0,
-    transactionType: "",
-    billingDetails: [],
-    owner: undefined
-  };
 
   useEffect(() => {
     setRefresh(true);
@@ -76,6 +64,9 @@ function Billings() {
     if (response?.trx) {
         setCurrentTrx(response.trx);
         setShowStatusTracker(true);
+        return true;
+    } else {
+      return false;
     }
   };
 

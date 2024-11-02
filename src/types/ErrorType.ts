@@ -1,4 +1,4 @@
-interface ErrorResponse {
+export interface ErrorResponse {
   timestamp: string;
   status: number;
   error: string;

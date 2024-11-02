@@ -1,4 +1,3 @@
-import handleErrorResponse from "../components/utils/errorHandler";
 import { buildPaginatedUrl, generateRequestOptions } from "../components/utils/httpHandler";
 import { addToast } from "../components/utils/toasterStore";
 import type { RegisterRequest } from "../types/RegisterRequestType";

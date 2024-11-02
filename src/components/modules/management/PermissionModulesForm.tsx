@@ -25,7 +25,9 @@ function PermissionModulesForm({ permission }: PermissionsFormProps) {
             selected: action.selected ?? false,
           })),
         }));
-        setModules(initializedModules);
+        if (initializedModules) {
+          setModules(initializedModules);
+        }
       } catch (error) {
         console.error("Failed to fetch modules:", error);
       }
@@ -88,7 +90,7 @@ function PermissionModulesForm({ permission }: PermissionsFormProps) {
       try {
         const permissionModuleActions: PermissionModules = {
           id: permission.id,
-          moduleId: selectedModule.id,
+          moduleId: selectedModule.id.toString(),
           name: permission.name,
           modulesAction: selectedModule.modulesActions.filter((action) => action.selected),
         };

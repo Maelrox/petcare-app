@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Receipt, Search, User } from "lucide-react";
+import { Plus, Trash2, Receipt, User } from "lucide-react";
 import type { Billing } from '../../../types/BillingType';
 import type { BillingDetail } from '../../../types/BilllingDetailType';
 import { fetchUnBilledAttentions } from '../../../hooks/useConsult';
@@ -11,7 +11,7 @@ import type { Inventory } from '../../../types/InventoryType';
 interface BillingModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: Billing) => Promise<string | undefined>;
+    onSubmit: (data: Billing) => Promise<boolean | undefined>;
     initialData?: Billing | null;
 }
 

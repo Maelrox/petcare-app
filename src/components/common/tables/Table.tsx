@@ -10,8 +10,9 @@ import TableCardView from "./TableCardView";
 import Pagination from "./TablePagination";
 import TableView from "./TableView";
 import notFoundImage from "../../../assets/not_found_doctor.png";
+import type { FormConfiguration } from "../../../types/FormFieldTypes";
 
-type DataTableProps<T> = {
+type DataTableProps<T, U> = {
   dataSource: T[];
   pagination: PaginationState;
   totalRows: number;
@@ -22,7 +23,7 @@ type DataTableProps<T> = {
   handleAdditionalAction2?: (rowData: T) => void;
   isLoading: boolean;
   handleSelect?: (rowData: T) => void;
-  configFields: FormField<T>[];
+  configFields: FormConfiguration<T, U>[];
 };
 
 type AccessorFn<T> = (data: T) => any;
@@ -37,7 +38,7 @@ function createAccessorFn<T>(key: keyof T): AccessorFn<T> {
   };
 }
 
-function generateTableColumns<T>(data: T[], configFields: FormField<T>[]): {
+function generateTableColumns<T, U>(data: T[], configFields: FormConfiguration<T, U>[]): {
   data: T[];
   columns: ColumnDef<T, any>[];
 } {
@@ -54,7 +55,7 @@ function generateTableColumns<T>(data: T[], configFields: FormField<T>[]): {
   return { data, columns };
 }
 
-function DataTable<T>({
+function DataTable<T, U>({
   dataSource,
   pagination,
   totalRows,
@@ -66,7 +67,7 @@ function DataTable<T>({
   isLoading,
   handleSelect,
   configFields
-}: DataTableProps<T>) {
+}: DataTableProps<T, U>) {
   const { data, columns } = React.useMemo(
     () => generateTableColumns(dataSource, configFields),
     [dataSource, configFields]

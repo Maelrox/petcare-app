@@ -10,6 +10,7 @@ import {
   Legend,
   type ChartOptions,
 } from 'chart.js';
+import type { BarChartWidgetProps } from '../../../types/BartChartTypes';
 
 ChartJS.register(
   CategoryScale,
@@ -19,19 +20,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-// Interface for the chart data structure
-export interface ChartData {
-  label: string;
-  value: number;
-}
-
-interface BarChartWidgetProps {
-  data?: ChartData[];
-  title?: string;
-  color?: string;
-  datasetLabel?: string;
-}
 
 const BarChartWidget: React.FC<BarChartWidgetProps> = ({
   data = [],

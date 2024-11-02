@@ -4,24 +4,14 @@ import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
-import { veterinaryFields } from "../../../types/FormFieldConfig";
 import { createVeterinary, searchVeterinaries, updateVeterinary } from "../../../hooks/useVeterinary";
-import type { Veterinary } from "../../../types/VeterinaryType";
+import { veterinaryFields, type Veterinary } from "../../../types/VeterinaryType";
 import { PlusIcon } from "lucide-react";
 
 function Veterinaries() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVeterinary, setSelectedVeterinary] = useState<Veterinary | null>(null);
   const paginatedData = usePaginatedData(searchVeterinaries, veterinaryFields);
-
-  const veterinary: Veterinary = {
-    vetId: 0,
-    identification: "",
-    identificationTypeId: 0,
-    name: "",
-    phone: "",
-    specialization: ""
-  };
 
   useEffect(() => {
     setRefresh(true);
@@ -115,7 +105,7 @@ function Veterinaries() {
           configFields={veterinaryFields}
         />
       </div>
-      <FormModal<Veterinary>
+      <FormModal<Veterinary, Veterinary>
         initialData={selectedVeterinary || {vetId: 0,identification:"", identificationTypeId:0, name:"", phone:"", specialization:""}}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

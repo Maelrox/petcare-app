@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
 import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
-import addIcon from "../../../assets/icons/table-add.png";
 import {
   createPermission,
   deletePermission,
@@ -10,15 +9,13 @@ import {
   updatePermission,
 } from "../../../hooks/useManager";
 import FilterControls from "../../common/tables/TableFilterControls";
-import type { Permission, Role } from "../../../types/AuthTypes";
+import { permissionFields, type Permission } from "../../../types/AuthTypes";
 import FormModal from "../FormModal";
-import { permissionFields } from "../../../types/FormFieldConfig";
 import Modal from "../../common/modals/Modal";
 import PermissionRolesForm from "./PermissionRolesForm";
 import PermissionModulesForm from "./PermissionModulesForm";
 import { addToast } from "../../utils/toasterStore";
 
-// simple CRUD
 function Permissions() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalAssignRolesOpen, setIsModalAssignRolesOpen] = useState(false);
@@ -144,7 +141,7 @@ function Permissions() {
           configFields={permissionFields}
         />
       </div>
-      <FormModal<Permission>
+      <FormModal<Permission, Permission>
         initialData={selectedPermission || { id: 0, name: "" }}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

@@ -5,8 +5,9 @@ import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { PlusSquareIcon } from "lucide-react";
-import { patientFields, type Patient } from "../../../types/PatientType";
 import { createPatient, searchPatients, updatePatient } from "../../../hooks/usePatient";
+import { patientFields, type Patient } from "../../../types/PatientType";
+import type { Specie } from "../../../types/SpecieType";
 
 function Patients() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -106,7 +107,7 @@ function Patients() {
         />
       </div>
       {isModalOpen && (
-        <FormModal<Patient>
+        <FormModal<Patient, Specie>
           initialData={
             selectedPatient || {
               patientId: 0,

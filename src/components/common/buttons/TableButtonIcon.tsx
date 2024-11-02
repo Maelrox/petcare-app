@@ -9,12 +9,12 @@ interface ButtonProps {
   color?: string;
 }
 
-const TableButtonIcon: React.FC<ButtonProps> = ({ onClick, children, text, bgColor = 'bg-white', color='text-skyblue_dark', type = 'button' }) => {
+const TableButtonIcon: React.FC<ButtonProps> = ({ onClick, children, text, bgColor = 'bg-white', color='text-color_brand', type = 'button' }) => {
   return (
     <button
       type={type}
       onClick={onClick || (() => {})}
-      className={`${bgColor} ml-1 flex items-center space-x-2 px-2 py-1 rounded`}
+      className={`${bgColor} ml-1 flex items-center space-x-2 px-2 py-1 rounded ${color}`}
     > 
     {children}
     {text && (

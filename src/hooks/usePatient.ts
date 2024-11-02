@@ -3,7 +3,6 @@ import { buildPaginatedUrl, generateRequestOptions } from "../components/utils/h
 import type { PaginatedResponse, PaginationParams } from "../types/RequestType";
 import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
 import type { Patient } from "../types/PatientType";
-import type { Owner } from "../types/OwnerType";
 import { addToast } from "../components/utils/toasterStore";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
@@ -65,20 +64,29 @@ export const deletePatient = async (id: number): Promise<string | undefined> => 
   }
 };
 
-
-export const fetchPatientOptions = async (dependantId: number, optionIdField: string): Promise<SelectOption[]> => {
-    try {
-      const patients = await fetchPatients(dependantId);
-      if (patients && Array.isArray(patients)) {
-        return patients.map(patient => ({
-          value: patient[optionIdField],
-          label: patient.name,
-          dependantName: patient.owner?.name,
-        }));
-      }
-    } catch (error) {
-      addToast("Error reading patient options")
-      console.error('Error fetching patients:', error);
+export const fetchPatientOptions = async (
+  dependantId: number,
+  optionIdField: string
+): Promise<SelectOption[]> => {
+  try {
+    const patients = await fetchPatients(dependantId);
+    if (patients && Array.isArray(patients)) {
+      const idField = optionIdField as keyof Patient;
+      return patients.map(patient => {
+        const value = patient[idField];
+        if (typeof value === 'number') {
+          return {
+            value,
+            label: patient.name,
+            dependantName: patient.owner?.name,
+          };
+        }
+        throw new Error(`Value of ${optionIdField} is not a number.`);
+      });
     }
+  } catch (error) {
+    addToast("Error reading patient options");
+    console.error("Error fetching patients:", error);
+  }
   return [];
 };

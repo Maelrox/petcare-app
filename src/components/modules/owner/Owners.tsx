@@ -8,11 +8,11 @@ import { ownerFields, type Owner } from "../../../types/OwnerType";
 import { createOwner, searchOwners, updateOwner } from "../../../hooks/useOwner";
 import { PlusSquareIcon } from "lucide-react";
 
-type OwnerProps<T> = {
+type OwnerProps = {
   handleSelect?: (rowData: Owner) => void;
 }
 
-function Owners<T>({ handleSelect }: OwnerProps<T>) {
+function Owners({ handleSelect }: OwnerProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOwner, setSelectedOwner] = useState<Owner | null>(null);
   const paginatedData = usePaginatedData(searchOwners, ownerFields);
@@ -110,7 +110,7 @@ function Owners<T>({ handleSelect }: OwnerProps<T>) {
           configFields={ownerFields}
         />
       </div>
-      <FormModal<Owner>
+      <FormModal<Owner, Owner>
         initialData={
           selectedOwner || {
             ownerId: 0,

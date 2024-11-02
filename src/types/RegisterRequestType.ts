@@ -1,3 +1,5 @@
+import Roles from "../components/modules/management/Roles";
+
 export interface RegisterRequest {
   id?: number;
   username: string;
@@ -16,3 +18,74 @@ export interface Company {
   companyIdentification: string,
   country: string
 }
+
+export const registerFields: FormField<RegisterRequest>[] = [
+  {
+    name: "id",
+    identifier: true,
+    label: "",
+    hiddenOnList: true,
+    type: "none",
+  },
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    required: true,
+    validators: { maxLength: 256 },
+  },
+  {
+    name: "username",
+    label: "User Name",
+    type: "text",
+    required: true,
+    placeHolder: true,
+    includeFilter: true,
+    validators: { maxLength: 256 },
+    displaySelect: "name",
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: "text",
+    required: true,
+    hiddenOnList: true,
+    validators: { maxLength: 32 },
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "text",
+    required: true,
+    includeFilter: true,
+    validators: { maxLength: 256 },
+  },
+  {
+    name: "phone",
+    label: "Phone",
+    type: "text",
+    required: true,
+    validators:
+    {
+      pattern: /^\d{3}-\d{3}-\d{4}$/
+    },
+  },
+  {
+    name: "country",
+    label: "Country",
+    type: "text",
+    required: true,
+    validators: { maxLength: 2 },
+  },
+  {
+    name: "roles",
+    label: "Rol",
+    type: "text",
+    required: true,
+    placeHolder: true,
+    displaySelect: "name",
+    hiddenOnList: true,
+    searchTable: Roles,
+  }
+
+];

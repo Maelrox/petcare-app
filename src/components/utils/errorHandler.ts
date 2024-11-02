@@ -1,3 +1,4 @@
+import type { ErrorResponse } from "../../types/ErrorType";
 import { addToast } from "./toasterStore";
 
 const handleErrorResponse = async (

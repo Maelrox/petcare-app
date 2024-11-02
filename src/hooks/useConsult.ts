@@ -3,9 +3,9 @@ import { buildPaginatedUrl, generateRequestOptions } from "../components/utils/h
 import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
 import type { Consult } from "../types/ConsultType";
 import type { PaginatedResponse, PaginationParams } from "../types/RequestType";
-import type { Appointment } from "../types/AppointmentType";
 import { fetchAppointments } from "./useAppointment";
 import { addToast } from "../components/utils/toasterStore";
+import type { Appointment } from "../types/AppointmentType";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_APPOINTMENT = "/appointments/consultation"
@@ -64,19 +64,23 @@ export const deleteAppointment = async (consultId: number): Promise<Consult | un
 
 export const fetchAppointmentOptions = async (dependantId: number, optionIdField: string): Promise<SelectOption[]> => {
   try {
+    const idField = optionIdField as keyof Appointment;
     const appointments = await fetchAppointments(dependantId);
     if (appointments && Array.isArray(appointments)) {
-      return appointments.map(appointment => ({
-        value: appointment[optionIdField],
-        label: appointment.appointmentDate,
-      }));
+      return appointments
+        .map(appointment => ({
+          value: appointment[idField],
+          label: appointment.appointmentDate,
+        }))
+        .filter(option => option.value !== undefined) as SelectOption[];
     }
   } catch (error) {
-    addToast("Error reading patient options")
+    addToast("Error reading patient options");
     console.error('Error fetching patients:', error);
   }
-return [];
+  return [];
 };
+
 
 export const fetchUnBilledAttentions = async (ownerId: number): Promise<Consult[] | undefined> => {
   const options = generateRequestOptions("GET")

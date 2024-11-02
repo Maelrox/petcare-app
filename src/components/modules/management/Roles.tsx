@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
 import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
-import addIcon from "../../../assets/icons/table-add.png";
 import {
   createRole,
   deleteRole,
@@ -10,17 +9,15 @@ import {
   updateRole,
 } from "../../../hooks/useManager";
 import FilterControls from "../../common/tables/TableFilterControls";
-import type { Role } from "../../../types/AuthTypes";
+import { roleFields, type Role } from "../../../types/AuthTypes";
 import FormModal from "../FormModal";
-import { roleFields } from "../../../types/FormFieldConfig";
 import { PlusIcon } from "lucide-react";
 
-type RolesProps<T> = {
-  handleSelect?: (rowData: T) => void;
+type RolesProps = {
+  handleSelect?: (rowData: Role) => void;
 }
 
-// simple CRUD
-function Roles<T>({ handleSelect }: RolesProps<T>) {
+function Roles ({ handleSelect }: RolesProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const paginatedData = usePaginatedData(getRoles, roleFields);
@@ -118,7 +115,7 @@ function Roles<T>({ handleSelect }: RolesProps<T>) {
           configFields={roleFields}
         />
       </div>
-      <FormModal<Role>
+      <FormModal<Role, Role>
         initialData={selectedRole || { id: 0, name: "" }}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { CalendarDays, LayoutGrid, CalendarPlus } from "lucide-react";
-import type { Appointment } from "../../../types/AppointmentType";
+import { appointmentFields, type Appointment } from "../../../types/AppointmentType";
 import type { Veterinary } from "../../../types/VeterinaryType";
 import "../../../styles/Calendar.css";
 import Calendar from "../../common/calendar/Calendar";
@@ -15,9 +15,8 @@ import {
   updateAppointment,
 } from "../../../hooks/useAppointment";
 import FormModal from "../FormModal";
-import { appointmentFields } from "../../../types/FormFieldConfig";
 import { fetchVeterinaries } from "../../../hooks/useVeterinary";
-import { filterOwners, searchOwners } from "../../../hooks/useOwner";
+import { filterOwners } from "../../../hooks/useOwner";
 import CalendarGrid from "../../common/calendar/CalendarGrid";
 import useDebounce from "../../../hooks/useDebounce";
 
@@ -128,7 +127,7 @@ const Appointments: React.FC = () => {
   };
 
   const handleAppointmentAttend = async (appointmentId: number) => {
-    alert("Not implemented");
+    alert("Not implemented" + appointmentId);
   };
 
   const handleSubmit = async (data: Appointment) => {
@@ -276,7 +275,7 @@ const Appointments: React.FC = () => {
         />
       )}
       {isModalOpen && (
-        <FormModal<Appointment>
+        <FormModal<Appointment, Veterinary>
           initialData={selectedAppointment || emptyAppointment}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
