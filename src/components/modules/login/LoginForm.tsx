@@ -6,6 +6,7 @@ import {
 import { login } from "../../../hooks/useAuth";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import { KeyRoundIcon, UserRoundPlusIcon } from "lucide-react";
+import Role from "../../../pages/modules/management/role.astro";
 
 interface LoginFormProps {
   setIsRegisterModalOpen: (isOpen: boolean) => void;
@@ -15,10 +16,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ setIsRegisterModalOpen }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState<LoginResponse | null>(null);
+  const [permissions, setPermissions] = useState(Role);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   useEffect(() => {
     if (loginResponse) {
+      const userPermissions = loginResponse.userDetailsDTO.roles;
+      setPermissions(userPermissions);
       window.location.href = "/modules/dashboard/";
     }
   }, [loginResponse]);

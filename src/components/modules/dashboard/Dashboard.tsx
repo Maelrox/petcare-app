@@ -91,7 +91,7 @@ const Dashboard = () => {
           />
           <StatCard
             title="Inventory Sales"
-            value={`${companyData?.inventorySales.currency} ${companyData?.inventorySales.amount}M`}
+            value={`${companyData?.inventorySales.currency} ${companyData?.inventorySales.amount}`}
             trend={`Increased by ${companyData?.inventoryTrend.percentage}%`}
           />
           <StatCard
