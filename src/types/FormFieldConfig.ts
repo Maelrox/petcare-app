@@ -2,17 +2,24 @@ import Roles from "../components/modules/management/Roles";
 import Owners from "../components/modules/owner/Owners";
 import { fetchAppointmentOptions } from "../hooks/useConsult";
 import { fetchPatientOptions, fetchPatients } from "../hooks/usePatient";
-import { fetchSpecies } from "../hooks/useSpecie";
 import { fetchVeterinaries } from "../hooks/useVeterinary";
 import type { Appointment } from "./AppointmentType";
-import type { Permission, Role } from "./AuthType";
+import type { Permission, Role } from "./AuthTypes";
 import type { Billing } from "./BillingType";
 import type { Consult } from "./ConsultType";
 import type { Inventory } from "./InventoryType";
 import type { Owner } from "./OwnerType";
-import type { Patient } from "./PatientType";
 import type { RegisterRequest } from "./RegisterRequestType";
 import type { Veterinary } from "./VeterinaryType";
+
+export type FormFieldType = 
+  | "none" 
+  | "text" 
+  | "number" 
+  | "select" 
+  | "select-dependant" 
+  | "datetime-local" 
+  | "text-area";
 
 export const roleFields: FormField<Role>[] = [
   {
@@ -125,57 +132,6 @@ export const ownerFields: FormField<Owner>[] = [
     required: true,
     validators: { maxLength: 128 },
   },
-];
-
-export const patientFields: FormField<Patient>[] = [
-  {
-    name: "patientId",
-    identifier: true,
-    label: "",
-    type: "none",
-  },
-
-  {
-    name: "owner",
-    label: "Owner",
-    type: "text",
-    required: true,
-    searchTable: Owners,
-    displaySelect: "name",
-    includeFilter: true,
-    filterName: "ownerName"
-  },
-  {
-    name: "name",
-    label: "Name",
-    type: "text",
-    required: true,
-    validators: { maxLength: 64 },
-    includeFilter: true
-  },
-  {
-    name: "specie",
-    label: "Specie",
-    type: "select",
-    required: true,
-    validators: { maxLength: 32 },
-    fetch: fetchSpecies,
-    dependantId: "id"
-  },
-  {
-    name: "breed",
-    label: "Breed",
-    type: "text",
-    required: true,
-    includeFilter: true
-  },
-  {
-    name: "age",
-    label: "Age",
-    type: "number",
-    required: true,
-  },
-
 ];
 
 export const appointmentFields: FormField<Appointment>[] = [

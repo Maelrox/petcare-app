@@ -10,7 +10,7 @@ import {
   updatePermission,
 } from "../../../hooks/useManager";
 import FilterControls from "../../common/tables/TableFilterControls";
-import type { Permission, Role } from "../../../types/AuthType";
+import type { Permission, Role } from "../../../types/AuthTypes";
 import FormModal from "../FormModal";
 import { permissionFields } from "../../../types/FormFieldConfig";
 import Modal from "../../common/modals/Modal";

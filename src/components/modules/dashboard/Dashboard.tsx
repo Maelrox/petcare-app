@@ -95,7 +95,7 @@ const Dashboard = () => {
             trend={`Increased by ${companyData?.inventoryTrend.percentage}%`}
           />
           <StatCard
-            title="Today Attentions"
+            title="Today Appointments"
             value={companyData?.todayAppointments.toString() ?? "0"}
             trend={`${companyData?.todayAppointmentsTrend.percentage}% from ${companyData?.todayAppointmentsTrend.period}`}
           />
@@ -105,9 +105,9 @@ const Dashboard = () => {
           <div className="w-full">
             <BarChartWidget
               data={companyData?.chartData}
-              title="Company Statistics"
+              title="Patient Statistics"
               datasetLabel="Monthly Data"
-              color="#4f46e5" // or any other color
+              color="#0d2b35" 
             />
           </div>
         </div>

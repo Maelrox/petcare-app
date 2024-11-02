@@ -4,32 +4,18 @@ import usePaginatedData from "../../../hooks/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
-import type { Owner } from "../../../types/OwnerType";
-import { ownerFields } from "../../../types/FormFieldConfig";
-import {
-  createOwner,
-  searchOwners,
-  updateOwner,
-} from "../../../hooks/useOwner";
+import { ownerFields, type Owner } from "../../../types/OwnerType";
+import { createOwner, searchOwners, updateOwner } from "../../../hooks/useOwner";
 import { PlusSquareIcon } from "lucide-react";
 
 type OwnerProps<T> = {
-  handleSelect?: (rowData: T) => void;
+  handleSelect?: (rowData: Owner) => void;
 }
 
 function Owners<T>({ handleSelect }: OwnerProps<T>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOwner, setSelectedOwner] = useState<Owner | null>(null);
   const paginatedData = usePaginatedData(searchOwners, ownerFields);
-
-  const owner: Owner = {
-    ownerId: 0,
-    identification: "",
-    identificationTypeId: 0,
-    name: "",
-    phone: "",
-    address: "",
-  };
 
   useEffect(() => {
     setRefresh(true);

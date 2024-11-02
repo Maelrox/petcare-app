@@ -1,4 +1,4 @@
-import type { Permission, Role } from "./AuthType";
+import type { Permission, Role } from "./AuthTypes";
 
 export type RequestOptions = {
   method: string

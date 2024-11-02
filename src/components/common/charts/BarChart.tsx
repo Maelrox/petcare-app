@@ -75,9 +75,6 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
     scales: {
       y: {
         beginAtZero: true,
-        grid: {
-          drawBorder: false,
-        },
         ticks: {
           padding: 8,
         },
@@ -85,7 +82,6 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
       x: {
         grid: {
           display: false,
-          drawBorder: false,
         },
         ticks: {
           padding: 8,

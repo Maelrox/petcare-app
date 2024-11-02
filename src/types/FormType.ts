@@ -1,4 +1,4 @@
-interface FormField<T> {
+interface FormField<T, U = T> {
   name: keyof T;
   label: string;
   type: string;
@@ -9,7 +9,7 @@ interface FormField<T> {
   dependsOn?: string;
   dependantId?: string;
   placeHolder?: boolean;
-  fetch?: T[] | (() => Promise<T[]>);
+  fetch?: U[] | (() => Promise<U[] | undefined>);
   fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]>;
   identifier?: boolean;
   includeFilter?: boolean;

@@ -1,6 +1,6 @@
 import { useFetchData } from "./api/useFetchData"
 import { buildPaginatedUrl, generateRequestOptions } from "../components/utils/httpHandler";
-import type { Module, ModuleAction, Permission, PermissionModules, Role } from "../types/AuthType";
+import type { Module, ModuleAction, Permission, PermissionModules, Role } from "../types/AuthTypes";
 import type { PaginatedResponse, PaginationParams, PermissionRoles } from "../types/RequestType";
 import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
 

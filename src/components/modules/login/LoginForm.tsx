@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import type { LoginResponse } from "../../../types/AuthType";
+import type { LoginResponse } from "../../../types/AuthTypes";
 import {
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";

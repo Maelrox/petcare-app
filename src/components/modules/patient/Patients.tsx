@@ -5,9 +5,8 @@ import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { PlusSquareIcon } from "lucide-react";
-import type { Patient } from "../../../types/PatientType";
+import { patientFields, type Patient } from "../../../types/PatientType";
 import { createPatient, searchPatients, updatePatient } from "../../../hooks/usePatient";
-import { patientFields } from "../../../types/FormFieldConfig";
 
 function Patients() {
   const [isModalOpen, setIsModalOpen] = useState(false);

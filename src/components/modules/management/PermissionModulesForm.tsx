@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../common/buttons/Button";
-import type { Module, Permission, PermissionModules } from "../../../types/AuthType";
+import type { Module, Permission, PermissionModules } from "../../../types/AuthTypes";
 import { getAllModules, getModuleActions, updatePermissionActionsModule } from "../../../hooks/useManager";
 import { addToast } from "../../utils/toasterStore";
 import '../../../styles/Checkbox.css';

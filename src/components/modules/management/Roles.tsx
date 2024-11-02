@@ -10,7 +10,7 @@ import {
   updateRole,
 } from "../../../hooks/useManager";
 import FilterControls from "../../common/tables/TableFilterControls";
-import type { Role } from "../../../types/AuthType";
+import type { Role } from "../../../types/AuthTypes";
 import FormModal from "../FormModal";
 import { roleFields } from "../../../types/FormFieldConfig";
 import { PlusIcon } from "lucide-react";

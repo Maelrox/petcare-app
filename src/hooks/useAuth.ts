@@ -1,7 +1,7 @@
 import { addToast } from "../components/utils/toasterStore";
 import handleErrorResponse from "../components/utils/errorHandler";
 import { generateRequestOptions } from "../components/utils/httpHandler";
-import type { LoginRequest, LoginResponse } from "../types/AuthType";
+import type { LoginRequest, LoginResponse } from "../types/AuthTypes";
 import type { RegisterRequest } from "../types/RegisterRequestType";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
