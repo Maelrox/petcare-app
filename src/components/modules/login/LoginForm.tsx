@@ -1,12 +1,10 @@
+
 import React, { useEffect, useState } from "react";
-import type { LoginResponse } from "../../../types/AuthTypes";
-import {
-  useGoogleReCaptcha,
-} from "react-google-recaptcha-v3";
-import { login } from "../../../hooks/useAuth";
-import ButtonIcon from "../../common/buttons/ButtonIcon";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { KeyRoundIcon, UserRoundPlusIcon } from "lucide-react";
-import Role from "../../../pages/modules/management/role.astro";
+import { login } from "../../../hooks/useAuth";
+import type { LoginResponse, UserDetails } from "../../../types/AuthTypes";
+import ButtonIcon from "../../common/buttons/ButtonIcon";
 
 interface LoginFormProps {
   setIsRegisterModalOpen: (isOpen: boolean) => void;
@@ -16,13 +14,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ setIsRegisterModalOpen }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState<LoginResponse | null>(null);
-  const [permissions, setPermissions] = useState(Role);
+  const [userDetails, setUserDetails] = useState<UserDetails>();
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   useEffect(() => {
     if (loginResponse) {
-      const userPermissions = loginResponse.userDetailsDTO.roles;
-      setPermissions(userPermissions);
+      setUserDetails(userDetails);
       window.location.href = "/modules/dashboard/";
     }
   }, [loginResponse]);
@@ -33,7 +30,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ setIsRegisterModalOpen }) => {
       console.log("Execute recaptcha not yet available");
       return;
     }
-
     try {
       const token = await executeRecaptcha("login");
       const data = await login(userName, password, token);

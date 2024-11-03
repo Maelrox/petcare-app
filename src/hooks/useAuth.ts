@@ -1,8 +1,9 @@
 import { addToast } from "../components/utils/toasterStore";
 import handleErrorResponse from "../components/utils/errorHandler";
 import { generateRequestOptions } from "../components/utils/httpHandler";
-import type { LoginRequest, LoginResponse } from "../types/AuthTypes";
+import type { Action, LoginRequest, LoginResponse } from "../types/AuthTypes";
 import type { RegisterRequest } from "../types/RegisterRequestType";
+import { act } from "react";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_MANAGEMENT = "/management/"

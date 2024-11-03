@@ -1,9 +1,10 @@
 ---
-import Menu from '../components/layout/Menu.astro';
+//import Menu from '../components/layout/Menu.astro';
 import Spinner from '../components/common/spinners/Spinner';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import Toast from '../components/common/toasters/Toast';
+import Menu from '../components/common/menu/Menu';
 
 interface Props {
   title: string;
@@ -38,9 +39,8 @@ const { title, includeMenu = true } = Astro.props;
       ::-webkit-scrollbar-thumb:hover {
         background: #555;
       }
-      /* For WebKit browsers (Chrome, Safari) */
       ::-webkit-scrollbar {
-        width: thin; /* Width of the scrollbar */
+        width: thin;
       }
       html {
         scrollbar-width: thin;
@@ -71,8 +71,10 @@ const { title, includeMenu = true } = Astro.props;
     <Spinner client:load />
     <Toast client:load />
     <div class="flex flex-1 flex-col">
-      <Header username={"O"} />
-      {includeMenu && <Menu class="w-full m-10"/>}
+      <Header username="?" />
+      {includeMenu && 
+        <Menu client:load />
+      }
       <main class="flex-1 overflow-y-auto w-full m-auto">
         <slot />
       </main>

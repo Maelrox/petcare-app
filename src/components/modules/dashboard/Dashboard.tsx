@@ -17,7 +17,7 @@ const Dashboard = () => {
     try {
       if (storedData) {
         const userData = JSON.parse(storedData);
-        setUserName(userData?.userDetailsDTO?.name);
+        setUserName(userData?.UserDetails?.name);
       }
     } catch (error) {
       console.error("Error parsing user data:", error);
@@ -60,7 +60,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header section */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
@@ -69,7 +68,7 @@ const Dashboard = () => {
                 Welcome{userName ? `, ${userName}` : ""}!
               </h1>
               <p className="text-sm text-gray-500 mt-1">
-                Free Open Source Solution 0.9.1
+                Free Open Source Solution 0.9.3
               </p>
             </div>
             <img src={welcomeImage.src} alt="Menu Icon" className="w-24 h-24 mr-4" />

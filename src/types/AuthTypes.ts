@@ -42,21 +42,32 @@ export interface PermissionModules extends Permission {
   modulesAction?: ModuleAction[];
 }
 
-interface UserDetailsDTO {
+export interface UserDetails {
   name: string;
   email: string;
   phone: string;
   country: string;
   enabled: boolean;
   companyId: number;
-  roles: Role[];
+  actions: Action[];
+}
+
+export interface Action {
+  id: number;
+  name: string;
+  module: Module;
+}
+
+export interface Module {
+  id: number;
+  name: string;
 }
 
 export interface LoginResponse {
   message: string;
   token: string;
   expirationDate: string;
-  userDetailsDTO: UserDetailsDTO;
+  userDetails: UserDetails;
 }
 
 export type LoginRequest = {

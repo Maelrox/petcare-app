@@ -19,10 +19,10 @@ import { fetchVeterinaries } from "../../../hooks/useVeterinary";
 import { filterOwners } from "../../../hooks/useOwner";
 import CalendarGrid from "../../common/calendar/CalendarGrid";
 import useDebounce from "../../../hooks/useDebounce";
-
-
+import usePermission from "../../../hooks/usePermission";
 
 const Appointments: React.FC = () => {
+  const { hasPermission } = usePermission();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [veterinaries, setVeterinaries] = useState<Veterinary[]>([]);
@@ -168,124 +168,134 @@ const Appointments: React.FC = () => {
   return (
     <div className="p-4 pt-0">
       <h2 className="text-center text-color_brand font-bold">Appointments</h2>
-
-      
-      <div className="p-2 pb-0">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-end">
-          <div className="w-full md:col-span-1">
-            <label htmlFor="vet-select" className="block text-sm font-medium text-color_brand mb-1">
-              Veterinary
-            </label>
-            <Select
-              id="vet-select"
-              options={vetOptions}
-              value={selectedVet}
-              onChange={handleVetChange}
-              className="w-full"
-              classNamePrefix="select"
-              isClearable
-              placeholder="Select a vet..."
-            />
-          </div>
-          <div className="w-full md:col-span-2">
-            <label htmlFor="owner-select" className="block text-sm font-medium text-color_brand mb-1">
-              Owner
-            </label>
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-2">
-              <AsyncSelect
-                id="owner-select"
-                cacheOptions
-                loadOptions={loadOwnerOptions}
-                value={selectedOwner}
-                onChange={handleOwnerChange}
-                className="w-full md:flex-grow"
+      {hasPermission("appointment", "view") ? (
+        <div className="p-2 pb-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-end">
+            {/* Veterinary Select */}
+            <div className="w-full md:col-span-1">
+              <label htmlFor="vet-select" className="block text-sm font-medium text-color_brand mb-1">
+                Veterinary
+              </label>
+              <Select
+                id="vet-select"
+                options={vetOptions}
+                value={selectedVet}
+                onChange={handleVetChange}
+                className="w-full"
                 classNamePrefix="select"
                 isClearable
-                placeholder={`Search by ${searchByIdentification ? 'identification' : 'name'}...`}
-                noOptionsMessage={({ inputValue }) =>
-                  inputValue.length < 3 ? "Please enter at least 3 characters" : "No options"
-                }
+                placeholder="Select a vet..."
               />
-              <div className="flex items-center mt-2 md:mt-0">
-                <input
-                  type="checkbox"
-                  id="search-mode"
-                  checked={searchByIdentification}
-                  onChange={() => setSearchByIdentification(!searchByIdentification)}
-                  className="mr-2"
+            </div>
+
+            {/* Owner Select with AsyncSelect */}
+            <div className="w-full md:col-span-2">
+              <label htmlFor="owner-select" className="block text-sm font-medium text-color_brand mb-1">
+                Owner
+              </label>
+              <div className="flex flex-col md:flex-row md:items-center md:space-x-2">
+                <AsyncSelect
+                  id="owner-select"
+                  cacheOptions
+                  loadOptions={loadOwnerOptions}
+                  value={selectedOwner}
+                  onChange={handleOwnerChange}
+                  className="w-full md:flex-grow"
+                  classNamePrefix="select"
+                  isClearable
+                  placeholder={`Search by ${searchByIdentification ? 'identification' : 'name'}...`}
+                  noOptionsMessage={({ inputValue }) =>
+                    inputValue.length < 3 ? "Please enter at least 3 characters" : "No options"
+                  }
                 />
-                <label htmlFor="search-mode" className="text-sm text-color_brand whitespace-nowrap">
-                  By Identification
-                </label>
+                <div className="flex items-center mt-2 md:mt-0">
+                  <input
+                    type="checkbox"
+                    id="search-mode"
+                    checked={searchByIdentification}
+                    onChange={() => setSearchByIdentification(!searchByIdentification)}
+                    className="mr-2"
+                  />
+                  <label htmlFor="search-mode" className="text-sm text-color_brand whitespace-nowrap">
+                    By Identification
+                  </label>
+                </div>
               </div>
             </div>
+
+            {/* Date Inputs */}
+            <div className="w-full md:col-span-1">
+              <label htmlFor="initial-date" className="block text-sm font-medium text-color_brand mb-1">
+                Initial Date
+              </label>
+              <input
+                id="initial-date"
+                type="date"
+                className="w-full p-1 text-color_brand border border-gray-300"
+                value={initialDate}
+                onChange={(e) => setInitialDate(e.target.value)}
+              />
+            </div>
+            <div className="w-full md:col-span-1">
+              <label htmlFor="final-date" className="block text-sm font-medium text-color_brand mb-1">
+                Final Date
+              </label>
+              <input
+                id="final-date"
+                type="date"
+                className="w-full p-1 text-color_brand border border-gray-300"
+                value={finalDate}
+                onChange={(e) => setFinalDate(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="w-full md:col-span-1">
-            <label htmlFor="initial-date" className="block text-sm font-medium text-color_brand mb-1">
-              Initial Date
-            </label>
-            <input
-              id="initial-date"
-              type="date"
-              className="w-full p-1 text-color_brand border border-gray-300"
-              value={initialDate}
-              onChange={(e) => setInitialDate(e.target.value)}
+
+          <div className="flex justify-end mt-2 space-x-2">
+            <button
+              className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
+              onClick={handleAddClick}
+            >
+              <CalendarPlus size={24} />
+            </button>
+            <button
+              onClick={toggleViewMode}
+              className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
+            >
+              {viewMode === "cards" ? <CalendarDays size={24} /> : <LayoutGrid size={24} />}
+            </button>
+          </div>
+
+          {viewMode === "calendar" && (
+            <Calendar
+              appointments={appointments}
+              onAppointmentClick={handleAppointmentEdit}
             />
-          </div>
-          <div className="w-full md:col-span-1">
-            <label htmlFor="final-date" className="block text-sm font-medium text-color_brand mb-1">
-              Final Date
-            </label>
-            <input
-              id="final-date"
-              type="date"
-              className="w-full p-1 text-color_brand border border-gray-300"
-              value={finalDate}
-              onChange={(e) => setFinalDate(e.target.value)}
+          )}
+          {viewMode === "cards" && (
+            <CalendarGrid
+              appointments={appointments}
+              onEditAppointment={handleAppointmentEdit}
+              onDeleteAppointment={handleAppointmentDelete}
+              onAttendAppointment={handleAppointmentAttend}
             />
-          </div>
+          )}
+
+          {isModalOpen && (
+            <FormModal<Appointment, Veterinary>
+              initialData={selectedAppointment || emptyAppointment}
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              onSubmit={handleSubmit}
+              fields={appointmentFields}
+              maxSize="max-w-md"
+              title={selectedAppointment ? "Edit Appointment" : "Create Appointment"}
+            />
+          )}
+          {appointments.length === 0 && <span>No appointments found</span>}
         </div>
-        <div className="flex justify-end mt-2 space-x-2">
-          <button
-            className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
-            onClick={handleAddClick}
-          >
-            <CalendarPlus size={24} />
-          </button>
-          <button
-            onClick={toggleViewMode}
-            className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
-          >
-            {viewMode === "cards" ? <CalendarDays size={24} /> : <LayoutGrid size={24} />}
-          </button>
-        </div>
-      </div>
-      {viewMode === "calendar" && (
-        <Calendar
-          appointments={appointments}
-          onAppointmentClick={handleAppointmentEdit}
-        />
+      ) : (
+        <h2 className="text-center text-color_brand font-bold">You don't have permissions to access this module</h2>
       )}
-      {viewMode === "cards" && (
-        <CalendarGrid
-          appointments={appointments}
-          onEditAppointment={handleAppointmentEdit}
-          onDeleteAppointment={handleAppointmentDelete}
-          onAttendAppointment={handleAppointmentAttend}
-        />
-      )}
-      {isModalOpen && (
-        <FormModal<Appointment, Veterinary>
-          initialData={selectedAppointment || emptyAppointment}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onSubmit={handleSubmit}
-          fields={appointmentFields}
-          maxSize="max-w-md"
-          title={selectedAppointment ? "Edit Appointment" : "Create Appointment"}
-        />
-      )}
-      {appointments.length===0 && (<span>No appointments found</span>) }
     </div>
   );
 };
