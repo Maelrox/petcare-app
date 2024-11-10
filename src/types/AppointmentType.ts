@@ -1,6 +1,7 @@
 import Owners from "../components/modules/owner/Owners";
 import { fetchPatientOptions } from "../hooks/usePatient";
 import { fetchVeterinaries } from "../hooks/useVeterinary";
+import type { FormField } from "./FormType";
 import type { Owner } from "./OwnerType";
 import type { Veterinary } from "./VeterinaryType";
 
@@ -20,6 +21,16 @@ export interface Appointment {
 
 export const appointmentFields: FormField<Appointment, Veterinary>[] = [
   {
+    name: "appointmentId",
+    label: "",
+    type: "none",
+    required: false,
+    identifier: true,
+    placeHolder: true,
+    includeFilter: false,
+    hiddenOnList: true,
+  },
+  {
     name: "owner",
     label: "Owner",
     type: "text",
@@ -35,7 +46,6 @@ export const appointmentFields: FormField<Appointment, Veterinary>[] = [
     required: true,
     dependsOn: "owner",
     validators: { maxLength: 64 },
-    identifier: true,
     dependantId: "ownerId",
     fetchDependant: fetchPatientOptions,
   },
@@ -67,6 +77,7 @@ export const appointmentFields: FormField<Appointment, Veterinary>[] = [
     label: "Status",
     type: "text",
     required: true,
+    readOnly: true,
     validators: { maxLength: 16 },
   },
 

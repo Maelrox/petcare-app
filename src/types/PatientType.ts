@@ -1,6 +1,5 @@
 import Owners from "../components/modules/owner/Owners";
 import { fetchSpecies } from "../hooks/useSpecie";
-import type { FormConfiguration } from "./FormFieldTypes";
 import type { Owner } from "./OwnerType";
 import type { Specie } from "./SpecieType";
 
@@ -14,7 +13,7 @@ export interface Patient {
   owner?: Owner;
 }
 
-export const patientFields: FormConfiguration<Patient, Specie>[] = [
+export const patientFields: FormField<Patient, Specie>[] = [
   {
     name: "patientId",
     identifier: true,

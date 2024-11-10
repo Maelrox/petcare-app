@@ -1,4 +1,4 @@
-interface FormField<T, U = T> {
+export interface FormField<T, U = T> {
   name: keyof T;
   label: string;
   type: string;
@@ -15,16 +15,17 @@ interface FormField<T, U = T> {
   includeFilter?: boolean;
   filterName?: string;
   hiddenOnList?: boolean;
+  readOnly?: boolean;
 }
 
-interface SelectOption {
+export interface SelectOption {
   value: number;
   label: string;
   dependantName?: string;
   [key: string]: any;
 }
 
-interface Validator {
+export interface Validator {
   maxLength?: number;
   minLength?: number;
   required?: boolean;
@@ -32,4 +33,8 @@ interface Validator {
   minDate?: Date;
   maxDate?: Date;
   minValue?: number;
+}
+
+export interface ValidationErrors<> {
+  [key: string]: string | undefined;
 }

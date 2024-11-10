@@ -6,14 +6,14 @@ import { useFormValidation } from "../../hooks/useFormValidation";
 import { SearchIcon } from "lucide-react";
 import ButtonIcon from "../common/buttons/ButtonIcon";
 import Select from "react-select";
-import type { FormConfiguration } from "../../types/FormFieldTypes";
+import type { FormField, SelectOption } from "../../types/FormType";
 
 interface FormModalProps<T, U> {
   initialData: T;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: T) => Promise<string | undefined>;
-  fields: FormConfiguration<T, U>[];
+  fields: FormField<T, U>[];
   title: string;
   description?: string;
   maxSize: string;
@@ -77,7 +77,7 @@ function FormModal<T extends Record<string, any>, U>({
   };
 
   const handleInputChange = async (name: keyof T | undefined, value: any) => {
-    if (!name){
+    if (!name) {
       return;
     }
     setFormData((prev) => {
@@ -217,7 +217,7 @@ function FormModal<T extends Record<string, any>, U>({
             setFormData((prev) => ({ ...prev, [field.name]: formDataValue }));
           }
         }
-      } 
+      }
       else if (field.type === "select-dependant" && initialData[field.name] && field.dependantId) {
         const dependentOn = fields.find((f) => f.name === field.dependsOn);
         const dependantIdIndex = field.dependantId.toString();
@@ -315,8 +315,6 @@ function FormModal<T extends Record<string, any>, U>({
       );
     }
 
-
-
     return (
       <input
         type={field.type}
@@ -324,6 +322,7 @@ function FormModal<T extends Record<string, any>, U>({
         value={formData[field.name] || ""}
         onChange={(e) => handleInputChange(field.name, e.target.value)}
         required={field.required}
+        readOnly={field.readOnly}
         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
       />
     );
@@ -338,19 +337,20 @@ function FormModal<T extends Record<string, any>, U>({
       {description && <p className="mb-4 text-sm">{description}</p>}
       <form onSubmit={handleSubmit}>
         {fields.map((field) => (
-          <div key={field.name as string} className="mb-4">
-            <label
-              htmlFor={field.name as string}
-              className="block text-sm font-medium text-color_brand mb-1"
-            >
-              {field.label}
-            </label>
-            {renderField(field)}
-            <span className="text-rose-600">
-              {validateField(field, formData[field.name])}
-            </span>
-          </div>
-        ))}
+          field.type != "none" ? (
+            <div key={field.name as string} className="mb-4">
+              <label
+                htmlFor={field.name as string}
+                className="block text-sm font-medium text-color_brand mb-1"
+              >
+                {field.label}
+              </label>
+              {renderField(field)}
+              <span className="text-rose-600">
+                {validateField(field, formData[field.name])}
+              </span>
+            </div>
+          ) : null))}
         <Button disabled={!isFormValid} type="submit">
           {identifierField && formData[identifierField.name] ? "Update" : "Create"}
         </Button>

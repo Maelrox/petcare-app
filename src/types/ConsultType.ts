@@ -2,7 +2,7 @@ import Owners from "../components/modules/owner/Owners";
 import { fetchAppointmentOptions } from "../hooks/useConsult";
 import { fetchPatientOptions } from "../hooks/usePatient";
 import { fetchVeterinaries } from "../hooks/useVeterinary";
-import type { FormConfiguration } from "./FormFieldTypes";
+import type { FormField } from "./FormType";
 import type { Owner } from "./OwnerType";
 import type { Veterinary } from "./VeterinaryType";
 
@@ -25,7 +25,16 @@ export interface Consult {
   owner?: Owner;
 }
 
-export const consultFields: FormConfiguration<Consult, Veterinary>[] = [
+export const consultFields: FormField<Consult, Veterinary>[] = [
+  {
+    name: "consultationId",
+    label: "",
+    type: "none",
+    required: true,
+    includeFilter: false,
+    identifier: true,
+    displaySelect: "name",
+  },
   {
     name: "owner",
     label: "Owner",
@@ -42,7 +51,6 @@ export const consultFields: FormConfiguration<Consult, Veterinary>[] = [
     required: true,
     dependsOn: "owner",
     validators: { maxLength: 64 },
-    identifier: true,
     dependantId: "ownerId",
     fetchDependant: fetchPatientOptions,
   },
@@ -84,6 +92,7 @@ export const consultFields: FormConfiguration<Consult, Veterinary>[] = [
     label: "Status",
     type: "text",
     required: true,
+    readOnly: true,
     validators: { maxLength: 16 },
   }, {
     name: "treatment",

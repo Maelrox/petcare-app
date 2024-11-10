@@ -20,7 +20,7 @@ function Consults() {
     vetId: 0,
     finalDate: "",
     reason: "",
-    status: "",
+    status: "ATTENDED",
     appointmentId: 0,
     consultationDate: "",
     treatment: "",

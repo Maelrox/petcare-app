@@ -10,7 +10,7 @@ import TableCardView from "./TableCardView";
 import Pagination from "./TablePagination";
 import TableView from "./TableView";
 import notFoundImage from "../../../assets/not_found_doctor.png";
-import type { FormConfiguration } from "../../../types/FormFieldTypes";
+import type { FormField } from "../../../types/FormType";
 
 type DataTableProps<T, U> = {
   dataSource: T[];
@@ -23,7 +23,7 @@ type DataTableProps<T, U> = {
   handleAdditionalAction2?: (rowData: T) => void;
   isLoading: boolean;
   handleSelect?: (rowData: T) => void;
-  configFields: FormConfiguration<T, U>[];
+  configFields: FormField<T, U>[];
 };
 
 type AccessorFn<T> = (data: T) => any;
@@ -38,7 +38,7 @@ function createAccessorFn<T>(key: keyof T): AccessorFn<T> {
   };
 }
 
-function generateTableColumns<T, U>(data: T[], configFields: FormConfiguration<T, U>[]): {
+function generateTableColumns<T, U>(data: T[], configFields: FormField<T, U>[]): {
   data: T[];
   columns: ColumnDef<T, any>[];
 } {

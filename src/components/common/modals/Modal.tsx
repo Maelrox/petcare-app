@@ -31,7 +31,7 @@ interface ModalProps {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div ref={modalRef} className={`${maxSize} relative bg-white shadow-xl w-full`}>
+      <div ref={modalRef} className={`${maxSize} max-h-full overflow-y-auto relative bg-white shadow-xl w-full`}>
         <div className="bg-skyblue_dark text-white px-4 py-2 flex justify-between items-center">
           <span className="font-semibold">{title}</span>
           <button

@@ -34,17 +34,6 @@ const Appointments: React.FC = () => {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [searchByIdentification, setSearchByIdentification] = useState(true);
 
-  const emptyAppointment: Appointment = {
-    patientId: 0,
-    vetId: 0,
-    ownerId: 0,
-    initialDate: "",
-    finalDate: "",
-    reason: "",
-    status: "",
-    appointmentDate: "",
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -282,7 +271,16 @@ const Appointments: React.FC = () => {
 
           {isModalOpen && (
             <FormModal<Appointment, Veterinary>
-              initialData={selectedAppointment || emptyAppointment}
+              initialData={selectedAppointment || {
+                patientId: 0,
+                vetId: 0,
+                ownerId: 0,
+                initialDate: "",
+                finalDate: "",
+                reason: "",
+                status: "SCHEDULED",
+                appointmentDate: "",
+              }}
               isOpen={isModalOpen}
               onClose={handleCloseModal}
               onSubmit={handleSubmit}

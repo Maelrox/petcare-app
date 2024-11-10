@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import type { PaginationState } from "@tanstack/react-table";
 import { addToast } from "../components/utils/toasterStore";
 import type { QueryParams } from "../types/RequestType";
-import type { FormConfiguration } from "../types/FormFieldTypes";
+import type { FormField } from "../types/FormType";
 
 type FetchDataResponse<T> = {
   data: T[];
@@ -19,7 +19,7 @@ type ServiceFunction<T> = (
 
 function usePaginatedData<T extends Record<string, any>, U>(
   service: ServiceFunction<T>,
-  fields: FormConfiguration<T, U>[]
+  fields: FormField<T, U>[]
 ) {
   const [data, setData] = useState<T[]>([]);
   const [isRefresh, setRefresh] = useState<boolean>(false)
