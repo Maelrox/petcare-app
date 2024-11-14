@@ -6,7 +6,7 @@
      * @returns A new Date object rounded to the nearest interval
      */
     export function roundToNearestMinuteInterval(stringDate: Date, intervalMinutes: number = 5): Date {
-      const roundedDate = new Date(stringDate);
+      const roundedDate = new Date(stringDate + "Z");
       const minutes = roundedDate.getMinutes();
       const roundedMinutes = Math.round(minutes / intervalMinutes) * intervalMinutes;
       roundedDate.setMinutes(roundedMinutes);

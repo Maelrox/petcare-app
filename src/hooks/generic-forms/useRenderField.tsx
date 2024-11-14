@@ -18,6 +18,8 @@ export function useFormFieldRenderer<T extends Record<string, any>, U>({
   selectedOptions,
   handleClickSearch,
 }: UseFormFieldRendererProps<T, U>) {
+
+  //Returns a form component depending of the FormField configuration of the generic
   const renderField = (field: FormField<T, U>) => {
     if (field.type === "none") {
       return null;

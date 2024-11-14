@@ -70,8 +70,8 @@ function FormModal<T extends Record<string, any>, U>({
 
     // set minutes to multiples of 5
     if (field && field.type === "datetime-local") {
-      const selecteDateTime =  roundToNearestMinuteInterval(value)
-      value = formatForDateTimeLocal(selecteDateTime)
+      const selectedDateTime =  roundToNearestMinuteInterval(value)
+      value = formatForDateTimeLocal(selectedDateTime)
     }
 
     // update form data handling objects+id and single values

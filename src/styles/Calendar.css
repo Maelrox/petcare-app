@@ -2,14 +2,6 @@
   font-family: Arial, sans-serif;
 }
 
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #dee2e6;
-}
-
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -54,7 +46,6 @@
     border-left: 4px solid #0c2a34;
   }
   .appointment-card {
-    background-color: #e9ecef;
     border-radius: 4px;
     padding: 5px;
     margin-top: 5px;
