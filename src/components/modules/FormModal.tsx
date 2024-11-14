@@ -3,9 +3,6 @@ import Button from "../common/buttons/Button";
 import Modal from "../common/modals/Modal";
 import { addToast } from "../utils/toasterStore";
 import { useFormValidation } from "../../hooks/modules/useFormValidation";
-import { SearchIcon } from "lucide-react";
-import ButtonIcon from "../common/buttons/ButtonIcon";
-import Select from "react-select";
 import type { FormField, SelectOption } from "../../types/FormType";
 import { formatForDateTimeLocal, roundToNearestMinuteInterval } from "../utils/timeUtil";
 import { useModalDependantFields } from "../../hooks/generic-forms/useModalFetchDependant";
@@ -69,8 +66,8 @@ function FormModal<T extends Record<string, any>, U>({
     if (!name) {
       return;
     }
-
     const field = fields.find((f) => f.name === name);
+
     // set minutes to multiples of 5
     if (field && field.type === "datetime-local") {
       const selecteDateTime =  roundToNearestMinuteInterval(value)
@@ -150,6 +147,7 @@ function FormModal<T extends Record<string, any>, U>({
           {identifierField && formData[identifierField.name] ? "Update" : "Create"}
         </Button>
       </form>
+      {/* Allows to search and select data from a table */}
       {activeSearchModal && (
         <Modal
           maxSize="max-w-full min-h-200"
