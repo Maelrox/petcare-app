@@ -7,7 +7,8 @@ import { SearchIcon } from "lucide-react";
 import ButtonIcon from "../common/buttons/ButtonIcon";
 import Select from "react-select";
 import type { FormField, SelectOption } from "../../types/FormType";
-
+import { formatForDateTimeLocal, roundToNearestMinuteInterval } from "../utils/TimeUtil";
+import { useModalDependantFields } from "../../hooks/useModalFetchDependant";
 interface FormModalProps<T, U> {
   initialData: T;
   isOpen: boolean;
@@ -31,10 +32,20 @@ function FormModal<T extends Record<string, any>, U>({
 }: FormModalProps<T, U>) {
   const [formData, setFormData] = useState<T>(initialData);
   const [activeSearchModal, setActiveSearchModal] = useState<keyof T | null>(null);
-  const [selectedElements, setSelectedElements] = useState<Record<string, any>>({});
-  const [dropdownOptions, setDropdownOptions] = useState<Record<string, SelectOption[]>>({});
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, SelectOption[]>>({});
   const { errors, validateField, validateForm, clearFieldError } = useFormValidation<T, U>({ fields });
+
+  const {
+    dropdownOptions,
+    selectedOptions,
+    selectedElements,
+    setDropdownOptions,
+    setSelectedOptions,
+    handleDependentFields,
+    handleSearchElementSelect
+  } = useModalDependantFields<T, U>({
+    fields,
+    setFormData
+  });
 
   useEffect(() => {
     setFormData(initialData);
@@ -80,47 +91,29 @@ function FormModal<T extends Record<string, any>, U>({
     if (!name) {
       return;
     }
+
+    const field = fields.find((f) => f.name === name);
+
+    // set minutes to multiples of 5
+    if (field && field.type === "datetime-local") {
+      const selecteDateTime =  roundToNearestMinuteInterval(value)
+      value = formatForDateTimeLocal(selecteDateTime)
+    }
+
+    // update form data handling objects+id and single values
     setFormData((prev) => {
       const currentValue = prev[name];
-      const newValue =
-        currentValue && typeof currentValue === "object" && "id" in currentValue
-          ? { ...currentValue, id: value }
-          : value;
+      const newValue = currentValue && typeof currentValue === "object" && "id" in currentValue
+        ? { ...currentValue, id: value }
+        : value;
       return { ...prev, [name]: newValue };
     });
 
     clearFieldError(name);
     validateForm({ ...formData, [name]: value });
-    const field = fields.find((f) => f.name === name);
-    if (
-      field &&
-      (field.type === "select" || field.type === "select-dependant")
-    ) {
-      const selectedOption = dropdownOptions[name as keyof typeof dropdownOptions]?.find(
-        (option) => option.value === value
-      );
-      setSelectedOptions((prev) => ({
-        ...prev,
-        [name]: selectedOption ? [selectedOption] : [],
-      }));
-      const dependentFields = fields.filter((f) => f.dependsOn === name);
-      for (const dependentField of dependentFields) {
-        setFormData((prev) => ({ ...prev, [dependentField.name]: undefined }));
-        setSelectedOptions((prev) => ({
-          ...prev,
-          [name]: selectedOption ? [selectedOption] : [],
-        }));
-        if (dependentField.fetchDependant && dependentField.dependantId) {
-          const options = await dependentField.fetchDependant(
-            value,
-            dependentField.name as string
-          );
-          setDropdownOptions((prev) => ({
-            ...prev,
-            [dependentField.name]: options,
-          }));
-        }
-      }
+    
+    if (field) {
+      await handleDependentFields(name, value, field);
     }
   };
 
@@ -133,49 +126,7 @@ function FormModal<T extends Record<string, any>, U>({
   };
 
   const handleSelectElement = async (fieldName: string | number | symbol, selected: any) => {
-    setSelectedElements((prev) => ({ ...prev, [fieldName]: selected }));
-    const field = fields.find((f) => f.name === fieldName);
-    if (
-      field &&
-      field.displaySelect &&
-      typeof selected === "object" &&
-      selected !== null
-    ) {
-      const displayValue = selected[field.displaySelect];
-      if (displayValue !== undefined) {
-        setFormData((prev) => ({
-          ...prev,
-          [fieldName]: field.placeHolder ? displayValue : selected,
-        }));
-      }
-    }
-
-    // After selection - fetch the next dependant select 
-    const dependentFields = fields.filter((f) => f.dependsOn === fieldName);
-    for (const dependentField of dependentFields) {
-      setFormData((prev) => ({ ...prev, [dependentField.name]: undefined }));
-      setSelectedElements((prev) => ({
-        ...prev,
-        [dependentField.name]: [],
-      }));
-
-      setSelectedOptions((prev) => ({
-        ...prev,
-        [dependentField.name]: [],
-      }));
-      if (dependentField.fetchDependant && dependentField.dependantId) {
-        const dependantId = selected[dependentField.dependantId];
-        const options = await dependentField.fetchDependant(
-          dependantId,
-          dependentField.name as string
-        );
-        setDropdownOptions((prev) => ({
-          ...prev,
-          [dependentField.name]: options,
-        }));
-      }
-    }
-
+    await handleSearchElementSelect(fieldName, selected);
     handleCloseSearch();
   };
 
@@ -383,3 +334,5 @@ function FormModal<T extends Record<string, any>, U>({
 }
 
 export default FormModal;
+
+

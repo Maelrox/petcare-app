@@ -20,6 +20,7 @@ import { filterOwners } from "../../../hooks/useOwner";
 import CalendarGrid from "../../common/calendar/CalendarGrid";
 import useDebounce from "../../../hooks/useDebounce";
 import usePermission from "../../../hooks/usePermission";
+import type { SelectOption } from "../../../types/FormType";
 
 const Appointments: React.FC = () => {
   const { hasPermission } = usePermission();
