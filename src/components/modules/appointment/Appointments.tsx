@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
-import { CalendarDays, LayoutGrid, CalendarPlus } from "lucide-react";
+import { CalendarDays, LayoutGrid, CalendarPlus, CircleIcon, CheckCircleIcon } from "lucide-react";
 import { appointmentFields, type Appointment } from "../../../types/AppointmentType";
 import type { Veterinary } from "../../../types/VeterinaryType";
 import "../../../styles/Calendar.css";
@@ -21,6 +21,7 @@ import CalendarGrid from "../../common/calendar/CalendarGrid";
 import useDebounce from "../../../hooks/modules/useDebounce";
 import usePermission from "../../../hooks/modules/usePermission";
 import type { SelectOption } from "../../../types/FormType";
+import ButtonIcon from "../../common/buttons/ButtonIcon";
 
 const Appointments: React.FC = () => {
   const { hasPermission } = usePermission();
@@ -157,10 +158,9 @@ const Appointments: React.FC = () => {
 
   return (
     <div className="p-4 pt-0">
-      <h2 className="text-center text-color_brand font-bold">Appointments</h2>
       {hasPermission("appointment", "view") ? (
         <div className="p-2 pb-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-end">
             {/* Veterinary Select */}
             <div className="w-full md:col-span-1">
               <label htmlFor="vet-select" className="block text-sm font-medium text-color_brand mb-1">
@@ -179,7 +179,7 @@ const Appointments: React.FC = () => {
             </div>
 
             {/* Owner Select with AsyncSelect */}
-            <div className="w-full md:col-span-2">
+            <div className="w-full md:col-span-1">
               <label htmlFor="owner-select" className="block text-sm font-medium text-color_brand mb-1">
                 Owner
               </label>
@@ -190,7 +190,7 @@ const Appointments: React.FC = () => {
                   loadOptions={loadOwnerOptions}
                   value={selectedOwner}
                   onChange={handleOwnerChange}
-                  className="w-full md:flex-grow"
+                  className="w-full md:col-span-1"
                   classNamePrefix="select"
                   isClearable
                   placeholder={`Search by ${searchByIdentification ? 'identification' : 'name'}...`}
@@ -199,15 +199,24 @@ const Appointments: React.FC = () => {
                   }
                 />
                 <div className="flex items-center mt-2 md:mt-0">
-                  <input
-                    type="checkbox"
-                    id="search-mode"
-                    checked={searchByIdentification}
-                    onChange={() => setSearchByIdentification(!searchByIdentification)}
-                    className="mr-2"
-                  />
-                  <label htmlFor="search-mode" className="text-sm text-color_brand whitespace-nowrap">
+                  <label htmlFor="search-mode" className="flex items-center text-sm text-color_brand whitespace-nowrap cursor-pointer">
+                    {/* TODO: Move to common component */}
+                    <div className="mr-2">
+                      {searchByIdentification ? (
+                        <CheckCircleIcon size={20} className="text-rose-600" />
+                      ) : (
+                        <CircleIcon size={20} className="text-gray-400" />
+                      )}
+                    </div>
                     By Identification
+                    {/* Hidden checkbox */}
+                    <input
+                      type="checkbox"
+                      id="search-mode"
+                      checked={searchByIdentification}
+                      onChange={() => setSearchByIdentification(!searchByIdentification)}
+                      className="mr-2 appearance-none w-0 h-0 opacity-0"
+                    />
                   </label>
                 </div>
               </div>
@@ -241,18 +250,12 @@ const Appointments: React.FC = () => {
           </div>
 
           <div className="flex justify-end mt-2 space-x-2">
-            <button
-              className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
-              onClick={handleAddClick}
-            >
+            <ButtonIcon onClick={handleAddClick}>
               <CalendarPlus size={24} />
-            </button>
-            <button
-              onClick={toggleViewMode}
-              className="p-2 bg-white rounded-md shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-600"
-            >
+            </ButtonIcon>
+            <ButtonIcon onClick={toggleViewMode}>
               {viewMode === "cards" ? <CalendarDays size={24} /> : <LayoutGrid size={24} />}
-            </button>
+            </ButtonIcon>
           </div>
 
           {viewMode === "calendar" && (
