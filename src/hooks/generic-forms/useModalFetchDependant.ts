@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { FormField, SelectOption } from '../types/FormType';
+import type { FormField, SelectOption } from '../../types/FormType';
 
 interface UseModalDependantFieldsProps<T, U> {
   fields: FormField<T, U>[];

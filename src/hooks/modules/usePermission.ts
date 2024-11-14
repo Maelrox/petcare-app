@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import type { Action, UserDetails } from "../types/AuthTypes";
+import type { UserDetails, Action } from "../../types/AuthTypes";
 
 const usePermission = () => {
   const [userData, setUserData] = useState<UserDetails | null>(null);

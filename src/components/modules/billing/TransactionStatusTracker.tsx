@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import { useTransactionStatus } from '../../../hooks/useTransactionStatus';
+import { useTransactionStatus } from '../../../hooks/modules/useTransactionStatus';
 
 interface TransactionStatusTrackerProps {
     trx: string;

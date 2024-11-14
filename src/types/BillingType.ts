@@ -1,4 +1,5 @@
 import type { BillingDetail } from "./BilllingDetailType";
+import type { FormField } from "./FormType";
 import type { Owner } from "./OwnerType";
 
 export interface Billing {

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { ownerFields, type Owner } from "../../../types/OwnerType";
-import { createOwner, searchOwners, updateOwner } from "../../../hooks/useOwner";
+import { createOwner, searchOwners, updateOwner } from "../../../hooks/modules/useOwner";
 import { PlusSquareIcon } from "lucide-react";
 
 type OwnerProps = {

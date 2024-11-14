@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { menuItems } from './MenuItems';
-import usePermission from '../../../hooks/usePermission';
+import usePermission from '../../../hooks/modules/usePermission';
 
 const Menu: React.FC = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(true);

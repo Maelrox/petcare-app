@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { PlusSquareIcon } from "lucide-react";
-import { createPatient, searchPatients, updatePatient } from "../../../hooks/usePatient";
+import { createPatient, searchPatients, updatePatient } from "../../../hooks/modules/usePatient";
 import { patientFields, type Patient } from "../../../types/PatientType";
 import type { Specie } from "../../../types/SpecieType";
 

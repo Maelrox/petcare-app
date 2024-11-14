@@ -3,7 +3,7 @@ import type { FormEvent, ChangeEvent } from 'react';
 import ButtonIcon from '../../common/buttons/ButtonIcon';
 import { SaveIcon } from 'lucide-react';
 import type { Company } from '../../../types/RegisterRequestType';
-import { updateCompany, fetchCompanyData } from '../../../hooks/useCompany';
+import { updateCompany, fetchCompanyData } from '../../../hooks/modules/useCompany';
 import CountrySelect from '../../common/select/CountrySelect';
 
 interface FormData {

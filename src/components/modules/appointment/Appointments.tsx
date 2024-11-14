@@ -13,13 +13,13 @@ import {
   getAppointment,
   searchAppointment,
   updateAppointment,
-} from "../../../hooks/useAppointment";
+} from "../../../hooks/modules/useAppointment";
 import FormModal from "../FormModal";
-import { fetchVeterinaries } from "../../../hooks/useVeterinary";
-import { filterOwners } from "../../../hooks/useOwner";
+import { fetchVeterinaries } from "../../../hooks/modules/useVeterinary";
+import { filterOwners } from "../../../hooks/modules/useOwner";
 import CalendarGrid from "../../common/calendar/CalendarGrid";
-import useDebounce from "../../../hooks/useDebounce";
-import usePermission from "../../../hooks/usePermission";
+import useDebounce from "../../../hooks/modules/useDebounce";
+import usePermission from "../../../hooks/modules/usePermission";
 import type { SelectOption } from "../../../types/FormType";
 
 const Appointments: React.FC = () => {

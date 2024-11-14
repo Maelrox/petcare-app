@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import {
   createPermission,
   deletePermission,
   getPermissions,
   updatePermission,
-} from "../../../hooks/useManager";
+} from "../../../hooks/modules/useManager";
 import FilterControls from "../../common/tables/TableFilterControls";
 import { permissionFields, type Permission } from "../../../types/AuthTypes";
 import FormModal from "../FormModal";

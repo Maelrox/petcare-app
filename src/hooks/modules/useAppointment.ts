@@ -1,7 +1,7 @@
-import { useFetchData } from "./api/useFetchData"
-import { generateRequestOptions } from "../components/utils/httpHandler";
-import type { Appointment } from "../types/AppointmentType";
-import type { TransactionResponse } from "../types/ResponseType";
+import { useFetchData } from "../api/useFetchData"
+import { generateRequestOptions } from "../../components/utils/httpHandler";
+import type { Appointment } from "../../types/AppointmentType";
+import type { TransactionResponse } from "../../types/ResponseType";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_APPOINTMENT = "/appointments"

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 
 import { PlusSquareIcon } from "lucide-react";
 import { registerFields, type RegisterRequest } from "../../../types/RegisterRequestType";
-import { search, update, register } from "../../../hooks/useEmployee";
+import { search, update, register } from "../../../hooks/modules/useEmployee";
 
 type EmployeeProps = {
   handleSelect?: (rowData: RegisterRequest) => void;

@@ -1,5 +1,6 @@
 import Owners from "../components/modules/owner/Owners";
-import { fetchSpecies } from "../hooks/useSpecie";
+import { fetchSpecies } from "../hooks/modules/useSpecie";
+import type { FormField } from "./FormType";
 import type { Owner } from "./OwnerType";
 import type { Specie } from "./SpecieType";
 

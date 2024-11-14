@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { KeyRoundIcon, UserRoundPlusIcon } from "lucide-react";
-import { login } from "../../../hooks/useAuth";
+import { login } from "../../../hooks/modules/useAuth";
 import type { LoginResponse, UserDetails } from "../../../types/AuthTypes";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
-import { createVeterinary, searchVeterinaries, updateVeterinary } from "../../../hooks/useVeterinary";
+import { createVeterinary, searchVeterinaries, updateVeterinary } from "../../../hooks/modules/useVeterinary";
 import { veterinaryFields, type Veterinary } from "../../../types/VeterinaryType";
 import { PlusIcon } from "lucide-react";
 

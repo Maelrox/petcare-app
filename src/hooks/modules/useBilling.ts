@@ -1,9 +1,9 @@
-import { generateRequestOptions, buildPaginatedUrl } from "../components/utils/httpHandler";
-import type { Billing } from "../types/BillingType";
-import type { PaginationParams, PaginatedResponse } from "../types/RequestType";
-import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
-import type { Transaction } from "../types/TransactionType";
-import { useFetchData } from "./api/useFetchData";
+import { generateRequestOptions, buildPaginatedUrl } from "../../components/utils/httpHandler";
+import type { Billing } from "../../types/BillingType";
+import type { PaginationParams, PaginatedResponse } from "../../types/RequestType";
+import { blankPaginatedResponse, type TransactionResponse } from "../../types/ResponseType";
+import type { Transaction } from "../../types/TransactionType";
+import { useFetchData } from "../api/useFetchData";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_BILLING = "/billing/"

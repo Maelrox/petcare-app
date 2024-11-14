@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { FormField, ValidationErrors } from "../types/FormType";
+import type { FormField, ValidationErrors } from "../../types/FormType";
 
 interface UseFormValidationProps<T,U=T> {
   fields: FormField<T, U>[];

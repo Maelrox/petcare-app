@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import FormModal from "../FormModal";
 import { PlusIcon } from "lucide-react";
-import { createInventory, getInventory, updateInventory } from "../../../hooks/useInventory";
+import { createInventory, getInventory, updateInventory } from "../../../hooks/modules/useInventory";
 import { inventoryFields, type Inventory } from "../../../types/InventoryType";
 
 type InventoriesProps = {

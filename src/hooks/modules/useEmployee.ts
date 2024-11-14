@@ -1,9 +1,9 @@
-import { buildPaginatedUrl, generateRequestOptions } from "../components/utils/httpHandler";
-import { addToast } from "../components/utils/toasterStore";
-import type { RegisterRequest } from "../types/RegisterRequestType";
-import type { PaginatedResponse, PaginationParams } from "../types/RequestType";
-import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
-import { useFetchData } from "./api/useFetchData";
+import { generateRequestOptions, buildPaginatedUrl } from "../../components/utils/httpHandler";
+import { addToast } from "../../components/utils/toasterStore";
+import type { RegisterRequest } from "../../types/RegisterRequestType";
+import type { PaginationParams, PaginatedResponse } from "../../types/RequestType";
+import { type TransactionResponse, blankPaginatedResponse } from "../../types/ResponseType";
+import { useFetchData } from "../api/useFetchData";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_MANAGEMENT = "/management"

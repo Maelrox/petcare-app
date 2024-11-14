@@ -1,3 +1,5 @@
+import type { FormField } from "./FormType";
+
 export interface Module {
   id: number;
   name: string;

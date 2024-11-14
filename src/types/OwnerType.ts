@@ -1,3 +1,4 @@
+import type { FormField } from "./FormType";
 
 export interface Owner {
   ownerId: number;

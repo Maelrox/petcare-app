@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../common/buttons/Button";
 import type { Permission, Role } from "../../../types/AuthTypes";
-import { getAllRoles, updatePermissionRole } from "../../../hooks/useManager";
+import { getAllRoles, updatePermissionRole } from "../../../hooks/modules/useManager";
 import type { PermissionRoles } from "../../../types/RequestType";
 import { addToast } from "../../utils/toasterStore";
 

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import Button from "../common/buttons/Button";
 import Modal from "../common/modals/Modal";
 import { addToast } from "../utils/toasterStore";
-import { useFormValidation } from "../../hooks/useFormValidation";
+import { useFormValidation } from "../../hooks/modules/useFormValidation";
 import { SearchIcon } from "lucide-react";
 import ButtonIcon from "../common/buttons/ButtonIcon";
 import Select from "react-select";
 import type { FormField, SelectOption } from "../../types/FormType";
-import { formatForDateTimeLocal, roundToNearestMinuteInterval } from "../utils/TimeUtil";
-import { useModalDependantFields } from "../../hooks/useModalFetchDependant";
+import { formatForDateTimeLocal, roundToNearestMinuteInterval } from "../utils/timeUtil";
+import { useModalDependantFields } from "../../hooks/generic-forms/useModalFetchDependant";
+import { usePrepopulateSelect } from "../../hooks/generic-forms/usePrepopulateSelect";
+import { useFormFieldRenderer } from "../../hooks/generic-forms/useRenderField";
 interface FormModalProps<T, U> {
   initialData: T;
   isOpen: boolean;
@@ -37,7 +39,6 @@ function FormModal<T extends Record<string, any>, U>({
   const {
     dropdownOptions,
     selectedOptions,
-    selectedElements,
     setDropdownOptions,
     setSelectedOptions,
     handleDependentFields,
@@ -49,31 +50,8 @@ function FormModal<T extends Record<string, any>, U>({
 
   useEffect(() => {
     setFormData(initialData);
-    prepopulateSelectFields();
+    
   }, [initialData]);
-
-  useEffect(() => {
-    const loadInitialOptions = async () => {
-      for (const field of fields) {
-        if (field.type === "select") {
-          if (field.fetch && typeof field.fetch === "function") {
-            const fetchedObjects = await field.fetch();
-            if (Array.isArray(fetchedObjects)) {
-              const identifierField = field.dependantId;
-              const options = fetchedObjects.map((opt: any) => ({
-                value: identifierField ? opt[identifierField] : opt[field.name],
-                label: String(opt.name),
-              }));
-              setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
-            } else {
-              setDropdownOptions((prev) => ({ ...prev, [field.name]: [] }));
-            }
-          }
-        }
-      }
-    };
-    loadInitialOptions();
-  }, [fields]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,6 +95,15 @@ function FormModal<T extends Record<string, any>, U>({
     }
   };
 
+  usePrepopulateSelect({
+    fields,
+    initialData,
+    setFormData,
+    setSelectedOptions,
+    setDropdownOptions,
+    handleInputChange
+  });
+
   const handleClickSearch = (fieldName: keyof T) => {
     setActiveSearchModal(fieldName);
   };
@@ -130,77 +117,7 @@ function FormModal<T extends Record<string, any>, U>({
     handleCloseSearch();
   };
 
-  //Populate selects when editing a row
-  const prepopulateSelectFields = async () => {
-    for (const field of fields) {
-      const fieldNameIndex = field.name.toString()
-      if (field.type === "select" && initialData[field.name]) {
-        if (field.fetch && typeof field.fetch === "function") {
-          const fetchedObjects = await field.fetch();
-          if (!Array.isArray(fetchedObjects)) {
-            console.warn(`No fetched objects returned for field`);
-            continue;
-          }
-          const identifierField = field.dependantId as keyof U;
-          const initialValue = initialData[field.name];
-          const compareValue = typeof initialValue === "object" && initialValue !== null ? initialValue.id : initialValue;
-
-          // Find the selected option based on the identifierField
-          const selectedOption: any = fetchedObjects.find((opt: any) => {
-            return identifierField
-              ? opt[identifierField] === compareValue
-              : opt[field.name] === compareValue;
-          });
-
-          if (selectedOption) {
-            const option = {
-              value: identifierField ? selectedOption[identifierField] : selectedOption[field.name as keyof U],
-              label: String(selectedOption.name),
-            };
-            // Update selected options with an array containing the new option
-            setSelectedOptions((prev) => ({
-              ...prev,
-              [field.name]: [...(prev[fieldNameIndex] as SelectOption[] || []), option], // Use type assertion here
-            }));
-            const formDataValue = typeof initialValue === 'object' && initialValue !== null
-              ? { ...initialValue, id: option.value }
-              : option.value;
-            setFormData((prev) => ({ ...prev, [field.name]: formDataValue }));
-          }
-        }
-      }
-      else if (field.type === "select-dependant" && initialData[field.name] && field.dependantId) {
-        const dependentOn = fields.find((f) => f.name === field.dependsOn);
-        const dependantIdIndex = field.dependantId.toString();
-        if (dependentOn && initialData[dependantIdIndex] && field.fetchDependant && field.dependantId) {
-          const options = await field.fetchDependant(
-            initialData[dependantIdIndex],
-            field.name as string
-          );
-          setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
-
-          const selectedOption = options.find(
-            (opt: any) => opt.value === initialData[field.name]
-          );
-          if (selectedOption) {
-            setSelectedOptions((prev) => ({
-              ...prev,
-              [field.name]: [...(prev[fieldNameIndex] as SelectOption[] || []), selectedOption],
-            }));
-            setFormData((prev) => ({
-              ...prev,
-              [field.name]: selectedOption.value,
-            }));
-            if (selectedOption.dependantName) {
-              handleInputChange(field.dependsOn, selectedOption.dependantName);
-            }
-          }
-        }
-      }
-    }
-  };
-
-  const renderField = (field: FormField<T, U>) => {
+  const depRenderField = (field: FormField<T, U>) => {
     if (field.type === "none") {
       return;
     }
@@ -278,6 +195,15 @@ function FormModal<T extends Record<string, any>, U>({
       />
     );
   };
+
+  const { renderField } = useFormFieldRenderer({
+    formData,
+    handleInputChange,
+    dropdownOptions,
+    selectedOptions,
+    handleClickSearch,
+  });
+
 
   const isFormValid = Object.keys(errors).length === 0;
 

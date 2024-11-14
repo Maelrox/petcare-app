@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Receipt, User } from "lucide-react";
 import type { Billing } from '../../../types/BillingType';
 import type { BillingDetail } from '../../../types/BilllingDetailType';
-import { fetchUnBilledAttentions } from '../../../hooks/useConsult';
+import { fetchUnBilledAttentions } from '../../../hooks/modules/useConsult';
 import Owners from '../owner/Owners';
 import type { Owner } from '../../../types/OwnerType';
 import Inventories from '../inventory/Inventories';

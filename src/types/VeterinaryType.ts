@@ -1,3 +1,5 @@
+import type { FormField } from "./FormType";
+
 export interface Veterinary {
   vetId: number;
   identification: string;

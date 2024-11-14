@@ -1,8 +1,8 @@
-import { useFetchData } from "./api/useFetchData"
-import { buildPaginatedUrl, generateRequestOptions } from "../components/utils/httpHandler";
-import type { Module, ModuleAction, Permission, PermissionModules, Role } from "../types/AuthTypes";
-import type { PaginatedResponse, PaginationParams, PermissionRoles } from "../types/RequestType";
-import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
+import { generateRequestOptions, buildPaginatedUrl } from "../../components/utils/httpHandler";
+import type { Module, Role, Permission, PermissionModules, ModuleAction } from "../../types/AuthTypes";
+import type { PaginationParams, PaginatedResponse, PermissionRoles } from "../../types/RequestType";
+import { blankPaginatedResponse, type TransactionResponse } from "../../types/ResponseType";
+import { useFetchData } from "../api/useFetchData";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_ROLE = "/management/role"

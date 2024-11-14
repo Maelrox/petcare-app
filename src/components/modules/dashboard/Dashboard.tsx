@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import BarChartWidget from "../../common/charts/BarChart";
 import welcomeImage from "../../../assets/icons/menu-main-icon.png";
-import { getCompanyResume } from "../../../hooks/useDashboard";
+import { getCompanyResume } from "../../../hooks/modules/useDashboard";
 import type { CompanyResume, StatCardProps } from "../../../types/DashboardType";
 
 const Dashboard = () => {

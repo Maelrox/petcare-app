@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
-import usePaginatedData from "../../../hooks/usePaginatedData";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import { PlusIcon } from "lucide-react";
 import { billingFields, type Billing } from "../../../types/BillingType";
-import { createBilling, getBilling } from "../../../hooks/useBilling";
+import { createBilling, getBilling } from "../../../hooks/modules/useBilling";
 import BillingModal from "./BillingModal";
 import TransactionStatusTracker from "./TransactionStatusTracker";
 

@@ -1,4 +1,5 @@
 import Roles from "../components/modules/management/Roles";
+import type { FormField } from "./FormType";
 
 export interface RegisterRequest {
   id?: number;

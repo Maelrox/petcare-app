@@ -1,8 +1,9 @@
-import { useFetchData } from "./api/useFetchData"
-import { buildPaginatedUrl, generateRequestOptions } from "../components/utils/httpHandler";
-import type { PaginatedResponse, PaginationParams } from "../types/RequestType";
-import { blankPaginatedResponse, type TransactionResponse } from "../types/ResponseType";
-import type { Specie } from "../types/SpecieType";
+import { generateRequestOptions, buildPaginatedUrl } from "../../components/utils/httpHandler";
+import type { PaginationParams, PaginatedResponse } from "../../types/RequestType";
+import { blankPaginatedResponse, type TransactionResponse } from "../../types/ResponseType";
+import type { Specie } from "../../types/SpecieType";
+import { useFetchData } from "../api/useFetchData";
+
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_SPECIE = "/veterinary/specie"

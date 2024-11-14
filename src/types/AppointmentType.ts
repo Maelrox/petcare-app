@@ -1,6 +1,6 @@
 import Owners from "../components/modules/owner/Owners";
-import { fetchPatientOptions } from "../hooks/usePatient";
-import { fetchVeterinaries } from "../hooks/useVeterinary";
+import { fetchPatientOptions } from "../hooks/modules/usePatient";
+import { fetchVeterinaries } from "../hooks/modules/useVeterinary";
 import type { FormField } from "./FormType";
 import type { Owner } from "./OwnerType";
 import type { Veterinary } from "./VeterinaryType";

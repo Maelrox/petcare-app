@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import type { PaginationState } from "@tanstack/react-table";
-import { addToast } from "../components/utils/toasterStore";
+import type { FormField } from "../../types/FormType";
+import type { QueryParams } from "../../types/RequestType";
+import { addToast } from "../../components/utils/toasterStore";
+
 
 type FetchDataResponse<T> = {
   data: T[];
@@ -11,12 +14,13 @@ type FetchDataResponse<T> = {
 };
 
 type ServiceFunction<T> = (
-  filter: T | undefined,
+  queryParams: string,
   pagination: { page: number; pageSize: number }
 ) => Promise<FetchDataResponse<T>>;
 
-function usePaginatedDataFilter<T>(
-  service: ServiceFunction<T>
+function usePaginatedData<T extends Record<string, any>, U>(
+  service: ServiceFunction<T>,
+  fields: FormField<T, U>[]
 ) {
   const [data, setData] = useState<T[]>([]);
   const [isRefresh, setRefresh] = useState<boolean>(false)
@@ -26,63 +30,60 @@ function usePaginatedDataFilter<T>(
     pageIndex: 0,
     pageSize: 10,
   });
-  const [filters, setFilters] = useState<T>();
+  const [filters, setFilters] = useState<QueryParams>({});
 
   const availableFilters = useRef<string[]>([]);
   const totalRows = useRef<number>(0);
 
+  // Call api and configure pagination and filters
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        const response: FetchDataResponse<T> = await service(filters, {
+        setLoading(true)
+        const queryParams = new URLSearchParams(
+          Object.entries(filters)
+        ).toString();
+        const response: FetchDataResponse<T> = await service(queryParams, {
           page: pagination.pageIndex,
           pageSize: pagination.pageSize,
         });
         totalRows.current = response.pagination.totalPages;
+       
+        // filters by isFilter FormField<T>
+        availableFilters.current = fields
+          .filter((field) => field.includeFilter)
+          .map((field) => (field.filterName || field.name) as string);
 
-        if (response.data.length > 0) {
-          const firstItem = response.data[0] as Record<string, any>;
-          const keys = Object.keys(firstItem).filter(
-            (key) => !Array.isArray(firstItem[key])
-          );
-          availableFilters.current = keys;
-          setData(response.data);
-        }
-
+        setData(response.data);
       } catch (err: any) {
         console.log(err.message);
         addToast(err.message);
       }
-      setLoading(false);
+      setLoading(false)
     };
-
     if (isRefresh) {
       fetchData();
-      setRefresh(false);
+      setRefresh(false)
     }
-  }, [filters, pagination, isRefresh]);
+  }, [filters, pagination, fields, isRefresh]);
 
   const addFilter = (column: string, value: string) => {
     if (column && value) {
-      setFilters((prevFilters) => {
-        const updatedFilters: any = {
-          ...prevFilters,
-          [column]: value,
-        };
-        return updatedFilters;
-      });
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        [column]: value,
+      }));
       setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     }
   };
 
   const removeFilter = (key: string) => {
     setFilters((prevFilters) => {
-      const newFilters = { ...((prevFilters || {}) as T) };
-      delete newFilters[key as keyof T];
+      const newFilters = { ...prevFilters };
+      delete newFilters[key];
       return newFilters;
     });
-    setRefresh(true);
+    setRefresh(true)
   };
 
   const handlePaginationChange = (paginationToUpdate: PaginationState) => {
@@ -108,4 +109,4 @@ function usePaginatedDataFilter<T>(
   };
 }
 
-export default usePaginatedDataFilter;
+export default usePaginatedData;

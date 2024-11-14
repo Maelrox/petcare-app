@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { register } from '../../../hooks/useAuth';
+import { register } from '../../../hooks/modules/useAuth';
 import type { RegisterRequest } from '../../../types/RegisterRequestType';
 import CountrySelect from '../../common/select/CountrySelect';
 import ButtonIcon from '../../common/buttons/ButtonIcon';
