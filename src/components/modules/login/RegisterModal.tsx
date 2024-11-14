@@ -162,7 +162,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 overflow-y-auto z-50">
             <div className="bg-white p-1 shadow-lg rounded-lg w-full max-w-2xl">
-                <form onSubmit={handleSubmit} className="p-6 rounded-lg">
+                <form onSubmit={handleSubmit} className="p-6 rounded-lg max-h-[90vh] h-auto overflow-auto">
                     <div className="flex justify-between items-center mb-1">
                         <h2 className="text-2xl font-bold text-color_brand">Registration Form</h2>
                         <button
