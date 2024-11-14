@@ -71,7 +71,6 @@ function FormModal<T extends Record<string, any>, U>({
     }
 
     const field = fields.find((f) => f.name === name);
-
     // set minutes to multiples of 5
     if (field && field.type === "datetime-local") {
       const selecteDateTime =  roundToNearestMinuteInterval(value)
@@ -117,85 +116,6 @@ function FormModal<T extends Record<string, any>, U>({
     handleCloseSearch();
   };
 
-  const depRenderField = (field: FormField<T, U>) => {
-    if (field.type === "none") {
-      return;
-    }
-    if (field.type === "select-dependant" || field.type === "select") {
-      const fieldNameIndex = field.name.toString();
-      const options = dropdownOptions[fieldNameIndex] || [];
-      const isDisabled = field.dependsOn && !formData[field.dependsOn];
-      const value = selectedOptions[fieldNameIndex] || null;
-      return (
-        <Select
-          options={options}
-          value={value}
-          onChange={(selected) =>
-            handleInputChange(field.name, selected?.value)
-          }
-          isDisabled={isDisabled}
-          isClearable={false}
-          placeholder="Select..."
-        />
-      );
-    }
-
-    if (field.type === "text-area") {
-      return (
-        <textarea
-          id={field.name as string}
-          value={formData[field.name] || ""}
-          onChange={(e) => handleInputChange(field.name, e.target.value)}
-          required={field.required}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-        />
-      );
-    }
-
-    if (field.searchTable) {
-      const fieldValue = formData[field.name];
-      const displayValue =
-        fieldValue && typeof fieldValue === "object" && "name" in fieldValue
-          ? fieldValue.name
-          : fieldValue || "";
-      return (
-        <div className="flex items-center">
-          <input
-            type="text"
-            id={field.name as string}
-            value={displayValue}
-            onChange={(e) => handleInputChange(field.name, e.target.value)}
-            required={field.required}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            disabled
-          />
-          <ButtonIcon
-            type="button"
-            bgColor="bg-gray-300"
-            onClick={() => handleClickSearch(field.name)}
-          >
-            <SearchIcon
-              className="text-color_brand hover:animate-pulse"
-              size={24}
-            />
-          </ButtonIcon>
-        </div>
-      );
-    }
-
-    return (
-      <input
-        type={field.type}
-        id={field.name as string}
-        value={formData[field.name] || ""}
-        onChange={(e) => handleInputChange(field.name, e.target.value)}
-        required={field.required}
-        readOnly={field.readOnly}
-        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-      />
-    );
-  };
-
   const { renderField } = useFormFieldRenderer({
     formData,
     handleInputChange,
@@ -204,9 +124,7 @@ function FormModal<T extends Record<string, any>, U>({
     handleClickSearch,
   });
 
-
   const isFormValid = Object.keys(errors).length === 0;
-
   const identifierField = fields.find(field => field.identifier);
 
   return (
