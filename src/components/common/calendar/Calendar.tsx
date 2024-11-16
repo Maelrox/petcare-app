@@ -158,7 +158,7 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
                         e.stopPropagation();
                         toggleDayExpansion(dayStr);
                       }}
-                      className="text-xs text-gray-500 hover:text-gray-700 w-full text-left cursor-pointer"
+                      className="text-xs text-gray-500 hover:text-gray-700 w-full text-center cursor-pointer"
                     >
                       Show less
                     </button>
