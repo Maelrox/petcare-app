@@ -17,6 +17,7 @@ export interface Appointment {
   owner?: Owner;
   ownerId?: number;
   specieName?: string;
+  vetName?: string;
 }
 
 export const appointmentFields: FormField<Appointment, Veterinary>[] = [

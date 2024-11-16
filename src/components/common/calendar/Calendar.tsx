@@ -12,6 +12,7 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentClick }) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [isDayView, setIsDayView] = useState<boolean>(true);
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
 
   const startOfMonth = currentDate.startOf("month");
   const endOfMonth = currentDate.endOf("month");
@@ -38,26 +39,38 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
     return acc;
   }, {} as Record<string, Appointment[]>);
 
+  const toggleDayExpansion = (dayStr: string): void => {
+    setExpandedDays(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dayStr)) {
+        newSet.delete(dayStr);
+      } else {
+        newSet.add(dayStr);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <div className="calendar">
 
       {!isDayView ? (
         <div className="bg-color_brand text-white flex justify-between items-center p-2">
 
-            <button
-              onClick={() => setCurrentDate(currentDate.subtract(1, "month"))}
-              className="text-sm px-2 py-1 bg-color_brand rounded hover:bg-rose-600 transition"
-            >
-              Previous
-            </button>
-            <span className="font-bold text-lg">{currentDate.format("MMMM YYYY")}</span>
+          <button
+            onClick={() => setCurrentDate(currentDate.subtract(1, "month"))}
+            className="text-sm px-2 py-1 bg-color_brand rounded hover:bg-rose-600 transition"
+          >
+            Previous
+          </button>
+          <span className="font-bold text-lg">{currentDate.format("MMMM YYYY")}</span>
 
-            <button
-              onClick={() => setCurrentDate(currentDate.add(1, "month"))}
-              className="text-sm px-2 py-1 bg-color_brand rounded hover:bg-rose-600 transition"
-            >
-              Next
-            </button>
+          <button
+            onClick={() => setCurrentDate(currentDate.add(1, "month"))}
+            className="text-sm px-2 py-1 bg-color_brand rounded hover:bg-rose-600 transition"
+          >
+            Next
+          </button>
         </div>
       ) : (
         <div className="bg-color_brand text-white text-center p-2">
@@ -109,6 +122,9 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
               const dayAppointments = appointments.filter((app) =>
                 dayjs(app.appointmentDate).isSame(day, "day")
               );
+              const dayStr = day.format('YYYY-MM-DD');
+              const isExpanded = expandedDays.has(dayStr);
+
               return (
                 <div
                   key={day.toString()}
@@ -116,7 +132,7 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
                     }`}
                 >
                   <div className="text-xs font-bold mb-2">{day.date()}</div>
-                  {dayAppointments.slice(0, 2).map((app) => (
+                  {(isExpanded ? dayAppointments : dayAppointments.slice(0, 2)).map((app) => (
                     <div
                       key={app.appointmentId}
                       onClick={() => onAppointmentClick(app.appointmentId || 0)}
@@ -125,8 +141,27 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
                       {dayjs(app.appointmentDate).format("h:mm A")} - {app.reason}
                     </div>
                   ))}
-                  {dayAppointments.length > 2 && (
-                    <p className="text-xs text-gray-500">+{dayAppointments.length - 2} more</p>
+                  {dayAppointments.length > 2 && !isExpanded && (
+                    <button
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        toggleDayExpansion(dayStr);
+                      }}
+                      className="text-xs text-center text-gray-500 hover:text-gray-700 w-full cursor-pointer"
+                    >
+                      +{dayAppointments.length - 2} more
+                    </button>
+                  )}
+                  {isExpanded && dayAppointments.length > 2 && (
+                    <button
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        toggleDayExpansion(dayStr);
+                      }}
+                      className="text-xs text-gray-500 hover:text-gray-700 w-full text-left cursor-pointer"
+                    >
+                      Show less
+                    </button>
                   )}
                 </div>
               );

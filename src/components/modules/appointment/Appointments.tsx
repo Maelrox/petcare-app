@@ -51,8 +51,10 @@ const Appointments: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchAppointments();
-  }, [selectedVet, selectedOwner, initialDate, finalDate]);
+    if (veterinaries.length > 0) {
+      fetchAppointments();
+    }
+  }, [selectedVet, selectedOwner, initialDate, finalDate, veterinaries]);
 
   const fetchAppointments = async () => {
     try {
@@ -67,6 +69,10 @@ const Appointments: React.FC = () => {
       };
       const fetchedAppointments = await searchAppointment(filter);
       if (fetchedAppointments) {
+        fetchedAppointments.forEach(appointment => {
+          const vet = veterinaries.find(v => v.vetId === appointment.vetId);
+          appointment.vetName = vet?.name || 'Unknown Veterinary';
+        });
         setAppointments(fetchedAppointments);
       }
     } catch (err) {

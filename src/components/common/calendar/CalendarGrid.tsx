@@ -71,11 +71,12 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
               <p className="text-sm text-color_brand">
                 Time: {dayjs(app.appointmentDate).format("h:mm A")}
               </p>
+              <p className="text-sm">Veterinary: {app.vetName}</p>
               <p className="text-sm">Reason: {app.reason}</p>
               <p className="text-sm">
                 Status:{" "}
                 <span
-                  className={`font-semibold ${app.status === "Confirmed" ? "text-green-500" : "text-red-500"
+                  className={`font-semibold ${app.status === "Confirmed" ? "text-green-500" : "text-rose-600"
                     }`}
                 >
                   {app.status}
