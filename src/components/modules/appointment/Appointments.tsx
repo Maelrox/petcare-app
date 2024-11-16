@@ -123,10 +123,6 @@ const Appointments: React.FC = () => {
     fetchAppointments();
   };
 
-  const handleAppointmentAttend = async (appointmentId: number) => {
-    alert("Not implemented" + appointmentId);
-  };
-
   const handleSubmit = async (data: Appointment) => {
     const formattedDate = dayjs(data.appointmentDate).format("YYYY-MM-DDTHH:mm");
     data.appointmentDate = formattedDate;
@@ -275,7 +271,6 @@ const Appointments: React.FC = () => {
               appointments={appointments}
               onEditAppointment={handleAppointmentEdit}
               onDeleteAppointment={handleAppointmentDelete}
-              onAttendAppointment={handleAppointmentAttend}
             />
           )}
 

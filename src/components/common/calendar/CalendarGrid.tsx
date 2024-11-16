@@ -22,7 +22,6 @@ interface CalendarGridProps {
   appointments: Appointment[] | undefined;
   onEditAppointment: (appointmentId: number) => void;
   onDeleteAppointment: (appointmentId: number) => void;
-  onAttendAppointment: (appointmentId: number) => void;
 }
 
 const speciesIcons = {
@@ -46,7 +45,6 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   appointments,
   onEditAppointment,
   onDeleteAppointment,
-  onAttendAppointment,
 }) => {
 
   type SpeciesIconKey = keyof typeof speciesIcons;
@@ -85,14 +83,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
               <p className="text-sm">Specie: {app.specieName}</p>
             </div>
             <div className="pb-4 flex space-x-2">
-              
-              <ButtonIcon
-                text=""
-                onClick={() => onAttendAppointment(app.appointmentId || 0)}
-                bgColor="bg-gray-100"
-              >
-                <UserCheck size={12} />
-              </ButtonIcon>
+
               <ButtonIcon
                 text=""
                 onClick={() => onEditAppointment(app.appointmentId || 0)}
