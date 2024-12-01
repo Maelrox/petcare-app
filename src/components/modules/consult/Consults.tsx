@@ -5,7 +5,6 @@ import FormModal from "../FormModal";
 import { PlusIcon, PlusSquareIcon } from "lucide-react";
 import { createConsult, deleteConsult, getConsult, searchConsult, updateConsult } from "../../../hooks/modules/useConsult";
 import { consultFields, type Consult } from "../../../types/ConsultType";
-import usePaginatedDataFilter from "../../../hooks/modules/usePaginatedDataFilter";
 import dayjs from "dayjs";
 import type { Veterinary } from "../../../types/VeterinaryType";
 import { addToast } from "../../utils/toasterStore";

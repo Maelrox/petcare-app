@@ -22,6 +22,8 @@ export interface Consult {
   createdAt?: string;
   updateAt?: string;
   ownerName?: string;
+  veterinaryName?: string;
+  patientName?: string;
   owner?: Owner;
 }
 
@@ -34,6 +36,7 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     includeFilter: false,
     identifier: true,
     displaySelect: "name",
+    hiddenOnList: true
   },
   {
     name: "owner",
@@ -43,6 +46,15 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     searchTable: Owners,
     placeHolder: true,
     displaySelect: "name",
+    hiddenOnList: true
+  },
+  {
+    name: "ownerName",
+    label: "Owner",
+    type: "none",
+    required: false,
+    includeFilter: true,
+    hiddenOnList: false
   },
   {
     name: "patientId",
@@ -52,7 +64,16 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     dependsOn: "owner",
     validators: { maxLength: 64 },
     dependantId: "ownerId",
+    hiddenOnList: true,
     fetchDependant: fetchPatientOptions,
+  },
+  {
+    name: "patientName",
+    label: "Patient",
+    type: "none",
+    required: false,
+    includeFilter: true,
+    hiddenOnList: false
   },
   {
     name: "appointmentId",
@@ -63,6 +84,7 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     validators: { maxLength: 64 },
     identifier: true,
     dependantId: "patientId",
+    hiddenOnList: true,
     fetchDependant: fetchAppointmentOptions,
   },
   {
@@ -72,8 +94,18 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     required: true,
     dependantId: "vetId",
     validators: { maxLength: 64 },
+    hiddenOnList: true,
     fetch: fetchVeterinaries,
-  }, {
+  }, 
+  {
+    name: "veterinaryName",
+    label: "Veterinary",
+    type: "none",
+    required: false,
+    includeFilter: true,
+    hiddenOnList: false,
+  },
+  {
     name: "consultationDate",
     label: "Date",
     type: "datetime-local",
@@ -93,6 +125,7 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     type: "text",
     required: true,
     readOnly: true,
+    includeFilter: true,
     validators: { maxLength: 16 },
   }, {
     name: "treatment",
