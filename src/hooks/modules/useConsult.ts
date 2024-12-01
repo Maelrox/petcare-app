@@ -13,13 +13,13 @@ const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_APPOINTMENT = "/appointments/consultation"
 
 export const searchConsult = async (
-  filter?: Consult,
+  queryParams: string,
   pagination?: PaginationParams
 ): Promise<PaginatedResponse<Consult>> => {
 
-  const options = generateRequestOptions("POST", filter ? filter : {})
+  const options = generateRequestOptions("GET")
   if (pagination) {
-    const url = buildPaginatedUrl(BASE_URL + PATH_APPOINTMENT + "/search", pagination)
+    const url = buildPaginatedUrl(BASE_URL + PATH_APPOINTMENT + "/search", pagination, queryParams)
     if (options && url) {
       const response = await useFetchData<PaginatedResponse<Consult>>(url, options)
       return response? response : blankPaginatedResponse

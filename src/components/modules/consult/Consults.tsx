@@ -2,19 +2,21 @@ import { useState, useEffect } from "react";
 import DataTable from "../../common/tables/Table";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FormModal from "../FormModal";
-import { PlusSquareIcon } from "lucide-react";
+import { PlusIcon, PlusSquareIcon } from "lucide-react";
 import { createConsult, deleteConsult, getConsult, searchConsult, updateConsult } from "../../../hooks/modules/useConsult";
 import { consultFields, type Consult } from "../../../types/ConsultType";
 import usePaginatedDataFilter from "../../../hooks/modules/usePaginatedDataFilter";
 import dayjs from "dayjs";
 import type { Veterinary } from "../../../types/VeterinaryType";
 import { addToast } from "../../utils/toasterStore";
+import FilterControls from "../../common/tables/TableFilterControls";
+import usePaginatedData from "../../../hooks/modules/usePaginatedData";
 
 function Consults() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedConsult, setSelectedConsult] = useState<Consult | null>(null);
-  const paginatedData = usePaginatedDataFilter(searchConsult);
+  const paginatedData = usePaginatedData(searchConsult, consultFields);
 
   const emptyConsult: Consult = {
     patientId: 0,
@@ -40,7 +42,16 @@ function Consults() {
     totalRows,
     setRefresh,
     isLoading,
+    availableFilters,
+    filters,
+    addFilter,
+    removeFilter,
   } = paginatedData;
+
+  const convertedFilters = Object.entries(filters || {}).reduce((acc, [key, value]) => {
+    acc[key] = String(value);
+    return acc;
+  }, {} as Record<string, string>);
 
   const handleEdit = async (consult: Consult) => {
     const consultToEdit = await getConsult(consult.consultationId || 0);
@@ -96,14 +107,22 @@ function Consults() {
     <>
       <h2 className="text-center text-color_brand font-bold">Patient Consult</h2>
       <div className="flex flex-col p-0 items-center md:flex-row md:justify-between mb-0">
-        
+      <div className="w-full lg:w-2/3 md:pr-2 md:mb-0">
+          <FilterControls
+            setRefresh={setRefresh}
+            addFilter={addFilter}
+            removeFilter={removeFilter}
+            availableFilters={availableFilters.current}
+            filters={convertedFilters}
+          />
+        </div>
         <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
           <ButtonIcon
             type="submit"
             text="Attend Patient"
             onClick={() => handleAddClick()}
           >
-            <PlusSquareIcon />
+            <PlusIcon />
           </ButtonIcon>
         </div>
       </div>
