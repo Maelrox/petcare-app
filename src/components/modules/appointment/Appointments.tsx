@@ -22,6 +22,7 @@ import useDebounce from "../../../hooks/modules/useDebounce";
 import usePermission from "../../../hooks/modules/usePermission";
 import type { SelectOption } from "../../../types/FormType";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
+import { addToast } from "../../utils/toasterStore";
 
 const Appointments: React.FC = () => {
   const { hasPermission } = usePermission();
@@ -119,8 +120,11 @@ const Appointments: React.FC = () => {
   };
 
   const handleAppointmentDelete = async (appointmentId: number) => {
-    await deleteAppointment(appointmentId);
-    fetchAppointments();
+    const responseMessage = await deleteAppointment(appointmentId);
+    if (responseMessage) {
+      addToast(responseMessage);
+      fetchAppointments();
+    }
   };
 
   const handleSubmit = async (data: Appointment) => {

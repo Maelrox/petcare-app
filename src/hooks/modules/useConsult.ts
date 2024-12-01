@@ -56,11 +56,14 @@ export const updateConsult = async (consult: Consult): Promise<string | undefine
   }
 };
 
-export const deleteAppointment = async (consultId: number): Promise<Consult | undefined> => {
-  const options = generateRequestOptions("DELETE", )
+export const deleteConsult = async (consultId: number): Promise<string | undefined> => {
+  const options = generateRequestOptions("DELETE")
   const url = BASE_URL + PATH_APPOINTMENT + "/" + consultId
   if (options) {
-    return await useFetchData<Consult>(url, options)
+    const response = await useFetchData<TransactionResponse>(url, options)
+    return response?.message ? response.message : undefined
+  } else {
+    return undefined
   }
 };
 

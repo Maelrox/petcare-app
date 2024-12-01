@@ -3,11 +3,12 @@ import DataTable from "../../common/tables/Table";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FormModal from "../FormModal";
 import { PlusSquareIcon } from "lucide-react";
-import { createConsult, getConsult, searchConsult, updateConsult } from "../../../hooks/modules/useConsult";
+import { createConsult, deleteConsult, getConsult, searchConsult, updateConsult } from "../../../hooks/modules/useConsult";
 import { consultFields, type Consult } from "../../../types/ConsultType";
 import usePaginatedDataFilter from "../../../hooks/modules/usePaginatedDataFilter";
 import dayjs from "dayjs";
 import type { Veterinary } from "../../../types/VeterinaryType";
+import { addToast } from "../../utils/toasterStore";
 
 function Consults() {
 
@@ -52,11 +53,12 @@ function Consults() {
   const handleDelete = async (consult: Consult) => {
     if (consult.consultationId) {
       const isConfirmed = window.confirm(
-        `Are you sure you want to delete the consult "${consult.consultationId}"?`
+        `Are you sure you want to cancel this consult?`
       );
       if (isConfirmed) {
-        const responseMessage = "TODO";
+        const responseMessage = await deleteConsult(consult.consultationId || 0);
         if (responseMessage) {
+          addToast(responseMessage)
           setRefresh(true);
         }
         return responseMessage;

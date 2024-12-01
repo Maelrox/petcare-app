@@ -42,11 +42,14 @@ export const updateAppointment = async (appointment: Appointment): Promise<strin
   }
 };
 
-export const deleteAppointment = async (appointmentId: number): Promise<Appointment | undefined> => {
-  const options = generateRequestOptions("DELETE", )
+export const deleteAppointment = async (appointmentId: number): Promise<string | undefined> => {
+  const options = generateRequestOptions("PATCH")
   const url = BASE_URL + PATH_APPOINTMENT + "/" + appointmentId
   if (options) {
-    return await useFetchData<Appointment>(url, options)
+    const response = await useFetchData<TransactionResponse>(url, options)
+    return response?.message ? response.message : undefined
+  } else {
+    return undefined
   }
 };
 
