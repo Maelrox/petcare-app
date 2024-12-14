@@ -16,6 +16,7 @@ export default {
 		  orange: '#f96501',
 		  color_brand: '#0c2a34',
 		  gray_light: '#e9ecef',
+		  white_brand: '#f1f1f1',
 		},
 		backgroundImage: {
 		  'skyblue-gradient': 'linear-gradient(to right, #50b0ec, #4a81ad)',

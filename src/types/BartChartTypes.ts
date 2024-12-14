@@ -5,8 +5,13 @@ export interface ChartData {
 }
 
 export interface BarChartWidgetProps {
-    data?: ChartData[];
+    data?: Array<{
+      label: string;
+      value: number;
+    }>;
     title?: string;
     color?: string;
     datasetLabel?: string;
-}
+    labelColor?: string;
+    backgroundColor?: string;
+  }

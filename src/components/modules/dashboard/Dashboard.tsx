@@ -5,6 +5,8 @@ import BarChartWidget from "../../common/charts/BarChart";
 import welcomeImage from "../../../assets/icons/menu-main-icon.png";
 import { getCompanyResume } from "../../../hooks/modules/useDashboard";
 import type { CompanyResume, StatCardProps } from "../../../types/DashboardType";
+import { HotMetrics } from "../../common/charts/HotMetrics";
+import QuickAction from "../../common/widgets/QuickAction";
 
 const Dashboard = () => {
   const [userName, setUserName] = useState<string>();
@@ -43,10 +45,10 @@ const Dashboard = () => {
   }, []);
 
   const StatCard = ({ title, value, trend }: StatCardProps) => (
-    <div className="bg-white rounded-lg shadow-sm p-6 flex flex-col">
-      <h3 className="text-sm font-medium text-gray-600 mb-2">{title}</h3>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-xs text-gray-600 mt-1">{trend}</p>
+    <div className="bg-color_brand shadow-sm p-6 flex flex-col border-white_brand border">
+      <h3 className="text-sm font-medium text-white_brand mb-2">{title}</h3>
+      <p className="text-2xl font-bold text-white_brand">{value}</p>
+      <p className="text-xs text-white_brand mt-1">{trend}</p>
     </div>
   );
 
@@ -59,16 +61,16 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm">
+    <div className="min-h-screen bg-white_brand">
+      <div className="bg-gradient-to-br from-rose-600 to-rose-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-white_brand">
                 Welcome{userName ? `, ${userName}` : ""}!
               </h1>
-              <p className="text-sm text-gray-500 mt-1">
-                Free Open Source Solution 0.9.3
+              <p className="text-sm text-white_brand mt-1">
+                Free Veterinary Management System 0.9.4
               </p>
             </div>
             <img src={welcomeImage.src} alt="Menu Icon" className="w-24 h-24 mr-4" />
@@ -77,7 +79,7 @@ const Dashboard = () => {
       </div>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <StatCard
             title="Total Customers"
             value={companyData?.totalCustomers.toString() ?? "0"}
@@ -100,14 +102,22 @@ const Dashboard = () => {
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="w-full">
-            <BarChartWidget
-              data={companyData?.chartData}
-              title="Patient Statistics"
-              datasetLabel="Monthly Data"
-              color="#0d2b35" 
-            />
+        <div className="bg-white_brand shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-8">
+            <div className="bg-color_brand border-white_brand border">
+              <HotMetrics />
+            </div>
+            <div className="bg-color_brand border-white_brand border">
+              <BarChartWidget
+                data={companyData?.chartData}
+                title="Patient Statistics"
+                datasetLabel="Monthly Data"
+                color="#f1f1f1"
+              />
+            </div>
+            <div className="border-white_brand border">
+              <QuickAction />
+            </div>
           </div>
         </div>
       </main>

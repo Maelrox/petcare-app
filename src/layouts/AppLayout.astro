@@ -8,9 +8,8 @@ import Menu from '../components/common/menu/Menu';
 
 interface Props {
   title: string;
-  includeMenu?: boolean;
 }
-const { title, includeMenu = true } = Astro.props;
+const { title } = Astro.props;
 
 ---
 
@@ -71,21 +70,12 @@ const { title, includeMenu = true } = Astro.props;
     <Spinner client:load />
     <Toast client:load />
     <div class="flex flex-1 flex-col">
-      <Header username="?" />
-      {includeMenu && 
-        <Menu client:load />
-      }
+      <Header username="?"/>
       <main class="flex-1 overflow-y-auto w-full m-auto">
         <slot />
       </main>
       <Footer />
-      {!includeMenu && (
-        <div class="floating-back-button bg-color_brand hover:bg-skyblue_dark" data-back-button>
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </div>
-      )}
+
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', () => {

@@ -1,14 +1,23 @@
 ---
 import logoImage from '../../assets/logo-pet-care-suite.png';
+import managementIcon from '../../assets/icons/company.png';
+import catIcon from '../../assets/icons/cat.png';
+import vetIcon from '../../assets/icons/vet.png';
+import billIcon from '../../assets/icons/bill.png';
+import checkListIcon from '../../assets/icons/checklist.png';
+import { CalendarDays, MonitorCog, BriefcaseMedical,Warehouse, Receipt} from 'lucide-react';
+import Navbar from '../common/menu/Navbar';
 
 ---
 <header class="bg-white p-2  border-b-rose-500 border-b-2">
     <div class="flex items-center justify-between">
+
       <div class="flex-grow">
         <a href="/modules/dashboard">
           <img src={logoImage.src} alt="Background" class="max-h-10 ml-1" />
         </a>
       </div>
+      <Navbar client:load />
       <div class="relative">
         <button class="flex items-center justify-center w-10 h-10 rounded-full bg-rose-500 text-white" onclick="toggleMenu()">
           <div>O</div>

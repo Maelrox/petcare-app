@@ -25,7 +25,9 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
   data = [],
   title = 'Chart',
   color = '#f43f5e',
-  datasetLabel = 'Data'
+  datasetLabel = 'Data',
+  labelColor = '#f1f1f1',
+  backgroundColor = 'black_brand',
 }) => {
   const chartData = {
     labels: data.map(item => item.label),
@@ -46,12 +48,20 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
     plugins: {
       legend: {
         position: 'top' as const,
+        labels: {
+          color: labelColor,
+          font: {
+            family: 'Quicksand',
+          },
+        },
       },
       title: {
         display: true,
         text: title,
+        color: labelColor,
         font: {
-          size: 16,
+          family: 'Quicksand',
+          size: 20,
           weight: 'bold',
         },
         padding: {
@@ -65,6 +75,13 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
         beginAtZero: true,
         ticks: {
           padding: 8,
+          color: labelColor,
+          font: {
+            family: 'Quicksand',
+          },
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.1)',
         },
       },
       x: {
@@ -73,6 +90,10 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
         },
         ticks: {
           padding: 8,
+          color: labelColor,
+          font: {
+            family: 'Quicksand',
+          },
         },
       },
     },
@@ -80,14 +101,14 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-slate-50 p-4 rounded-lg shadow-md flex-1 h-64 flex items-center justify-center">
-        <p className="text-gray-500">No data available</p>
+      <div className={`bg-${backgroundColor} p-4 shadow-md flex-1 h-64 flex items-center justify-center`}>
+        <p className="text-white_brand">No data available</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-slate-50 p-4 rounded-lg shadow-md flex-1" style={{ height: '400px' }}>
+    <div className={`bg-${backgroundColor} p-4 shadow-md flex-1`} style={{ height: '400px' }}>
       <Bar data={chartData} options={options} />
     </div>
   );
