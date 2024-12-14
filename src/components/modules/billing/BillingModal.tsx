@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Receipt, User } from "lucide-react";
+import { Plus, Receipt, User } from "lucide-react";
 import type { Billing } from '../../../types/BillingType';
 import type { BillingDetail } from '../../../types/BilllingDetailType';
 import { fetchUnBilledAttentions } from '../../../hooks/modules/useConsult';
@@ -7,6 +7,8 @@ import Owners from '../owner/Owners';
 import type { Owner } from '../../../types/OwnerType';
 import Inventories from '../inventory/Inventories';
 import type { Inventory } from '../../../types/InventoryType';
+import { BillingItemCard } from './BillingItemCard';
+import { BillingItemTable } from './BillingItemTable';
 
 interface BillingModalProps {
     isOpen: boolean;
@@ -140,78 +142,21 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
         calculateTotal(updatedItems);
     };
 
-    const BillingItemCard = ({ item, index }: { item: BillingDetail; index: number }) => (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
-            <div className="flex justify-between items-start mb-2">
-                <div className="font-medium">{item.name}</div>
-                <button
-                    className="p-2 text-red-500 hover:text-red-700 rounded-full hover:bg-red-50"
-                    onClick={() => handleRemoveItem(index)}
-                >
-                    <Trash2 className="w-4 h-4" />
-                </button>
-            </div>
-            <div className="text-sm text-gray-600 mb-2">{item.description}</div>
-            <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                    <label className="text-sm">Qty:</label>
-                    <input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={(e) => handleQuantityChange(index, parseInt(e.target.value) || 1)}
-                        className="w-20 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
-                <div className="text-right">
-                    <div className="text-sm text-gray-600">Price: ${item.amount.toFixed(2)}</div>
-                    <div className="font-medium">Subtotal: ${(item.quantity * item.amount).toFixed(2)}</div>
-                </div>
-            </div>
-        </div>
-    );
+    const handlePriceChange = (index: number, newPrice: number) => {
+        const updatedItems = items.map((item, i) => {
+            if (i === index) {
+                return {
+                    ...item,
+                    amount: newPrice
+                };
+            }
+            return item;
+        });
+        setItems(updatedItems);
+        calculateTotal(updatedItems);
+    };
 
-    const BillingItemTable = () => (
-        <table className="w-full">
-            <thead>
-                <tr className="bg-gray-100">
-                    <th className="text-left p-4">Item</th>
-                    <th className="text-left p-4">Description</th>
-                    <th className="text-left p-4 w-24">Quantity</th>
-                    <th className="text-left p-4 w-24">Price</th>
-                    <th className="text-left p-4 w-24">Subtotal</th>
-                    <th className="w-16"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {items.map((item, index) => (
-                    <tr key={index} className="border-b">
-                        <td className="p-4">{item.name}</td>
-                        <td className="p-4">{item.description}</td>
-                        <td className="p-4">
-                            <input
-                                type="number"
-                                min="1"
-                                value={item.quantity}
-                                onChange={(e) => handleQuantityChange(index, parseInt(e.target.value) || 1)}
-                                className="w-20 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </td>
-                        <td className="p-4">${item.amount.toFixed(2)}</td>
-                        <td className="p-4">${(item.quantity * item.amount).toFixed(2)}</td>
-                        <td className="p-4">
-                            <button
-                                className="p-2 text-red-500 hover:text-red-700 rounded-full hover:bg-red-50"
-                                onClick={() => handleRemoveItem(index)}
-                            >
-                                <Trash2 className="w-4 h-4" />
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    );
+
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -260,7 +205,7 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
                                 disabled={!selectedOwner}
                                 className="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-color_brand disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                             >
-                                <Plus className="w-4 h-4" /> 
+                                <Plus className="w-4 h-4" />
                                 <span className="hidden md:inline">Add Item</span>
                             </button>
                         </div>
@@ -268,13 +213,22 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
                         {/* Mobile: Cards */}
                         <div className="md:hidden space-y-4">
                             {items.map((item, index) => (
-                                <BillingItemCard key={index} item={item} index={index} />
+                                <BillingItemCard
+                                    key={index}
+                                    item={item}
+                                    index={index}
+                                    handleRemoveItem={handleRemoveItem}
+                                    handleQuantityChange={handleQuantityChange} />
                             ))}
                         </div>
 
                         {/* Desktop: Table */}
                         <div className="hidden md:block overflow-x-auto">
-                            <BillingItemTable />
+                            <BillingItemTable 
+                                handleRemoveItem={handleRemoveItem}
+                                handleQuantityChange={handleQuantityChange}
+                                handlePriceChange={handlePriceChange} 
+                                items={items} />
                         </div>
                     </div>
 
@@ -321,7 +275,7 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
                     </div>
                 </div>
             )}
-            
+
             {/* Inventory Selection Modal */}
             {isInventorySearchOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">

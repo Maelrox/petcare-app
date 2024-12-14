@@ -61,15 +61,15 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white_brand">
-      <div className="bg-gradient-to-br from-rose-600 to-rose-800 shadow-sm">
+    <div className="bg-white_brand">
+      <div className="bg-white_brand shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-white_brand">
+              <h1 className="text-2xl font-bold text-color_brand">
                 Welcome{userName ? `, ${userName}` : ""}!
               </h1>
-              <p className="text-sm text-white_brand mt-1">
+              <p className="text-sm text-color_brand mt-1">
                 Free Veterinary Management System 0.9.4
               </p>
             </div>

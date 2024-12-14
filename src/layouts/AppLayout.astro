@@ -69,13 +69,14 @@ const { title } = Astro.props;
   <body class="bg-white flex flex-col min-h-screen">
     <Spinner client:load />
     <Toast client:load />
-    <div class="flex flex-1 flex-col">
-      <Header username="?"/>
-      <main class="flex-1 overflow-y-auto w-full m-auto">
+    <div class="min-h-screen flex flex-col">
+      <Header username="?" />
+      
+      <main class="flex-grow overflow-y-auto w-full m-auto bg-white_brand">
         <slot />
       </main>
+      
       <Footer />
-
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', () => {

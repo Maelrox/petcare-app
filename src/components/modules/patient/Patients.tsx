@@ -84,7 +84,7 @@ function Patients() {
             filters={filters}
           />
         </div>
-        <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
+        <div className="w-full md:w-1/3 flex lg:justify-end max-h-16 pr-4">
           <ButtonIcon
             type="submit"
             text="New Patient"

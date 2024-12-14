@@ -11,17 +11,17 @@ import {
 const QuickActionsWidget = () => {
   const actions = [
     { 
-      icon: <FileText className="text-blue-500" size={24} />, 
+      icon: <FileText className="text-rose-600" size={24} />, 
       title: "Generate Report", 
       description: "Create monthly summary" 
     },
     { 
-      icon: <CloudUpload className="text-green-500" size={24} />, 
+      icon: <CloudUpload className="text-rose-600" size={24} />, 
       title: "Upload Data", 
       description: "Import new records" 
     },
     { 
-      icon: <Users className="text-purple-500" size={24} />, 
+      icon: <Users className="text-rose-600" size={24} />, 
       title: "Manage Users", 
       description: "Edit team access" 
     }
