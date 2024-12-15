@@ -1,15 +1,17 @@
+import { fetchIdentificationTypes } from "../hooks/modules/useManager";
+import type { IdentificationType } from "./AuthTypes";
 import type { FormField } from "./FormType";
 
 export interface Owner {
   ownerId: number;
   identification?: string;
-  identificationTypeId?: number;
+  identificationType?: IdentificationType;
   name?: string;
   phone?: string;
   address?: string;
 }
 
-export const ownerFields: FormField<Owner, Owner>[] = [
+export const ownerFields: FormField<Owner, IdentificationType>[] = [
   {
     name: "name",
     label: "Full Name",
@@ -26,10 +28,12 @@ export const ownerFields: FormField<Owner, Owner>[] = [
     includeFilter: true,
   },
   {
-    name: "identificationTypeId",
+    name: "identificationType",
     label: "Identification Type",
-    type: "number",
+    type: "select",
+    fetch: fetchIdentificationTypes,
     required: true,
+    dependantId: "id"
   },
   {
     name: "phone",

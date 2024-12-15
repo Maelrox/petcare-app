@@ -1,15 +1,23 @@
+import { fetchIdentificationTypes } from "../hooks/modules/useManager";
+import type { IdentificationType } from "./AuthTypes";
 import type { FormField } from "./FormType";
 
 export interface Veterinary {
   vetId: number;
   identification: string;
-  identificationTypeId: number;
+  identificationType: IdentificationType;
   name: string;
   phone: string;
   specialization: string;
 }
 
-export const veterinaryFields: FormField<Veterinary>[] = [
+export const veterinaryFields: FormField<Veterinary, IdentificationType>[] = [
+  {
+    name: "vetId",
+    identifier: true,
+    label: "",
+    type: "none",
+  },
   {
     name: "name",
     label: "Name",
@@ -26,10 +34,12 @@ export const veterinaryFields: FormField<Veterinary>[] = [
     required: true,
   },
   {
-    name: "identificationTypeId",
+    name: "identificationType",
     label: "Identification Type",
-    type: "number",
+    type: "select",
     required: true,
+    fetch: fetchIdentificationTypes,
+    dependantId: "id"
   },
   {
     name: "phone",

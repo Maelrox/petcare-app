@@ -99,7 +99,6 @@ function Billings() {
           pagination={pagination}
           totalRows={totalRows.current}
           onPaginationChange={handlePaginationChange}
-          handleEdit={handleEdit}
           handleDelete={handleDelete}
           isLoading={isLoading}
           configFields={billingFields}

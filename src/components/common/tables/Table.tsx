@@ -17,7 +17,7 @@ type DataTableProps<T, U> = {
   pagination: PaginationState;
   totalRows: number;
   onPaginationChange: (pagination: PaginationState) => void;
-  handleEdit: (rowData: T) => void;
+  handleEdit?: (rowData: T) => void;
   handleDelete: (rowData: T) => void;
   handleAdditionalAction?: (rowData: T) => void;
   handleAdditionalAction2?: (rowData: T) => void;

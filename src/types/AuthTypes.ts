@@ -101,3 +101,8 @@ export const roleFields: FormField<Role>[] = [
     includeFilter: true,
   }
 ];
+
+export interface IdentificationType {
+  id: number;
+  name: string;
+}

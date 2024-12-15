@@ -1,5 +1,5 @@
 import { generateRequestOptions, buildPaginatedUrl } from "../../components/utils/httpHandler";
-import type { Module, Role, Permission, PermissionModules, ModuleAction } from "../../types/AuthTypes";
+import type { Module, Role, Permission, PermissionModules, ModuleAction, IdentificationType } from "../../types/AuthTypes";
 import type { PaginationParams, PaginatedResponse, PermissionRoles } from "../../types/RequestType";
 import { blankPaginatedResponse, type TransactionResponse } from "../../types/ResponseType";
 import { useFetchData } from "../api/useFetchData";
@@ -8,6 +8,7 @@ const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
 const PATH_ROLE = "/management/role"
 const PATH_PERMISSION = "/management/permission"
 const PATH_MODULE = "/management/module"
+const PATH_USER = "/management/user"
 const PATH_PERMISSION_MODULE_ACTIONS = "/management/permission/module-actions"
 
 export const getAllModules = async (): Promise<Module[] | undefined> => {
@@ -144,5 +145,13 @@ export const getModuleActions = async (permissionId: number, moduleId: number): 
     return response? response : undefined
   } else {
     return undefined
+  }
+};
+
+export const fetchIdentificationTypes = async (): Promise<IdentificationType[] | undefined> => {
+  const options = generateRequestOptions("GET")
+  let url = BASE_URL + PATH_USER + "/identificationTypes"
+  if (options) {
+    return await useFetchData<IdentificationType[]>(url, options)
   }
 };

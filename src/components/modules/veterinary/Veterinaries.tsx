@@ -7,6 +7,7 @@ import FormModal from "../FormModal";
 import { createVeterinary, searchVeterinaries, updateVeterinary } from "../../../hooks/modules/useVeterinary";
 import { veterinaryFields, type Veterinary } from "../../../types/VeterinaryType";
 import { PlusIcon } from "lucide-react";
+import type { IdentificationType } from "../../../types/AuthTypes";
 
 function Veterinaries() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,7 +84,7 @@ function Veterinaries() {
             filters={filters}
           />
         </div>
-        <div className="w-full md:w-1/3 pt-4 flex lg:justify-end max-h-16">
+        <div className="w-full md:w-1/3 pt-4 flex lg:justify-end max-h-16 pr-4">
           <ButtonIcon
             type="submit"
             onClick={() => handleAddClick()}
@@ -105,8 +106,8 @@ function Veterinaries() {
           configFields={veterinaryFields}
         />
       </div>
-      <FormModal<Veterinary, Veterinary>
-        initialData={selectedVeterinary || {vetId: 0,identification:"", identificationTypeId:0, name:"", phone:"", specialization:""}}
+      <FormModal<Veterinary, IdentificationType>
+        initialData={selectedVeterinary || {vetId: 0, identification:"", name:"", phone:"", specialization:"", identificationType: { id:0, name:""}}}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmit}

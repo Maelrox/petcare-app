@@ -7,6 +7,7 @@ import FormModal from "../FormModal";
 import { ownerFields, type Owner } from "../../../types/OwnerType";
 import { createOwner, searchOwners, updateOwner } from "../../../hooks/modules/useOwner";
 import { PlusSquareIcon } from "lucide-react";
+import type { IdentificationType } from "../../../types/AuthTypes";
 
 type OwnerProps = {
   handleSelect?: (rowData: Owner) => void;
@@ -87,7 +88,7 @@ function Owners({ handleSelect }: OwnerProps) {
             filters={filters}
           />
         </div>
-        <div className="w-full md:w-1/3 flex lg:justify-end max-h-16">
+        <div className="w-full md:w-1/3 flex lg:justify-end max-h-16 pr-4">
           <ButtonIcon
             type="submit"
             text="New Owner"
@@ -110,12 +111,12 @@ function Owners({ handleSelect }: OwnerProps) {
           configFields={ownerFields}
         />
       </div>
-      <FormModal<Owner, Owner>
+      <FormModal<Owner, IdentificationType>
         initialData={
           selectedOwner || {
             ownerId: 0,
             identification: "",
-            identificationTypeId: 0,
+            identificationType: {id:0, name:""},
             name: "",
             phone: "",
             address: "",

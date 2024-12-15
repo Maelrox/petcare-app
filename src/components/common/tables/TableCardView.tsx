@@ -4,7 +4,7 @@ import ButtonIcon from "../buttons/ButtonIcon";
 
 type CardViewProps<T> = {
   table: Table<T>;
-  handleEdit: (rowData: T) => void;
+  handleEdit?: (rowData: T) => void;
   handleDelete: (rowData: T) => void;
   handleAdditionalAction?: (rowData: T) => void;
   handleAdditionalAction2?: (rowData: T) => void;
@@ -55,13 +55,15 @@ function TableCardView<T>({
                 </div>
               ))}
               <div className="flex gap-1">
-                <ButtonIcon
-                  text=""
-                  onClick={() => handleEdit(rowData)}
-                  bgColor="bg-gray-100"
-                >
-                  <EditIcon size={12} />
-                </ButtonIcon>
+                {handleEdit &&
+                  <ButtonIcon
+                    text=""
+                    onClick={() => handleEdit(rowData)}
+                    bgColor="bg-gray-100"
+                  >
+                    <EditIcon size={12} />
+                  </ButtonIcon>
+                }
                 <ButtonIcon
                   text=""
                   onClick={() => handleDelete(rowData)}
