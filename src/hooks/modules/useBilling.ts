@@ -31,16 +31,16 @@ export const createBilling = async (billing: Billing): Promise<TransactionRespon
       return undefined
     }
   };
-  
-  export const updateBilling = async (billing: Billing): Promise<string | undefined> => {
-    const options = generateRequestOptions("PUT", billing)
+
+  export const cancellBilling = async (billing: Billing): Promise<TransactionResponse | undefined> => {
+    const options = generateRequestOptions("DELETE", billing)
     if (options) {
-      const response = await useFetchData<TransactionResponse>(BASE_URL + PATH_BILLING, options)
-      return response?.message ? response.message : undefined
+      return await useFetchData<TransactionResponse>(BASE_URL + PATH_BILLING + billing.billingId, options)
     } else {
       return undefined
     }
   };
+  
 
   export const checkTrxStatus = async (trx: String): Promise<Transaction | undefined> => {
     const options = generateRequestOptions("GET")

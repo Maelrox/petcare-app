@@ -5,7 +5,7 @@ import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import { PlusIcon } from "lucide-react";
 import { billingFields, type Billing } from "../../../types/BillingType";
-import { createBilling, getBilling } from "../../../hooks/modules/useBilling";
+import { cancellBilling, createBilling, getBilling } from "../../../hooks/modules/useBilling";
 import BillingModal from "./BillingModal";
 import TransactionStatusTracker from "./TransactionStatusTracker";
 
@@ -33,18 +33,20 @@ function Billings() {
     isLoading,
   } = paginatedData;
 
-  const handleEdit = (billing: Billing) => {
-    setSelectedBilling(billing);
-    setIsModalOpen(true);
-  };
-
-  const handleDelete = async (billing: Billing) => {
-    if (billing.billingId) {
+  const handleDelete = async (data: Billing) => {
+    if (data.billingId) {
       const isConfirmed = window.confirm(
-        `Are you sure you want to cancel the billing "${billing.billingId}"?`
+        `Are you sure you want to cancel the billing "${data.billingId}"?`
       );
       if (isConfirmed) {
-        alert("Not implemented");
+        const response = await cancellBilling(data);
+        if (response?.trx) {
+            setCurrentTrx(response.trx);
+            setShowStatusTracker(true);
+            return true;
+        } else {
+          return false;
+        }
       }
     }
   };
