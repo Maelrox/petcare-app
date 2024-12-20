@@ -121,6 +121,13 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U>({
             }
           }
         }
+        // 
+        else if (field.type === "none" && field.placeHolder && handleInputChange && field.dependsOn) {
+          const placeHolder: String = initialData[field.name].toString();
+          if (placeHolder) {
+            handleInputChange(field.dependsOn, placeHolder);
+          }
+        }
       }
     };
 

@@ -1,8 +1,10 @@
 import Owners from "../components/modules/owner/Owners";
+import Services from "../components/modules/service/Services";
 import { fetchPatientOptions } from "../hooks/modules/usePatient";
 import { fetchVeterinaries } from "../hooks/modules/useVeterinary";
 import type { FormField } from "./FormType";
 import type { Owner } from "./OwnerType";
+import type { Service } from "./ServiceType";
 import type { Veterinary } from "./VeterinaryType";
 
 export interface Appointment {
@@ -18,6 +20,9 @@ export interface Appointment {
   ownerId?: number;
   specieName?: string;
   vetName?: string;
+  serviceId?: number;
+  service?: Service;
+  serviceName?: string;
 }
 
 export const appointmentFields: FormField<Appointment, Veterinary>[] = [
@@ -65,6 +70,29 @@ export const appointmentFields: FormField<Appointment, Veterinary>[] = [
     type: "datetime-local",
     required: true,
     validators: { maxLength: 64 },
+  },
+  {
+    name: "service",
+    label: "Service",
+    type: "text",
+    required: true,
+    placeHolder: true,
+    searchTable: Services,
+    displaySelect: "name",
+  },
+  {
+    name: "serviceName",
+    label: "",
+    type: "none",
+    placeHolder: true,
+    dependsOn: "service"
+  },
+  {
+    name: "serviceId",
+    label: "Service",
+    type: "none",
+    dependsOn: "service",
+    dependantId: "id",
   },
   {
     name: "reason",

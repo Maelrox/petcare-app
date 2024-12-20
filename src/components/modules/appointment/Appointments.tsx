@@ -129,6 +129,7 @@ const Appointments: React.FC = () => {
 
   const handleSubmit = async (data: Appointment) => {
     const formattedDate = dayjs(data.appointmentDate).format("YYYY-MM-DDTHH:mm");
+//    data.serviceId = data?.service?.id;
     data.appointmentDate = formattedDate;
     const responseMessage = !data.appointmentId
       ? await createAppointment(data)

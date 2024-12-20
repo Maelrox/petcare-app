@@ -24,7 +24,7 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
       const selectedOption = dropdownOptions[name as string]?.find(
         (option) => option.value === value
       );
-      
+
       setSelectedOptions((prev) => ({
         ...prev,
         [name]: selectedOption ? [selectedOption] : [],
@@ -32,12 +32,12 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
 
       // Handle dependent fields
       const dependentFields = fields.filter((f) => f.dependsOn === name);
-      
+
       for (const dependentField of dependentFields) {
         // Reset dependent field value
-        setFormData((prev) => ({ 
-          ...prev, 
-          [dependentField.name]: undefined 
+        setFormData((prev) => ({
+          ...prev,
+          [dependentField.name]: undefined
         }));
 
         // Reset dependent field selections
@@ -58,7 +58,7 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
               value,
               dependentField.name as string
             );
-            
+
             setDropdownOptions((prev) => ({
               ...prev,
               [dependentField.name]: options,
@@ -76,7 +76,7 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
     selected: any
   ) => {
     setSelectedElements((prev) => ({ ...prev, [fieldName]: selected }));
-    
+
     const field = fields.find((f) => f.name === fieldName);
     if (
       field &&
@@ -97,7 +97,7 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
     const dependentFields = fields.filter((f) => f.dependsOn === fieldName);
     for (const dependentField of dependentFields) {
       setFormData((prev) => ({ ...prev, [dependentField.name]: undefined }));
-      
+
       setSelectedElements((prev) => ({
         ...prev,
         [dependentField.name]: [],
@@ -108,6 +108,7 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
         [dependentField.name]: [],
       }));
 
+      // Pass dependant Id to fetch function in order to populate the dropdown
       if (dependentField.fetchDependant && dependentField.dependantId) {
         const dependantId = selected[dependentField.dependantId];
         const options = await dependentField.fetchDependant(
@@ -117,6 +118,12 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
         setDropdownOptions((prev) => ({
           ...prev,
           [dependentField.name]: options,
+        }));
+      } else if (dependentField.dependantId && selected && !dependentField.fetch) { // Set dependant id when no additional fetch is required
+        const dependantId = selected[dependentField.dependantId];
+        setFormData((prev) => ({ 
+          ...prev, 
+          [dependentField.name]: dependantId 
         }));
       }
     }
