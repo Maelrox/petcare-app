@@ -1,9 +1,13 @@
 import Owners from "../components/modules/owner/Owners";
+import Services from "../components/modules/service/Services";
+import { getAppointment } from "../hooks/modules/useAppointment";
 import { fetchAppointmentOptions } from "../hooks/modules/useConsult";
 import { fetchPatientOptions } from "../hooks/modules/usePatient";
 import { fetchVeterinaries } from "../hooks/modules/useVeterinary";
+import type { Appointment } from "./AppointmentType";
 import type { FormField } from "./FormType";
 import type { Owner } from "./OwnerType";
+import type { Service } from "./ServiceType";
 import type { Veterinary } from "./VeterinaryType";
 
 export interface Consult {
@@ -25,9 +29,12 @@ export interface Consult {
   veterinaryName?: string;
   patientName?: string;
   owner?: Owner;
+  serviceId?: number;
+  service?: Service;
+  serviceName?: string;
 }
 
-export const consultFields: FormField<Consult, Veterinary>[] = [
+export const consultFields: FormField<Consult, Veterinary, Appointment>[] = [
   {
     name: "consultationId",
     label: "",
@@ -66,7 +73,7 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     dependantId: "ownerId",
     hiddenOnList: true,
     fetchDependant: fetchPatientOptions,
-  },
+  },    
   {
     name: "patientName",
     label: "Patient",
@@ -80,12 +87,40 @@ export const consultFields: FormField<Consult, Veterinary>[] = [
     label: "Appointment",
     type: "select-dependant",
     required: true,
-    dependsOn: "patientId",
     validators: { maxLength: 64 },
     identifier: true,
+    dependsOn: "patientId",
     dependantId: "patientId",
     hiddenOnList: true,
     fetchDependant: fetchAppointmentOptions,
+  },
+  {
+    name: "service",
+    label: "Service",
+    type: "text",
+    required: true,
+    placeHolder: true,
+    searchTable: Services,
+    displaySelect: "name",
+    dependantId: "appointmentId",
+    dependsOn: "appointmentId",
+    fetchDependant: getAppointment,
+    resultPlaceHolder: "serviceName",
+    resultId: "serviceId"
+  },
+  {
+    name: "serviceName",
+    label: "",
+    type: "none",
+    placeHolder: true,
+    dependsOn: "service"
+  },
+  {
+    name: "serviceId",
+    label: "Service",
+    type: "none",
+    dependsOn: "service",
+    dependantId: "id",
   },
   {
     name: "vetId",

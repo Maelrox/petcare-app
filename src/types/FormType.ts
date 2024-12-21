@@ -1,4 +1,4 @@
-export interface FormField<T, U = T> {
+export interface FormField<T, U = T, K = T> {
   name: keyof T;
   label: string;
   type: string;
@@ -10,12 +10,14 @@ export interface FormField<T, U = T> {
   dependantId?: string;
   placeHolder?: boolean;
   fetch?: U[] | (() => Promise<U[] | undefined>);
-  fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]>;
+  fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]> | Promise<K | undefined>;
   identifier?: boolean;
   includeFilter?: boolean;
   filterName?: string;
   hiddenOnList?: boolean;
   readOnly?: boolean;
+  resultPlaceHolder?: string;
+  resultId?: string;
 }
 
 export interface SelectOption {

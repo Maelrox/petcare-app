@@ -32,7 +32,6 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
 
       // Handle dependent fields
       const dependentFields = fields.filter((f) => f.dependsOn === name);
-
       for (const dependentField of dependentFields) {
         // Reset dependent field value
         setFormData((prev) => ({
@@ -50,19 +49,46 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
           ...prev,
           [dependentField.name]: [],
         }));
+        console.log(dependentField)
 
         // Fetch new options if needed
         if (dependentField.fetchDependant && dependentField.dependantId) {
           try {
-            const options = await dependentField.fetchDependant(
+            const result = await dependentField.fetchDependant(
               value,
               dependentField.name as string
             );
 
-            setDropdownOptions((prev) => ({
-              ...prev,
-              [dependentField.name]: options,
-            }));
+            if (Array.isArray(result)) {
+              // Array expected to be SelectOption[]
+              setDropdownOptions((prev) => ({
+                ...prev,
+                [dependentField.name]: result,
+              }));
+            } else if (result) {
+              // Result expected to be a generic type T, U, K
+              setFormData((prev) => ({
+                ...prev,
+                [dependentField.name] : result[dependentField.resultPlaceHolder!],
+
+              }));
+              if (dependentField.resultId && typeof dependentField.resultId === "string") {
+                setFormData((prev) => ({
+                  ...prev,
+                  [dependentField.resultId as string]: result[dependentField.resultId!],
+                }));
+              } else {
+                console.warn(`Invalid resultId: ${dependentField.resultId}`);
+              }
+              
+            } else {
+              // Result is undefined
+              console.warn(`FetchDependant returned undefined for`, dependentField.name);
+              setDropdownOptions((prev) => ({
+                ...prev,
+                [dependentField.name]: [],
+              }));
+            }
           } catch (error) {
             console.error(`Error fetching dependent option`, error);
           }
@@ -121,9 +147,9 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
         }));
       } else if (dependentField.dependantId && selected && !dependentField.fetch) { // Set dependant id when no additional fetch is required
         const dependantId = selected[dependentField.dependantId];
-        setFormData((prev) => ({ 
-          ...prev, 
-          [dependentField.name]: dependantId 
+        setFormData((prev) => ({
+          ...prev,
+          [dependentField.name]: dependantId
         }));
       }
     }

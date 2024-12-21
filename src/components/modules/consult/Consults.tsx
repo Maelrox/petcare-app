@@ -27,7 +27,13 @@ function Consults() {
     consultationDate: "",
     treatment: "",
     notes: "",
-    diagnosis: ""
+    diagnosis: "",
+    service: {
+      id: 0,
+      name: "",
+      description: "",
+      price: 0
+    }
   };
 
   useEffect(() => {
