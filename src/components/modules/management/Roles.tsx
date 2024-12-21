@@ -115,7 +115,7 @@ function Roles ({ handleSelect }: RolesProps) {
           configFields={roleFields}
         />
       </div>
-      <FormModal<Role, Role>
+      <FormModal<Role, Role, Role>
         initialData={selectedRole || { id: 0, name: "" }}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

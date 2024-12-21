@@ -20,7 +20,7 @@ export interface Company {
   country: string
 }
 
-export const registerFields: FormField<RegisterRequest>[] = [
+export const registerFields: FormField<RegisterRequest , RegisterRequest, RegisterRequest>[] = [
   {
     name: "id",
     identifier: true,

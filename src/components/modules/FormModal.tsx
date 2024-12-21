@@ -3,23 +3,23 @@ import Button from "../common/buttons/Button";
 import Modal from "../common/modals/Modal";
 import { addToast } from "../utils/toasterStore";
 import { useFormValidation } from "../../hooks/modules/useFormValidation";
-import type { FormField, SelectOption } from "../../types/FormType";
+import type { FormField } from "../../types/FormType";
 import { formatForDateTimeLocal, roundToNearestMinuteInterval } from "../utils/timeUtil";
 import { useModalDependantFields } from "../../hooks/generic-forms/useModalFetchDependant";
 import { usePrepopulateSelect } from "../../hooks/generic-forms/usePrepopulateSelect";
 import { useFormFieldRenderer } from "../../hooks/generic-forms/useRenderField";
-interface FormModalProps<T, U> {
+interface FormModalProps<T, U, K> {
   initialData: T;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: T) => Promise<string | undefined>;
-  fields: FormField<T, U>[];
+  fields: FormField<T, U, K>[];
   title: string;
   description?: string;
   maxSize: string;
 }
 
-function FormModal<T extends Record<string, any>, U>({
+function FormModal<T extends Record<string, any>, U, K>({
   initialData,
   isOpen,
   onClose,
@@ -28,10 +28,10 @@ function FormModal<T extends Record<string, any>, U>({
   title,
   description,
   maxSize
-}: FormModalProps<T, U>) {
+}: FormModalProps<T, U, K>) {
   const [formData, setFormData] = useState<T>(initialData);
   const [activeSearchModal, setActiveSearchModal] = useState<keyof T | null>(null);
-  const { errors, validateField, validateForm, clearFieldError } = useFormValidation<T, U>({ fields });
+  const { errors, validateField, validateForm, clearFieldError } = useFormValidation<T, U, K>({ fields });
 
   const {
     dropdownOptions,
@@ -40,7 +40,7 @@ function FormModal<T extends Record<string, any>, U>({
     setSelectedOptions,
     handleDependentFields,
     handleSearchElementSelect
-  } = useModalDependantFields<T, U>({
+  } = useModalDependantFields<T, U, K>({
     fields,
     setFormData
   });

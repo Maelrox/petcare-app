@@ -10,6 +10,7 @@ import type { Veterinary } from "../../../types/VeterinaryType";
 import { addToast } from "../../utils/toasterStore";
 import FilterControls from "../../common/tables/TableFilterControls";
 import usePaginatedData from "../../../hooks/modules/usePaginatedData";
+import type { Appointment } from "../../../types/AppointmentType";
 
 function Consults() {
 
@@ -144,7 +145,7 @@ function Consults() {
         />
       </div>
       {isModalOpen && (
-        <FormModal<Consult, Veterinary>
+        <FormModal<Consult, Veterinary, Appointment>
           initialData={selectedConsult || emptyConsult}
           isOpen={isModalOpen}
           onClose={handleCloseModal}

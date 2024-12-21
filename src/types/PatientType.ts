@@ -14,7 +14,7 @@ export interface Patient {
   owner?: Owner;
 }
 
-export const patientFields: FormField<Patient, Specie>[] = [
+export const patientFields: FormField<Patient, Specie, Patient>[] = [
   {
     name: "patientId",
     identifier: true,

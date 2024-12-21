@@ -141,7 +141,7 @@ function Permissions() {
           configFields={permissionFields}
         />
       </div>
-      <FormModal<Permission, Permission>
+      <FormModal<Permission, Permission, Permission>
         initialData={selectedPermission || { id: 0, name: "" }}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

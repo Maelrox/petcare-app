@@ -106,7 +106,7 @@ function Veterinaries() {
           configFields={veterinaryFields}
         />
       </div>
-      <FormModal<Veterinary, IdentificationType>
+      <FormModal<Veterinary, IdentificationType, Veterinary>
         initialData={selectedVeterinary || {vetId: 0, identification:"", name:"", phone:"", specialization:"", identificationType: { id:0, name:""}}}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

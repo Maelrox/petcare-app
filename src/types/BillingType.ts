@@ -16,7 +16,7 @@ export interface Billing {
   finalDate?: string;
 }
 
-export const billingFields: FormField<Billing>[] = [
+export const billingFields: FormField<Billing, Billing, Billing>[] = [
   {
     name: "billingId",
     label: "Id",

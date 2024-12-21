@@ -11,7 +11,7 @@ export interface Owner {
   address?: string;
 }
 
-export const ownerFields: FormField<Owner, IdentificationType>[] = [
+export const ownerFields: FormField<Owner, IdentificationType, Owner>[] = [
   {
     name: "name",
     label: "Full Name",

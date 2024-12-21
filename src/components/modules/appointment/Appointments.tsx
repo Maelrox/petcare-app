@@ -280,7 +280,7 @@ const Appointments: React.FC = () => {
           )}
 
           {isModalOpen && (
-            <FormModal<Appointment, Veterinary>
+            <FormModal<Appointment, Veterinary, Appointment>
               initialData={selectedAppointment || {
                 patientId: 0,
                 vetId: 0,

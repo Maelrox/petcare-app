@@ -25,7 +25,7 @@ export interface Appointment {
   serviceName?: string;
 }
 
-export const appointmentFields: FormField<Appointment, Veterinary>[] = [
+export const appointmentFields: FormField<Appointment, Veterinary, Appointment>[] = [
   {
     name: "appointmentId",
     label: "",

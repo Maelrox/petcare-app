@@ -1,15 +1,15 @@
 import { useState, useCallback } from 'react';
 import type { FormField, SelectOption } from '../../types/FormType';
 
-interface UseModalDependantFieldsProps<T, U> {
-  fields: FormField<T, U>[];
+interface UseModalDependantFieldsProps<T, U, K> {
+  fields: FormField<T, U, K>[];
   setFormData: React.Dispatch<React.SetStateAction<T>>;
 }
 
-export function useModalDependantFields<T extends Record<string, any>, U>({
+export function useModalDependantFields<T extends Record<string, any>, U, K>({
   fields,
   setFormData,
-}: UseModalDependantFieldsProps<T, U>) {
+}: UseModalDependantFieldsProps<T, U, K>) {
   const [dropdownOptions, setDropdownOptions] = useState<Record<string, SelectOption[]>>({});
   const [selectedOptions, setSelectedOptions] = useState<Record<string, SelectOption[]>>({});
   const [selectedElements, setSelectedElements] = useState<Record<string, any>>({});
@@ -17,7 +17,7 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
   const handleDependentFields = useCallback(async (
     name: keyof T,
     value: any,
-    field: FormField<T, U>
+    field: FormField<T, U, K>
   ) => {
     if (field && (field.type === "select" || field.type === "select-dependant")) {
       // Find and set selected option
@@ -69,13 +69,13 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
               // Result expected to be a generic type T, U, K
               setFormData((prev) => ({
                 ...prev,
-                [dependentField.name] : result[dependentField.resultPlaceHolder!],
+                [dependentField.name]: result[dependentField.resultPlaceHolder as keyof typeof result],
 
               }));
               if (dependentField.resultId && typeof dependentField.resultId === "string") {
                 setFormData((prev) => ({
                   ...prev,
-                  [dependentField.resultId as string]: result[dependentField.resultId!],
+                  [dependentField.resultId as string]: result[dependentField.resultId! as keyof typeof result],
                 }));
               } else {
                 console.warn(`Invalid resultId: ${dependentField.resultId}`);
@@ -141,10 +141,13 @@ export function useModalDependantFields<T extends Record<string, any>, U>({
           dependantId,
           dependentField.name as string
         );
-        setDropdownOptions((prev) => ({
-          ...prev,
-          [dependentField.name]: options,
-        }));
+        if (Array.isArray(options)) {
+          setDropdownOptions((prev) => ({
+            ...prev,
+            [dependentField.name]: options,
+          }));
+        }
+
       } else if (dependentField.dependantId && selected && !dependentField.fetch) { // Set dependant id when no additional fetch is required
         const dependantId = selected[dependentField.dependantId];
         setFormData((prev) => ({

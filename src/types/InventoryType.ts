@@ -8,7 +8,7 @@ export interface Inventory {
   price: number;
 }
 
-export const inventoryFields: FormField<Inventory>[] = [
+export const inventoryFields: FormField<Inventory, Inventory, Inventory>[] = [
   {
     name: "inventoryId",
     label: "",

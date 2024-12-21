@@ -1,16 +1,16 @@
 import { useState } from "react";
 import type { FormField, ValidationErrors } from "../../types/FormType";
 
-interface UseFormValidationProps<T,U=T> {
-  fields: FormField<T, U>[];
+interface UseFormValidationProps<T, U = T, K = T> {
+  fields: FormField<T, U, K>[];
 }
 
-export function useFormValidation<T extends Record<string, any>, U>({
+export function useFormValidation<T extends Record<string, any>, U, K>({
   fields,
-}: UseFormValidationProps<T, U>) {
+}: UseFormValidationProps<T, U, K>) {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const validateField = (field: FormField<T, U>, value: any) => {
+  const validateField = (field: FormField<T, U, K>, value: any) => {
 
     if (field.validators) {
       const { required, maxLength, minLength, pattern, minDate, maxDate, minValue } = field.validators;

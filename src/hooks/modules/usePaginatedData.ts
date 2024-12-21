@@ -18,9 +18,9 @@ type ServiceFunction<T> = (
   pagination: { page: number; pageSize: number }
 ) => Promise<FetchDataResponse<T>>;
 
-function usePaginatedData<T extends Record<string, any>, U>(
+function usePaginatedData<T extends Record<string, any>, U, K>(
   service: ServiceFunction<T>,
-  fields: FormField<T, U>[]
+  fields: FormField<T, U, K>[]
 ) {
   const [data, setData] = useState<T[]>([]);
   const [isRefresh, setRefresh] = useState<boolean>(false)

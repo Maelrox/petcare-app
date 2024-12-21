@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import type { FormField, SelectOption } from "../../types/FormType";
 
-interface UsePrepopulateSelectProps<T, U> {
-  fields: FormField<T, U>[];
+interface UsePrepopulateSelectProps<T, U, K> {
+  fields: FormField<T, U, K>[];
   initialData: T;
   setFormData: React.Dispatch<React.SetStateAction<T>>;
   setSelectedOptions: React.Dispatch<React.SetStateAction<Record<string, SelectOption[]>>>;
@@ -10,14 +10,14 @@ interface UsePrepopulateSelectProps<T, U> {
   handleInputChange?: (name: keyof T, value: any) => void;
 }
 
-export const usePrepopulateSelect = <T extends Record<string, any>, U>({
+export const usePrepopulateSelect = <T extends Record<string, any>, U, K>({
   fields,
   initialData,
   setFormData,
   setSelectedOptions,
   setDropdownOptions,
   handleInputChange
-}: UsePrepopulateSelectProps<T, U>) => {
+}: UsePrepopulateSelectProps<T, U, K>) => {
   // Load initial options for all select fields
   useEffect(() => {
     const loadInitialOptions = async () => {
@@ -48,7 +48,7 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U>({
     const prepopulateSelectFields = async () => {
       for (const field of fields) {
         const fieldNameIndex = field.name.toString();
-        
+
         if (field.type === "select" && initialData[field.name]) {
           if (field.fetch && typeof field.fetch === "function") {
             const fetchedObjects = await field.fetch();
@@ -56,11 +56,11 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U>({
               console.warn(`No fetched objects returned for field`);
               continue;
             }
-            
+
             const identifierField = field.dependantId as keyof U;
             const initialValue = initialData[field.name];
-            const compareValue = typeof initialValue === "object" && initialValue !== null 
-              ? initialValue.id 
+            const compareValue = typeof initialValue === "object" && initialValue !== null
+              ? initialValue.id
               : initialValue;
 
             const selectedOption: any = fetchedObjects.find((opt: any) => {
@@ -74,16 +74,16 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U>({
                 value: identifierField ? selectedOption[identifierField] : selectedOption[field.name as keyof U],
                 label: String(selectedOption.name),
               };
-              
+
               setSelectedOptions((prev) => ({
                 ...prev,
                 [field.name]: [...(prev[fieldNameIndex] as SelectOption[] || []), option],
               }));
-              
+
               const formDataValue = typeof initialValue === 'object' && initialValue !== null
                 ? { ...initialValue, id: option.value }
                 : option.value;
-                
+
               setFormData((prev) => ({ ...prev, [field.name]: formDataValue }));
             }
           }
@@ -91,32 +91,32 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U>({
         else if (field.type === "select-dependant" && initialData[field.name] && field.dependantId) {
           const dependentOn = fields.find((f) => f.name === field.dependsOn);
           const dependantIdIndex = field.dependantId.toString();
-          
+
           if (dependentOn && initialData[dependantIdIndex] && field.fetchDependant && field.dependantId) {
             const options = await field.fetchDependant(
               initialData[dependantIdIndex],
               field.name as string
             );
-            
-            setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
+            if (Array.isArray(options)) {
+              setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
+              const selectedOption = options.find(
+                (opt: any) => opt.value === initialData[field.name]
+              );
 
-            const selectedOption = options.find(
-              (opt: any) => opt.value === initialData[field.name]
-            );
-            
-            if (selectedOption) {
-              setSelectedOptions((prev) => ({
-                ...prev,
-                [field.name]: [...(prev[fieldNameIndex] as SelectOption[] || []), selectedOption],
-              }));
-              
-              setFormData((prev) => ({
-                ...prev,
-                [field.name]: selectedOption.value,
-              }));
+              if (selectedOption) {
+                setSelectedOptions((prev) => ({
+                  ...prev,
+                  [field.name]: [...(prev[fieldNameIndex] as SelectOption[] || []), selectedOption],
+                }));
 
-              if (selectedOption.dependantName && handleInputChange && field.dependsOn) {
-                handleInputChange(field.dependsOn, selectedOption.dependantName);
+                setFormData((prev) => ({
+                  ...prev,
+                  [field.name]: selectedOption.value,
+                }));
+
+                if (selectedOption.dependantName && handleInputChange && field.dependsOn) {
+                  handleInputChange(field.dependsOn, selectedOption.dependantName);
+                }
               }
             }
           }

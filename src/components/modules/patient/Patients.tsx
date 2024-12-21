@@ -107,7 +107,7 @@ function Patients() {
         />
       </div>
       {isModalOpen && (
-        <FormModal<Patient, Specie>
+        <FormModal<Patient, Specie, Patient>
           initialData={
             selectedPatient || {
               patientId: 0,

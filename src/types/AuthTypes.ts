@@ -18,7 +18,7 @@ export interface Permission {
   modulesAction?: ModuleAction[];
 }
 
-export const permissionFields: FormField<Permission>[] = [
+export const permissionFields: FormField<Permission, Permission, Permission>[] = [
   {
     name: "id",
     label: "",
@@ -84,7 +84,7 @@ export interface Role {
   permissions?: Permission[];
 }
 
-export const roleFields: FormField<Role>[] = [
+export const roleFields: FormField<Role, Role, Role>[] = [
   {
     name: "id",
     label: "",

@@ -7,7 +7,7 @@ export interface Service {
   price: number;
 }
 
-export const serviceFields: FormField<Service>[] = [
+export const serviceFields: FormField<Service, Service, Service>[] = [
   {
     name: "id",
     label: "",

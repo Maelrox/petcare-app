@@ -106,7 +106,7 @@ function Inventories({ handleSelect }: InventoriesProps) {
           configFields={inventoryFields}
         />
       </div>
-      <FormModal<Inventory, Inventory>
+      <FormModal<Inventory, Inventory, Inventory>
         initialData={selectedInventory || { inventoryId: 0, name: "", description: "", price: 0, quantity:0 }}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

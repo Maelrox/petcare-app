@@ -11,7 +11,7 @@ export interface Veterinary {
   specialization: string;
 }
 
-export const veterinaryFields: FormField<Veterinary, IdentificationType>[] = [
+export const veterinaryFields: FormField<Veterinary, IdentificationType, Veterinary>[] = [
   {
     name: "vetId",
     identifier: true,

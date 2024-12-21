@@ -111,7 +111,7 @@ function Owners({ handleSelect }: OwnerProps) {
           configFields={ownerFields}
         />
       </div>
-      <FormModal<Owner, IdentificationType>
+      <FormModal<Owner, IdentificationType, Owner>
         initialData={
           selectedOwner || {
             ownerId: 0,

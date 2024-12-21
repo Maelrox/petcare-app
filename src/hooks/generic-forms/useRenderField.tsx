@@ -3,7 +3,7 @@ import { SearchIcon } from 'lucide-react';
 import type { FormField, SelectOption } from '../../types/FormType';
 import ButtonIcon from '../../components/common/buttons/ButtonIcon';
 
-interface UseFormFieldRendererProps<T, U> {
+interface UseFormFieldRendererProps<T, U, K> {
   formData: T;
   handleInputChange: (name: keyof T | undefined, value: any) => void;
   dropdownOptions: Record<string, SelectOption[]>;
@@ -11,16 +11,16 @@ interface UseFormFieldRendererProps<T, U> {
   handleClickSearch: (fieldName: keyof T) => void;
 }
 
-export function useFormFieldRenderer<T extends Record<string, any>, U>({
+export function useFormFieldRenderer<T extends Record<string, any>, U, K>({
   formData,
   handleInputChange,
   dropdownOptions,
   selectedOptions,
   handleClickSearch,
-}: UseFormFieldRendererProps<T, U>) {
+}: UseFormFieldRendererProps<T, U, K>) {
 
   //Returns a form component depending of the FormField configuration of the generic
-  const renderField = (field: FormField<T, U>) => {
+  const renderField = (field: FormField<T, U, K>) => {
     if (field.type === "none") {
       return null;
     }

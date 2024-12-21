@@ -106,7 +106,7 @@ function Services({ handleSelect }: ServicesProps) {
           configFields={serviceFields}
         />
       </div>
-      <FormModal<Service, Service>
+      <FormModal<Service, Service, Service>
         initialData={selectedService || { id: 0, name: "", description: "", price: 0 }}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

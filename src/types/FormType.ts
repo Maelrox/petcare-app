@@ -1,4 +1,4 @@
-export interface FormField<T, U = T, K = T> {
+export interface FormField<T, U, K> {
   name: keyof T;
   label: string;
   type: string;

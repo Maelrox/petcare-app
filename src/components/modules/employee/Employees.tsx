@@ -123,7 +123,7 @@ function Employees({ handleSelect }: EmployeeProps) {
           configFields={registerFields}
         />
       </div>
-      <FormModal<RegisterRequest, RegisterRequest>
+      <FormModal<RegisterRequest, RegisterRequest, RegisterRequest>
       initialData={selectedEmployee || emptyRegisterRequest}
       isOpen={isModalOpen}
       onClose={handleCloseModal}
