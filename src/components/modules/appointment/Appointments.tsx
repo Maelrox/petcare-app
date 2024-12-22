@@ -119,10 +119,17 @@ const Appointments: React.FC = () => {
   };
 
   const handleAppointmentDelete = async (appointmentId: number) => {
-    const responseMessage = await deleteAppointment(appointmentId);
-    if (responseMessage) {
-      addToast(responseMessage);
-      fetchAppointments();
+    if (appointmentId) {
+      const isConfirmed = window.confirm(
+        `Are you sure you want to cancel this consult?`
+      );
+      if (isConfirmed) {
+        const responseMessage = await deleteAppointment(appointmentId);
+        if (responseMessage) {
+          addToast(responseMessage)
+          fetchAppointments();
+        }
+      }
     }
   };
 
