@@ -1,7 +1,14 @@
+
 export interface StatCardProps {
   title: string;
   value: string;
   trend: string;
+}
+
+export interface CompanyStatCardProps {
+  title: string;
+  value: string;
+  icon: JSX.Element;
 }
 
 export interface CompanyResume {
