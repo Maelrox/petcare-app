@@ -53,7 +53,7 @@ const Dashboard = () => {
   }, []);
 
   const StatCard = ({ title, value, trend }: StatCardProps) => (
-    <div className="bg-color_brand shadow-sm p-6 flex flex-col">
+    <div className="bg-color_brand shadow-sm p-6 flex flex-col border-r">
       <h3 className="text-sm font-medium text-white_brand mb-2">{title}</h3>
       <p className="text-2xl font-bold text-white_brand">{value}</p>
       <p className="text-xs text-white_brand mt-1">{trend}</p>
@@ -127,7 +127,7 @@ const Dashboard = () => {
       </div>
 
       <main className="max-w-full mx-auto px-0 sm:px-0 lg:px-0 py-0">
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 border-b">
           <StatCard
             title="Monthly Customers"
             value={companyData?.totalCustomers.toString() ?? "0"}
@@ -151,11 +151,11 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white_brand shadow-sm">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-color_brand border-white_brand border">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0.5 border-b">
+            <div className="bg-color_brand">
               <HotMetrics />
             </div>
-            <div className="bg-color_brand border-white_brand border">
+            <div className="bg-color_brand">
               <BarChartWidget
                 data={companyData?.chartData}
                 title="Patient Statistics"
@@ -167,35 +167,35 @@ const Dashboard = () => {
               <QuickAction />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-0.5 border-b-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-0.5 border-b">
             <CompanyCard
               title="Company Name"
               value="Doctor Pet"
-              icon={<BriefcaseBusiness className="w-6 h-6 text-white mr-1" />}
+              icon={<BriefcaseBusiness className="w-6 h-6 text-white" />}
             />
             <EmployeeCard
               title="Total Employees"
               data={attentionsExampleData}
-              icon={<BookUser className="w-6 h-6 text-white mr-1" />}
+              icon={<BookUser className="w-6 h-6 text-white" />}
             />
             <AttentionsCard
               title="Total Attentions"
               data={attentionsExampleData}
-              icon={<PillBottle className="w-6 h-6 text-white mr-1" />}
+              icon={<PillBottle className="w-6 h-6 text-white" />}
             />
             <ProductsCard
               title={"Top Product"}
               data={[]}
-              icon={<Bone className="w-6 h-6 text-white mr-1" />}
+              icon={<Bone className="w-6 h-6 text-white" />}
             />
             <ServicesCard
               title={"Services"}
               data={[]}
-              icon={<HeartPulse className="w-6 h-6 text-white mr-1" />} />
+              icon={<HeartPulse className="w-6 h-6 text-white" />} />
             <SupportCard
               title="Support"
               value="Need any help contact our support team"
-              icon={<Headset className="w-6 h-6 text-white mr-1" />}
+              icon={<Headset className="w-6 h-6 text-white" />}
             />
           </div>
         </div>
