@@ -34,6 +34,7 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
   // Group appointments by hour
   const groupedAppointments = dayAppointments.reduce((acc, app) => {
     const hour = dayjs(app.appointmentDate).format("h A");
+    app.vetId
     if (!acc[hour]) acc[hour] = [];
     acc[hour].push(app);
     return acc;
@@ -95,7 +96,7 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
             Object.entries(groupedAppointments).map(([hour, apps], index) => (
               <div key={hour} className="hour-group mb-4">
                 <p className="hour-label font-bold mb-2 text-gray-700">{hour}</p>
-                <div className="appointments grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="appointments grid gap-2 grid-cols-1 sm:grid-cols-3 lg:grid-cols-4">
                   {apps.map((app, index) => (
                     <div
                       key={app.appointmentId}
@@ -103,8 +104,9 @@ const Calendar: React.FC<CalendarProps> = ({ appointments = [], onAppointmentCli
                       className={`appointment-card text-white p-2 rounded shadow cursor-pointer hover:bg-rose-700 transition
                         ${index % 2 === 0 ? 'bg-rose-600' : 'bg-color_brand'}`}
                     >
-                      <p className="font-bold">{dayjs(app.appointmentDate).format("h:mm A")}</p>
-                      <p>{app.reason}</p>
+                      <p><strong>Date: </strong>{dayjs(app.appointmentDate).format("h:mm A")}</p>
+                      <p><strong>Veterinary: </strong>{app.vetName}</p>
+                      <p><strong>Service: </strong>{app.serviceName}</p>
                     </div>
                   ))}
                 </div>

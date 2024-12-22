@@ -63,7 +63,7 @@ const Dashboard = () => {
   return (
     <div className="bg-white_brand">
       <div className="bg-white_brand shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-color_brand">
@@ -78,7 +78,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <StatCard
             title="Monthly Customers"
@@ -121,6 +121,7 @@ const Dashboard = () => {
           </div>
         </div>
       </main>
+
     </div>
   );
 };

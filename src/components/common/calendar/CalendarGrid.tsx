@@ -70,7 +70,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                 Time: {dayjs(app.appointmentDate).format("h:mm A")}
               </p>
               <p className="text-sm">Veterinary: {app.vetName}</p>
-              <p className="text-sm">Reason: {app.reason}</p>
+              <p className="text-sm">Service: {app.serviceName}</p>
               <p className="text-sm">
                 Status:{" "}
                 <span
