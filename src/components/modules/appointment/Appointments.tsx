@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { CalendarDays, LayoutGrid, CalendarPlus, CircleIcon, CheckCircleIcon } from "lucide-react";
+import { CalendarDays, LayoutGrid, CalendarPlus } from "lucide-react";
 import { appointmentFields, type Appointment } from "../../../types/AppointmentType";
 import type { Veterinary } from "../../../types/VeterinaryType";
 import "../../../styles/Calendar.css";

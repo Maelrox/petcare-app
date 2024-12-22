@@ -3,7 +3,6 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { CircleIcon, CheckCircleIcon } from "lucide-react";
 import type { SelectOption } from "../../../types/FormType";
-import type { Veterinary } from "../../../types/VeterinaryType";
 
 interface AppointmentFiltersProps {
   selectedVet: SelectOption | null;
