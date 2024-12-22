@@ -43,10 +43,10 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
             if (consultations) {
                 const billingItems: BillingDetail[] = consultations.map(consult => ({
                     consultationId: consult.consultationId || 0,
-                    name: `Consultation - ${consult.reason}`,
+                    name: `${consult.serviceName}`,
                     description: `Date: ${new Date(consult.consultationDate).toLocaleDateString()}`,
                     quantity: 1,
-                    amount: 50,
+                    amount: consult.price || 0
                 }));
                 setItems(billingItems);
                 calculateTotal(billingItems);

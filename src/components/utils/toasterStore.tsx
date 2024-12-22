@@ -5,7 +5,7 @@ interface Toast {
   id: number;
   message: string;
 }
-const MAX_MESSAGE_LENGTH = 64;
+const MAX_MESSAGE_LENGTH = 128;
 
 const toastsAtom = atom<Toast[]>([]);
 

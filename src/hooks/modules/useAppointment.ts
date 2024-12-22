@@ -53,9 +53,17 @@ export const deleteAppointment = async (appointmentId: number): Promise<string |
   }
 };
 
-export const fetchAppointments= async (patientId: number): Promise<Appointment[] | undefined> => {
+export const fetchAppointments= async (patientId: number, appointmentId: string): Promise<Appointment[] | undefined> => {
   const options = generateRequestOptions("GET")
-  let url = BASE_URL + PATH_APPOINTMENT + `/patient/${patientId}`
+  let url = BASE_URL + PATH_APPOINTMENT + `/${appointmentId}/patient/${patientId}`
+  if (options) {
+    return await useFetchData<Appointment[]>(url, options)
+  }
+};
+
+export const fetchScheduledAppointments= async (patientId: number): Promise<Appointment[] | undefined> => {
+  const options = generateRequestOptions("GET")
+  let url = BASE_URL + PATH_APPOINTMENT + `/patient/scheduled/${patientId}`
   if (options) {
     return await useFetchData<Appointment[]>(url, options)
   }

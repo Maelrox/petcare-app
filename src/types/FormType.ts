@@ -10,7 +10,6 @@ export interface FormField<T, U, K> {
   dependantId?: string;
   placeHolder?: boolean;
   fetch?: U[] | (() => Promise<U[] | undefined>);
-  fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]> | Promise<K | undefined>;
   identifier?: boolean;
   includeFilter?: boolean;
   filterName?: string;
@@ -18,6 +17,9 @@ export interface FormField<T, U, K> {
   readOnly?: boolean;
   resultPlaceHolder?: string;
   resultId?: string;
+  fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]> | Promise<K | undefined>;
+  fetchEditDependant?: (dependentValue: any, idField: string, idType: string) => Promise<SelectOption[]> | Promise<K | undefined>;
+
 }
 
 export interface SelectOption {

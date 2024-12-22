@@ -1,7 +1,7 @@
 import Owners from "../components/modules/owner/Owners";
 import Services from "../components/modules/service/Services";
 import { getAppointment } from "../hooks/modules/useAppointment";
-import { fetchAppointmentOptions } from "../hooks/modules/useConsult";
+import { fetchAppointmentOptions, fetchPendingAppointmentOptions } from "../hooks/modules/useConsult";
 import { fetchPatientOptions } from "../hooks/modules/usePatient";
 import { fetchVeterinaries } from "../hooks/modules/useVeterinary";
 import type { Appointment } from "./AppointmentType";
@@ -32,6 +32,7 @@ export interface Consult {
   serviceId?: number;
   service?: Service;
   serviceName?: string;
+  price?: number;
 }
 
 export const consultFields: FormField<Consult, Veterinary, Appointment>[] = [
@@ -92,7 +93,8 @@ export const consultFields: FormField<Consult, Veterinary, Appointment>[] = [
     dependsOn: "patientId",
     dependantId: "patientId",
     hiddenOnList: true,
-    fetchDependant: fetchAppointmentOptions,
+    fetchDependant: fetchPendingAppointmentOptions,
+    fetchEditDependant: fetchAppointmentOptions
   },
   {
     name: "service",
@@ -106,11 +108,13 @@ export const consultFields: FormField<Consult, Veterinary, Appointment>[] = [
     dependsOn: "appointmentId",
     fetchDependant: getAppointment,
     resultPlaceHolder: "serviceName",
-    resultId: "serviceId"
+    resultId: "serviceId",
+    hiddenOnList: true,
+    includeFilter: false
   },
   {
     name: "serviceName",
-    label: "",
+    label: "Service",
     type: "none",
     placeHolder: true,
     dependsOn: "service"
@@ -121,6 +125,7 @@ export const consultFields: FormField<Consult, Veterinary, Appointment>[] = [
     type: "none",
     dependsOn: "service",
     dependantId: "id",
+    hiddenOnList: true
   },
   {
     name: "vetId",

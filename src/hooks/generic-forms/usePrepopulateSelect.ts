@@ -93,10 +93,20 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U, K>({
           const dependantIdIndex = field.dependantId.toString();
 
           if (dependentOn && initialData[dependantIdIndex] && field.fetchDependant && field.dependantId) {
-            const options = await field.fetchDependant(
-              initialData[dependantIdIndex],
-              field.name as string
-            );
+            let options;
+            if (field.fetchEditDependant) {
+              options = await field.fetchEditDependant(
+                initialData[dependantIdIndex],
+                field.name as string,
+                initialData[field.name]
+              );
+            } else {
+              options = await field.fetchDependant(
+                initialData[dependantIdIndex],
+                field.name as string
+              );
+            }
+
             if (Array.isArray(options)) {
               setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
               const selectedOption = options.find(
@@ -127,6 +137,10 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U, K>({
           if (placeHolder) {
             handleInputChange(field.dependsOn, placeHolder);
           }
+        }
+        //Set the input place holder when it is a search table
+        else if (field.searchTable && field.dependsOn && handleInputChange) {
+          handleInputChange(field.name, initialData[field.resultPlaceHolder!])
         }
       }
     };

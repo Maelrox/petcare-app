@@ -6,7 +6,7 @@ import type { SelectOption } from "../../types/FormType";
 import type { PaginationParams, PaginatedResponse } from "../../types/RequestType";
 import { blankPaginatedResponse, type TransactionResponse } from "../../types/ResponseType";
 import { useFetchData } from "../api/useFetchData";
-import { fetchAppointments } from "./useAppointment";
+import { fetchAppointments, fetchScheduledAppointments } from "./useAppointment";
 
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
@@ -67,10 +67,10 @@ export const deleteConsult = async (consultId: number): Promise<string | undefin
   }
 };
 
-export const fetchAppointmentOptions = async (dependantId: number, optionIdField: string): Promise<SelectOption[]> => {
+export const fetchAppointmentOptions = async (dependantId: number, optionIdField: string, idAppointment: string): Promise<SelectOption[]> => {
   try {
     const idField = optionIdField as keyof Appointment;
-    const appointments = await fetchAppointments(dependantId);
+    const appointments = await fetchAppointments(dependantId, idAppointment);
     if (appointments && Array.isArray(appointments)) {
       return appointments
         .map(appointment => ({
@@ -86,6 +86,24 @@ export const fetchAppointmentOptions = async (dependantId: number, optionIdField
   return [];
 };
 
+export const fetchPendingAppointmentOptions = async (dependantId: number, optionIdField: string): Promise<SelectOption[]> => {
+  try {
+    const idField = optionIdField as keyof Appointment;
+    const appointments = await fetchScheduledAppointments(dependantId);
+    if (appointments && Array.isArray(appointments)) {
+      return appointments
+        .map(appointment => ({
+          value: appointment[idField],
+          label: appointment.appointmentDate,
+        }))
+        .filter(option => option.value !== undefined) as SelectOption[];
+    }
+  } catch (error) {
+    addToast("Error reading patient options");
+    console.error('Error fetching patients:', error);
+  }
+  return [];
+};
 
 export const fetchUnBilledAttentions = async (ownerId: number): Promise<Consult[] | undefined> => {
   const options = generateRequestOptions("GET")

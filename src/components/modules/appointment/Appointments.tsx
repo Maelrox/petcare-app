@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import Select from "react-select";
-import AsyncSelect from "react-select/async";
 import { CalendarDays, LayoutGrid, CalendarPlus, CircleIcon, CheckCircleIcon } from "lucide-react";
 import { appointmentFields, type Appointment } from "../../../types/AppointmentType";
 import type { Veterinary } from "../../../types/VeterinaryType";
@@ -23,6 +21,7 @@ import usePermission from "../../../hooks/modules/usePermission";
 import type { SelectOption } from "../../../types/FormType";
 import ButtonIcon from "../../common/buttons/ButtonIcon";
 import { addToast } from "../../utils/toasterStore";
+import AppointmentFilter from "./AppointmentsFilter";
 
 const Appointments: React.FC = () => {
   const { hasPermission } = usePermission();
@@ -129,7 +128,7 @@ const Appointments: React.FC = () => {
 
   const handleSubmit = async (data: Appointment) => {
     const formattedDate = dayjs(data.appointmentDate).format("YYYY-MM-DDTHH:mm");
-//    data.serviceId = data?.service?.id;
+    //    data.serviceId = data?.service?.id;
     data.appointmentDate = formattedDate;
     const responseMessage = !data.appointmentId
       ? await createAppointment(data)
@@ -167,94 +166,20 @@ const Appointments: React.FC = () => {
     <div className="p-4 pt-0">
       {hasPermission("appointment", "view") ? (
         <div className="p-2 pb-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-end">
-            {/* Veterinary Select */}
-            <div className="w-full md:col-span-1">
-              <label htmlFor="vet-select" className="block text-sm font-medium text-color_brand mb-1">
-                Veterinary
-              </label>
-              <Select
-                id="vet-select"
-                options={vetOptions}
-                value={selectedVet}
-                onChange={handleVetChange}
-                className="w-full"
-                classNamePrefix="select"
-                isClearable
-                placeholder="Select a vet..."
-              />
-            </div>
-
-            {/* Owner Select with AsyncSelect */}
-            <div className="w-full md:col-span-1">
-              <label htmlFor="owner-select" className="block text-sm font-medium text-color_brand mb-1">
-                Owner
-              </label>
-              <div className="flex flex-col md:flex-row md:items-center md:space-x-2">
-                <AsyncSelect
-                  id="owner-select"
-                  cacheOptions
-                  loadOptions={loadOwnerOptions}
-                  value={selectedOwner}
-                  onChange={handleOwnerChange}
-                  className="w-full md:col-span-1"
-                  classNamePrefix="select"
-                  isClearable
-                  placeholder={`Search by ${searchByIdentification ? 'identification' : 'name'}...`}
-                  noOptionsMessage={({ inputValue }) =>
-                    inputValue.length < 3 ? "Please enter at least 3 characters" : "No options"
-                  }
-                />
-                <div className="flex items-center mt-2 md:mt-0">
-                  <label htmlFor="search-mode" className="flex items-center text-sm text-color_brand whitespace-nowrap cursor-pointer">
-                    {/* TODO: Move to common component */}
-                    <div className="mr-2">
-                      {searchByIdentification ? (
-                        <CheckCircleIcon size={20} className="text-rose-600" />
-                      ) : (
-                        <CircleIcon size={20} className="text-gray-400" />
-                      )}
-                    </div>
-                    By Identification
-                    {/* Hidden checkbox */}
-                    <input
-                      type="checkbox"
-                      id="search-mode"
-                      checked={searchByIdentification}
-                      onChange={() => setSearchByIdentification(!searchByIdentification)}
-                      className="mr-2 appearance-none w-0 h-0 opacity-0"
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Date Inputs */}
-            <div className="w-full md:col-span-1">
-              <label htmlFor="initial-date" className="block text-sm font-medium text-color_brand mb-1">
-                Initial Date
-              </label>
-              <input
-                id="initial-date"
-                type="date"
-                className="w-full p-1 text-color_brand border border-gray-300"
-                value={initialDate}
-                onChange={(e) => setInitialDate(e.target.value)}
-              />
-            </div>
-            <div className="w-full md:col-span-1">
-              <label htmlFor="final-date" className="block text-sm font-medium text-color_brand mb-1">
-                Final Date
-              </label>
-              <input
-                id="final-date"
-                type="date"
-                className="w-full p-1 text-color_brand border border-gray-300"
-                value={finalDate}
-                onChange={(e) => setFinalDate(e.target.value)}
-              />
-            </div>
-          </div>
+          <AppointmentFilter
+            selectedVet={selectedVet}
+            selectedOwner={selectedOwner}
+            initialDate={initialDate}
+            finalDate={finalDate}
+            searchByIdentification={searchByIdentification}
+            vetOptions={vetOptions}
+            onVetChange={handleVetChange}
+            onOwnerChange={handleOwnerChange}
+            onInitialDateChange={setInitialDate}
+            onFinalDateChange={setFinalDate}
+            onSearchModeChange={() => setSearchByIdentification(!searchByIdentification)}
+            loadOwnerOptions={loadOwnerOptions}
+          />
 
           <div className="flex justify-end mt-2 space-x-2">
             <ButtonIcon onClick={handleAddClick}>
