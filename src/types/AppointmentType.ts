@@ -68,6 +68,7 @@ export const appointmentFields: FormField<Appointment, Veterinary, Appointment>[
     name: "appointmentDate",
     label: "Date",
     type: "datetime-local",
+    typeFormat: "datetime",
     required: true,
     validators: { maxLength: 64 },
   },

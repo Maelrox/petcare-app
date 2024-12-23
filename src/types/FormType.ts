@@ -2,6 +2,7 @@ export interface FormField<T, U, K> {
   name: keyof T;
   label: string;
   type: string;
+  typeFormat?: string;
   required?: boolean;
   validators?: Validator;
   searchTable?: any;

@@ -149,6 +149,7 @@ export const consultFields: FormField<Consult, Veterinary, Appointment>[] = [
     name: "consultationDate",
     label: "Date",
     type: "datetime-local",
+    typeFormat: "datetime",
     required: true,
     validators: { maxLength: 64 },
   },

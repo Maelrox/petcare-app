@@ -37,6 +37,7 @@ export const billingFields: FormField<Billing, Billing, Billing>[] = [
     name: "transactionDate",
     label: "Date",
     type: "datetime-local",
+    typeFormat: "datetime",
     required: true,
     includeFilter: false,
     filterName: "Date"

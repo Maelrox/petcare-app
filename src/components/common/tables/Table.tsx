@@ -12,6 +12,7 @@ import TableView from "./TableView";
 import notFoundImage from "../../../assets/not_found_doctor.png";
 import type { FormField } from "../../../types/FormType";
 import { formatForStringTimeLocal } from "../../utils/timeUtil";
+import { formatMoney } from "../../utils/numberUtil";
 
 type DataTableProps<T, U, K> = {
   dataSource: T[];
@@ -39,6 +40,20 @@ function createAccessorFn<T>(key: keyof T): AccessorFn<T> {
   };
 }
 
+const renderCell = (value: any, typeFormat?: string) => {
+  switch (typeFormat) {
+    case 'boolean':
+      return value ? 'Yes' : 'No';
+    case 'datetime':
+      return formatForStringTimeLocal(value);
+    case 'money':
+      return formatMoney(value);
+    default:
+      return value;
+  }
+};
+
+
 function generateTableColumns<T, U, K>(
   data: T[],
   configFields: FormField<T, U, K>[]
@@ -56,17 +71,9 @@ function generateTableColumns<T, U, K>(
       return columnHelper.accessor(accessorFn, {
         id: field.name as string,
         header: field.label,
-        cell: (info) => {
-          const value = info.getValue();
-          if (typeof value === "boolean") {
-            return <span>{value ? "Yes" : "No"}</span>;
-          }
-          if (field.type === "datetime-local") {
-            const formatDateTime = formatForStringTimeLocal(value);
-            return <span>{formatDateTime}</span>;
-          }
-          return <span>{value}</span>;
-        },
+        cell: ({ getValue }) => (
+          <span>{renderCell(getValue(), field.typeFormat)}</span>
+        ),
         footer: (info) => info.column.id,
       });
     });

@@ -55,9 +55,6 @@ function TableView<T>({
                   } hover:bg-skyblue_dark hover:text-white text-color_brand`}
               >
                 {row.getVisibleCells().map((cell) => {
-                  console.log('Rendering cell:', cell.getValue());
-                  console.log('Rendering cell:', cell.getContext());
-                  console.log('Rendering cell:', cell.column.columnDef.cell);
                   return (
                     <td
                       key={cell.id}

@@ -95,6 +95,7 @@ export const registerFields: FormField<RegisterRequest , RegisterRequest, Regist
     name: "enabled",
     label: "Enabled",
     type: "",
+    typeFormat: "boolean",
     required: true,
     placeHolder: true,
   }

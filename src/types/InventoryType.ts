@@ -42,8 +42,10 @@ export const inventoryFields: FormField<Inventory, Inventory, Inventory>[] = [
     name: "price",
     label: "Price",
     type: "number",
+    typeFormat: "money",
     required: true,
     validators: { minValue: 1 },
     includeFilter: false,
+
   },
 ];
