@@ -22,19 +22,17 @@ export const usePrepopulateSelect = <T extends Record<string, any>, U, K>({
   useEffect(() => {
     const loadInitialOptions = async () => {
       for (const field of fields) {
-        if (field.type === "select") {
-          if (field.fetch && typeof field.fetch === "function") {
-            const fetchedObjects = await field.fetch();
-            if (Array.isArray(fetchedObjects)) {
-              const identifierField = field.dependantId;
-              const options = fetchedObjects.map((opt: any) => ({
-                value: identifierField ? opt[identifierField] : opt[field.name],
-                label: String(opt.name),
-              }));
-              setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
-            } else {
-              setDropdownOptions((prev) => ({ ...prev, [field.name]: [] }));
-            }
+        if (field.type === "select" && field.fetch && typeof field.fetch === "function") {
+          const fetchedObjects = await field.fetch();
+          if (Array.isArray(fetchedObjects)) {
+            const identifierField = field.dependantId;
+            const options = fetchedObjects.map((opt: any) => ({
+              value: identifierField ? opt[identifierField] : opt[field.name],
+              label: String(opt.name),
+            }));
+            setDropdownOptions((prev) => ({ ...prev, [field.name]: options }));
+          } else {
+            setDropdownOptions((prev) => ({ ...prev, [field.name]: [] }));
           }
         }
       }

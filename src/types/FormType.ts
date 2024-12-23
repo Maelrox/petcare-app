@@ -19,7 +19,7 @@ export interface FormField<T, U, K> {
   resultId?: string;
   fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]> | Promise<K | undefined>;
   fetchEditDependant?: (dependentValue: any, idField: string, idType: string) => Promise<SelectOption[]> | Promise<K | undefined>;
-
+  customType?: React.FC<any>
 }
 
 export interface SelectOption {

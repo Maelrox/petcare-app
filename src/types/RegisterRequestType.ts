@@ -1,3 +1,4 @@
+import CountrySelect from "../components/common/select/CountrySelect";
 import Roles from "../components/modules/management/Roles";
 import type { FormField } from "./FormType";
 
@@ -48,7 +49,7 @@ export const registerFields: FormField<RegisterRequest , RegisterRequest, Regist
   {
     name: "password",
     label: "Password",
-    type: "text",
+    type: "password",
     required: true,
     hiddenOnList: true,
     validators: { maxLength: 32 },
@@ -74,7 +75,8 @@ export const registerFields: FormField<RegisterRequest , RegisterRequest, Regist
   {
     name: "country",
     label: "Country",
-    type: "text",
+    type: "custom",
+    customType: CountrySelect,
     required: true,
     validators: { maxLength: 2 },
   },

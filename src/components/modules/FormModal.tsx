@@ -113,16 +113,18 @@ function FormModal<T extends Record<string, any>, U, K>({
     handleCloseSearch();
   };
 
+  const isFormValid = Object.keys(errors).length === 0;
+  const identifierField = fields.find(field => field.identifier);
+  const isEdit = (identifierField && formData[identifierField.name]) || false;
+
   const { renderField } = useFormFieldRenderer({
     formData,
     handleInputChange,
     dropdownOptions,
     selectedOptions,
     handleClickSearch,
+    isEdit
   });
-
-  const isFormValid = Object.keys(errors).length === 0;
-  const identifierField = fields.find(field => field.identifier);
 
   return (
     <Modal title={title} isOpen={isOpen} onClose={onClose} maxSize={maxSize}>
@@ -144,7 +146,7 @@ function FormModal<T extends Record<string, any>, U, K>({
             </div>
           ) : null))}
         <Button disabled={!isFormValid} type="submit">
-          {identifierField && formData[identifierField.name] ? "Update" : "Create"}
+          {isEdit ? "Update" : "Create"}
         </Button>
       </form>
       {/* Allows to search and select data from a table */}

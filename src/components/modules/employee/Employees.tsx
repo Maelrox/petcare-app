@@ -77,9 +77,10 @@ function Employees({ handleSelect }: EmployeeProps) {
   };
 
   const handleSubmit = async (data: RegisterRequest) => {
-    const responseMessage = data.username
-      ? await register(data)
-      : await update(data);
+    console.log(data)
+    const responseMessage = data.id
+      ? await update(data)
+      : await register(data);
     if (responseMessage) {
       setIsModalOpen(false);
       setRefresh(true);
