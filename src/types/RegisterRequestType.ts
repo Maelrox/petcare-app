@@ -13,6 +13,7 @@ export interface RegisterRequest {
   roles: string[];
   token: string;
   company?: Company;
+  enabled: boolean;
 }
 
 export interface Company {
@@ -89,6 +90,13 @@ export const registerFields: FormField<RegisterRequest , RegisterRequest, Regist
     displaySelect: "name",
     hiddenOnList: true,
     searchTable: Roles,
+  }, 
+  {
+    name: "enabled",
+    label: "Enabled",
+    type: "",
+    required: true,
+    placeHolder: true,
   }
 
 ];

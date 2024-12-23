@@ -7,8 +7,7 @@ import FormModal from "../FormModal";
 
 import { PlusSquareIcon } from "lucide-react";
 import { registerFields, type RegisterRequest } from "../../../types/RegisterRequestType";
-import { search, update, register } from "../../../hooks/modules/useEmployee";
-import { deleteOwner } from "../../../hooks/modules/useOwner";
+import { search, update, register, deactivateUser } from "../../../hooks/modules/useEmployee";
 
 type EmployeeProps = {
   handleSelect?: (rowData: RegisterRequest) => void;
@@ -27,7 +26,8 @@ function Employees({ handleSelect }: EmployeeProps) {
     phone: "",
     country: "",
     roles: [],
-    token: ""
+    token: "",
+    enabled: true
   };
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function Employees({ handleSelect }: EmployeeProps) {
         `Are you sure you want to disable the employee "${registerRequest.username}"?`
       );
       if (isConfirmed) {
-        const responseMessage = await deactivateEmployee(registerRequest.username);
+        const responseMessage = await deactivateUser(registerRequest.username);
         if (responseMessage) {
           setRefresh(true);
         }

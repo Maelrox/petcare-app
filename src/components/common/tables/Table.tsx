@@ -38,20 +38,34 @@ function createAccessorFn<T>(key: keyof T): AccessorFn<T> {
   };
 }
 
-function generateTableColumns<T, U, K>(data: T[], configFields: FormField<T, U, K>[]): {
+function generateTableColumns<T, U, K>(
+  data: T[],
+  configFields: FormField<T, U, K>[]
+): {
   data: T[];
   columns: ColumnDef<T, any>[];
 } {
   const columnHelper = createColumnHelper<T>();
-  const columns: ColumnDef<T, any>[] = configFields.filter(field => !field.hiddenOnList).map((field) => {
-    const accessorFn = createAccessorFn(field.name);
-    return columnHelper.accessor(accessorFn, {
-      id: field.name as string,
-      header: field.label,
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
+
+  const columns: ColumnDef<T, any>[] = configFields
+    .filter(field => !field.hiddenOnList)
+    .map((field) => {
+      const accessorFn = createAccessorFn(field.name);
+
+      return columnHelper.accessor(accessorFn, {
+        id: field.name as string,
+        header: field.label,
+        cell: (info) => {
+          const value = info.getValue();
+          if (typeof value === "boolean") {
+            return <span>{value ? "Yes" : "No"}</span>;
+          }
+          return <span>{value}</span>;
+        },
+        footer: (info) => info.column.id,
+      });
     });
-  });
+
   return { data, columns };
 }
 
@@ -90,7 +104,6 @@ function DataTable<T, U, K>({
     manualPagination: true,
     debugTable: false,
   });
-
   return (
     <div className="p-4">
       {!isLoading && dataSource.length === 0 ? (

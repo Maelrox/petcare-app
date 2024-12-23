@@ -54,14 +54,24 @@ function TableView<T>({
                 className={`${rowIndex % 2 === 0 ? "bg-white" : "bg-gray-100"
                   } hover:bg-skyblue_dark hover:text-white text-color_brand`}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="px-6 py-1 whitespace-nowrap text-sm font-medium"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  console.log('Rendering cell:', cell.getValue());
+                  console.log('Rendering cell:', cell.getContext());
+                  console.log('Rendering cell:', cell.column.columnDef.cell);
+                  return (
+                    <td
+                      key={cell.id}
+                      className="px-6 py-1 whitespace-nowrap text-sm font-medium"
+                    >
+                      {flexRender(
+                        typeof cell.column.columnDef.cell === "function"
+                          ? cell.column.columnDef.cell
+                          : () => cell.getValue(),
+                        cell.getContext()
+                      )}
+                    </td>
+                  );
+                })}
                 <td className="px-6 py-1 whitespace-nowrap flex space-x-2 justify-center">
                   {handleEdit &&
                     <ButtonIcon

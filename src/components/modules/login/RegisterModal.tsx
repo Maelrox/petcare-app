@@ -114,7 +114,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({
                 ...formData,
                 roles: ["ADMIN"],
                 token,
-                username: ''
+                username: '',
+                enabled: true
             };
             await register(registerData);
             onClose();
