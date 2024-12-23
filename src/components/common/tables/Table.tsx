@@ -11,6 +11,7 @@ import Pagination from "./TablePagination";
 import TableView from "./TableView";
 import notFoundImage from "../../../assets/not_found_doctor.png";
 import type { FormField } from "../../../types/FormType";
+import { formatForStringTimeLocal } from "../../utils/timeUtil";
 
 type DataTableProps<T, U, K> = {
   dataSource: T[];
@@ -59,6 +60,10 @@ function generateTableColumns<T, U, K>(
           const value = info.getValue();
           if (typeof value === "boolean") {
             return <span>{value ? "Yes" : "No"}</span>;
+          }
+          if (field.type === "datetime-local") {
+            const formatDateTime = formatForStringTimeLocal(value);
+            return <span>{formatDateTime}</span>;
           }
           return <span>{value}</span>;
         },

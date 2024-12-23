@@ -42,7 +42,7 @@ export const update = async (registerData: RegisterRequest): Promise<string | un
 export const deactivateUser = async (username: String): Promise<string | undefined> => {
   const options = generateRequestOptions("PATCH")
   if (options) {
-    const response = await useFetchData<TransactionResponse>(`${BASE_URL}${PATH_MANAGEMENT}${PATH_EMPLOYEE}${username}`, options)
+    const response = await useFetchData<TransactionResponse>(`${BASE_URL}${PATH_MANAGEMENT}${PATH_EMPLOYEE}/${username}/disable`, options)
     return response?.message ? response.message : undefined
   } else {
     return undefined

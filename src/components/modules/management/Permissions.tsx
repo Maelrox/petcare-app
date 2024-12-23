@@ -118,7 +118,7 @@ function Permissions() {
             filters={filters}
           />
         </div>
-        <div className="w-full md:w-1/3 pt-4 flex lg:justify-end max-h-16">
+        <div className="w-full md:w-1/3 pt-4 flex lg:justify-end max-h-16 mr-4">
           <ButtonIcon
             type="submit"
             onClick={() => handleAddClick()}
