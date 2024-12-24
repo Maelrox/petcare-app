@@ -8,9 +8,12 @@ import { PlusSquareIcon } from "lucide-react";
 import { createPatient, searchPatients, updatePatient } from "../../../hooks/modules/usePatient";
 import { patientFields, type Patient } from "../../../types/PatientType";
 import type { Specie } from "../../../types/SpecieType";
+import Modal from "../../common/modals/Modal";
+import PatientFiles from "./PatientFiles";
 
 function Patients() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalUploadFilesOpen, setIsModalUploadFilesOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const paginatedData = usePaginatedData(searchPatients, patientFields);
 
@@ -61,6 +64,16 @@ function Patients() {
     setSelectedPatient(null);
   };
 
+  const handleUploadFiles = (patient: Patient) => {
+    setSelectedPatient(patient);
+    setIsModalUploadFilesOpen(true);
+  };
+
+  const handleCloseModalUploadFile = () => {
+    setIsModalUploadFilesOpen(false);
+    setSelectedPatient(null);
+  };
+
   const handleSubmit = async (data: Patient) => {
     const responseMessage = data.patientId
       ? await updatePatient(data)
@@ -102,6 +115,7 @@ function Patients() {
           onPaginationChange={handlePaginationChange}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
+          handleAdditionalAction={handleUploadFiles}
           isLoading={isLoading}
           configFields={patientFields}
         />
@@ -112,7 +126,7 @@ function Patients() {
             selectedPatient || {
               patientId: 0,
               breed: "",
-              specie: {id:0, name:""},
+              specie: { id: 0, name: "" },
               name: "",
               age: 0,
               ownerId: null,
@@ -126,6 +140,17 @@ function Patients() {
           title={selectedPatient ? "Edit Patient" : "Create Patient"}
         />
       )}
+      <Modal
+        isOpen={isModalUploadFilesOpen}
+        maxSize="max-w-md"
+        onClose={handleCloseModalUploadFile}
+        title="Add modules to permission "
+        children={
+          selectedPatient && (
+            <PatientFiles patient={selectedPatient} />
+          )
+        }
+      ></Modal>
     </>
   );
 }

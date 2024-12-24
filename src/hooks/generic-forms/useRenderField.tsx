@@ -1,8 +1,7 @@
-import Select from 'react-select';
-import { SearchIcon } from 'lucide-react';
 import type { FormField, SelectOption } from '../../types/FormType';
-import ButtonIcon from '../../components/common/buttons/ButtonIcon';
-import type { ReactNode } from 'react';
+import { FileUpload } from '../../components/common/input/FileUpload';
+import { Dropdown } from '../../components/common/select/DropDown';
+import { InputSearchTable } from '../../components/common/input/InputSearchTable';
 
 interface UseFormFieldRendererProps<T, U, K> {
   formData: T;
@@ -22,32 +21,23 @@ export function useFormFieldRenderer<T extends Record<string, any>, U, K>({
   isEdit,
 }: UseFormFieldRendererProps<T, U, K>) {
 
-  //Returns a form component depending of the FormField configuration of the generic
+  //Returns a form component according to the field configuration
   const renderField = (field: FormField<T, U, K>) => {
     if (field.type === "none") {
       return null;
     }
 
-    // Selects
-    if (field.type === "select-dependant" || field.type === "select") {
-      const fieldNameIndex = field.name.toString();
-      const options = dropdownOptions[fieldNameIndex] || [];
-      const isDisabled = field.dependsOn && !formData[field.dependsOn];
-      const value = selectedOptions[fieldNameIndex] || null;
-
+    if (field.type === "select" || field.type === "select-dependant") {
       return (
-        <Select
-          options={options}
-          value={value}
-          onChange={(selected) => handleInputChange(field.name, selected?.value)}
-          isDisabled={isDisabled}
-          isClearable={false}
-          placeholder="Select..."
-        />
+      <Dropdown
+        dropdownOptions={dropdownOptions}
+        selectedOptions={selectedOptions}
+        field={field}
+        formData={formData}
+        handleInputChange={handleInputChange} />
       );
     }
 
-    // Textareas
     if (field.type === "text-area") {
       return (
         <textarea
@@ -60,10 +50,8 @@ export function useFormFieldRenderer<T extends Record<string, any>, U, K>({
       );
     }
 
-    // Custom
     if (field.type === "custom" && field.customType) {
       const CustomComponent = field.customType;
-
       return (
         <CustomComponent
           value={formData[field.name]}
@@ -75,43 +63,24 @@ export function useFormFieldRenderer<T extends Record<string, any>, U, K>({
       );
     }
 
-
-    // Get the display value from the selected/retrieved object/array
-    if (field.searchTable) {
-      let displayValue = "";
-      const fieldValue = formData[field.name];
-      if (fieldValue && !Array.isArray(fieldValue) && typeof fieldValue === "object" && "name" in fieldValue) {
-        displayValue = fieldValue.name;
-      }
-      if (fieldValue && !Array.isArray(fieldValue)) {
-        displayValue = fieldValue;
-      }
-      // Handle employees roles array in edition prepulatefields
-      if (fieldValue && Array.isArray(fieldValue) && fieldValue.length > 0 && "name" in fieldValue[0] && isEdit) {
-        displayValue = fieldValue[0].name;
-      }
+    if (field.type === "file" && field.fileAcceptedTypes) {
       return (
-        <div className="flex items-center">
-          <input
-            type="text"
-            id={field.name as string}
-            value={displayValue}
-            onChange={(e) => handleInputChange(field.name, e.target.value)}
-            required={field.required}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            disabled
-          />
-          <ButtonIcon
-            type="button"
-            bgColor="bg-gray-300"
-            onClick={() => handleClickSearch(field.name)}
-          >
-            <SearchIcon
-              className="text-color_brand hover:animate-pulse"
-              size={24}
-            />
-          </ButtonIcon>
-        </div>
+        <FileUpload
+          field={field}
+          formData={formData}
+          handleInputChange={handleInputChange}
+          isEdit={false} />
+      )
+    }
+
+    if (field.searchTable) {
+      return (
+        <InputSearchTable
+          field={field}
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleClickSearch={handleClickSearch}
+          isEdit={isEdit} />
       );
     }
 
@@ -127,7 +96,8 @@ export function useFormFieldRenderer<T extends Record<string, any>, U, K>({
         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
       />
     );
-  };
+  }
 
   return { renderField };
+
 }

@@ -49,6 +49,16 @@ export const deactivateUser = async (username: String): Promise<string | undefin
   }
 };
 
+export const activateUser = async (username: String): Promise<string | undefined> => {
+  const options = generateRequestOptions("PATCH")
+  if (options) {
+    const response = await useFetchData<TransactionResponse>(`${BASE_URL}${PATH_MANAGEMENT}${PATH_EMPLOYEE}/${username}/enable`, options)
+    return response?.message ? response.message : undefined
+  } else {
+    return undefined
+  }
+};
+
 export const search = async (
   queryParams: string,
   pagination: PaginationParams

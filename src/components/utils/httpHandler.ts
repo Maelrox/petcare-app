@@ -54,6 +54,34 @@ export const generateRequestOptions = (
   }
 };
 
+export const generateRequestOptionsForFileUpload = (
+  method: string,
+  file: File,
+  description?: string,
+  skipToken?: boolean
+): RequestOptions | undefined => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("description", description || "");
+
+    const options: RequestOptions = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      method: method,
+      skipToken: skipToken,
+      body: formData,
+    };
+
+    return options;
+  } catch (e) {
+    console.error("Unknown error", e);
+    return undefined;
+  }
+};
+
+
 
 export const buildPaginatedUrl = (baseUrl: string, pagination: PaginationParams, queryParams?: string): string | undefined => {
   try {

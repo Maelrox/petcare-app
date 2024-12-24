@@ -21,6 +21,7 @@ export interface FormField<T, U, K> {
   fetchDependant?: (dependentValue: any, idField: string) => Promise<SelectOption[]> | Promise<K | undefined>;
   fetchEditDependant?: (dependentValue: any, idField: string, idType: string) => Promise<SelectOption[]> | Promise<K | undefined>;
   customType?: React.FC<any>
+  fileAcceptedTypes?: string
 }
 
 export interface SelectOption {

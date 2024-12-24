@@ -19,7 +19,7 @@ export interface Billing {
 export const billingFields: FormField<Billing, Billing, Billing>[] = [
   {
     name: "billingId",
-    label: "Id",
+    label: "Bill No.",
     type: "none",
     required: true,
     includeFilter: true,
@@ -55,6 +55,7 @@ export const billingFields: FormField<Billing, Billing, Billing>[] = [
     name: "totalAmount",
     label: "Amount",
     type: "number",
+    typeFormat: "money",
     required: true,
     validators: { minValue: 1 },
   }

@@ -19,11 +19,8 @@ import { addToast } from "../../utils/toasterStore";
 function Permissions() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalAssignRolesOpen, setIsModalAssignRolesOpen] = useState(false);
-  const [isModalAssignModulesOpen, setIsModalAssignModulesOpen] =
-    useState(false);
-
-  const [selectedPermission, setSelectedPermission] =
-    useState<Permission | null>(null);
+  const [isModalAssignModulesOpen, setIsModalAssignModulesOpen] = useState(false);
+  const [selectedPermission, setSelectedPermission] = useState<Permission | null>(null);
   const paginatedData = usePaginatedData(getPermissions, permissionFields);
 
   useEffect(() => {

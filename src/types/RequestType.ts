@@ -3,7 +3,7 @@ import type { Permission, Role } from "./AuthTypes";
 export type RequestOptions = {
   method: string
   headers?: HeadersInit
-  body?: string
+  body?: string | FormData
   skipToken?: boolean
 };
 

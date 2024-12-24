@@ -7,7 +7,7 @@ import FormModal from "../FormModal";
 
 import { PlusSquareIcon } from "lucide-react";
 import { registerFields, type RegisterRequest } from "../../../types/RegisterRequestType";
-import { search, update, register, deactivateUser } from "../../../hooks/modules/useEmployee";
+import { search, update, register, deactivateUser, activateUser } from "../../../hooks/modules/useEmployee";
 
 type EmployeeProps = {
   handleSelect?: (rowData: RegisterRequest) => void;
@@ -52,13 +52,28 @@ function Employees({ handleSelect }: EmployeeProps) {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (registerRequest: RegisterRequest) => {
+  const handleDeactivate = async (registerRequest: RegisterRequest) => {
     if (registerRequest.username) {
       const isConfirmed = window.confirm(
         `Are you sure you want to disable the employee "${registerRequest.username}"?`
       );
       if (isConfirmed) {
         const responseMessage = await deactivateUser(registerRequest.username);
+        if (responseMessage) {
+          setRefresh(true);
+        }
+        return responseMessage;
+      }
+    }
+  };
+
+  const handleActivate = async (registerRequest: RegisterRequest) => {
+    if (registerRequest.username) {
+      const isConfirmed = window.confirm(
+        `Are you sure you want to enable the employee "${registerRequest.username}"?`
+      );
+      if (isConfirmed) {
+        const responseMessage = await activateUser(registerRequest.username);
         if (responseMessage) {
           setRefresh(true);
         }
@@ -119,8 +134,9 @@ function Employees({ handleSelect }: EmployeeProps) {
           totalRows={totalRows.current}
           onPaginationChange={handlePaginationChange}
           handleEdit={handleEdit}
-          handleDelete={handleDelete}
+          handleDelete={handleDeactivate}
           handleSelect={handleSelect}
+          handleAdditionalAction={handleActivate}
           isLoading={isLoading}
           configFields={registerFields}
         />

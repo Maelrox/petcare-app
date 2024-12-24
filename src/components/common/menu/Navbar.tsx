@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
       </button>
 
       <div
-        className={`absolute lg:static top-16 left-0 lg:w-auto bg-white lg:bg-transparent flex flex-col lg:flex-row items-start lg:items-stretch gap-2 lg:gap-4 transition-all duration-300 ease-in-out ${
+        className={`absolute lg:static top-16 -left-8 lg:w-auto bg-white lg:bg-transparent flex flex-col lg:flex-row items-start lg:items-stretch gap-2 lg:gap-4 transition-all duration-300 ease-in-out z-50 min-w-52 ${
           menuOpen ? "block" : "hidden"
         } lg:flex`}
       >

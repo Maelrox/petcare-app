@@ -12,7 +12,7 @@ interface FormModalProps<T, U, K> {
   initialData: T;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: T) => Promise<string | undefined>;
+  onSubmit: (data: T, optional1?: any, optional2?: any) => Promise<string | undefined>;
   fields: FormField<T, U, K>[];
   title: string;
   description?: string;
