@@ -142,9 +142,9 @@ function Patients() {
       )}
       <Modal
         isOpen={isModalUploadFilesOpen}
-        maxSize="max-w-md"
+        maxSize="max-w-3xl"
         onClose={handleCloseModalUploadFile}
-        title="Add modules to permission "
+        title="Files History"
         children={
           selectedPatient && (
             <PatientFiles patient={selectedPatient} />

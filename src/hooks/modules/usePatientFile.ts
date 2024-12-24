@@ -2,7 +2,7 @@ import { generateRequestOptions, buildPaginatedUrl, generateRequestOptionsForFil
 import type { PatientFile } from "../../types/PatientFilesType";
 import type { Patient } from "../../types/PatientType";
 import type { PaginationParams, PaginatedResponse } from "../../types/RequestType";
-import  { blankPaginatedResponse, type TransactionResponse } from "../../types/ResponseType";
+import { blankPaginatedResponse, type TransactionResponse } from "../../types/ResponseType";
 import { useFetchData } from "../api/useFetchData";
 
 const BASE_URL = import.meta.env.PUBLIC_VITE_BACKEND_URL;
@@ -18,16 +18,11 @@ export const uploadFile = async (patientFile: PatientFile, patientId?: number): 
   }
 };
 
-export const getPatientFiles = async (
-  queryParams: string,
-  pagination: PaginationParams
-): Promise<PaginatedResponse<Patient>> => {
+export const getPatientFiles = async (patientId?: number): Promise<PatientFile[] | undefined> => {
   const options = generateRequestOptions("GET")
-  const url = buildPaginatedUrl(BASE_URL + PATH_PATIENT + "", pagination, queryParams)
+  let url = BASE_URL + PATH_PATIENT
+  url += `/${patientId}/patientFiles`;
   if (options && url) {
-    const response = await useFetchData<PaginatedResponse<Patient>>(url, options)
-    return response? response : blankPaginatedResponse
-  } else {
-    return blankPaginatedResponse
+    return await useFetchData<PatientFile[]>(url, options)
   }
 };

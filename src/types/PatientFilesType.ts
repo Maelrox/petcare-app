@@ -1,10 +1,14 @@
 import type { FormField } from "./FormType";
+import type { Patient } from "./PatientType";
 
 export interface PatientFile {
+  fileId?: number;
   fileName: string;
   description: string;
   fileDate?: Date;
   file?: File;
+  filePath?: string;
+  patient?: Patient;
 }
 
 export const patientFilesField: FormField<PatientFile, PatientFile, PatientFile>[] = [
