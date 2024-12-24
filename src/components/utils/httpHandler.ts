@@ -3,7 +3,10 @@ import { addToast } from "./toasterStore";
 
 export const configureRequestHeader = (options: RequestOptions): Headers => {
   const headers = new Headers(options.headers);
-  headers.set("Content-Type", "application/json")
+  // Only set "Content-Type" for non-FormData requests
+  if (!(options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
 
   try {
     if (!options.skipToken) {
@@ -38,7 +41,7 @@ export const generateRequestOptions = (
         "Content-Type": "application/json",
       },
       skipToken: skipToken,
-      method : method
+      method: method
     };
 
     if (body) {
@@ -63,12 +66,11 @@ export const generateRequestOptionsForFileUpload = (
   try {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("description", description || "");
+    if (description) {
+      formData.append("description", description);
+    }
 
     const options: RequestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
       method: method,
       skipToken: skipToken,
       body: formData,
@@ -80,8 +82,6 @@ export const generateRequestOptionsForFileUpload = (
     return undefined;
   }
 };
-
-
 
 export const buildPaginatedUrl = (baseUrl: string, pagination: PaginationParams, queryParams?: string): string | undefined => {
   try {

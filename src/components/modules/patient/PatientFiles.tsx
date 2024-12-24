@@ -31,10 +31,10 @@ const PatientFiles: React.FC<PatientFilesProps> = ({ patient }) => {
     setSelectedPatientFiles(null);
   };
 
-  const handleSubmit = async (data: PatientFile, patientId?: number, file?: File) => {
+  const handleSubmit = async (data: PatientFile) => {
     let responseMessage;
-    if (file) {
-      responseMessage = await uploadFile(file, 31, data.description) || "";
+    if (data.file) {
+      responseMessage = await uploadFile(data, 31) || "";
     }
     return responseMessage;
   };
