@@ -1,17 +1,10 @@
 import React, { type FC } from 'react';
-import { scaleLinear, scaleOrdinal, scaleThreshold } from '@visx/scale';
+import { scaleThreshold } from '@visx/scale';
 import {
-  LegendLinear,
-  LegendOrdinal,
   LegendThreshold,
   LegendItem,
   LegendLabel,
 } from '@visx/legend';
-
-const linearScale = scaleLinear({
-  domain: [41, 20],
-  range: ['#ed4fbb', '#e9a039'],
-});
 
 const thresholdScale = scaleThreshold({
   domain: [2, 4, 6, 8, 10],
@@ -64,35 +57,7 @@ const ProductsCard: FC<PrdouctsCardProps> = ({ title, icon, data, events }) => (
     <div>
       <span className='text-white text-xs text-center font-bold'>20 Shampoo para perro</span>
     </div>
-    <LegendHolder title="Afectación">
-      <LegendLinear
-        scale={linearScale}
-        labelFormat={(d, i) => (i % 2 === 0 ? d : '')}
-      >
-        {(labels) =>
-          labels.map((label, i) => (
-            <LegendItem
-              key={`legend-quantile-${i}`}
-              onClick={() => {
-                if (events) alert(`clicked: ${JSON.stringify(label)}`);
-              }}
-            >
-              <svg width={legendGlyphSize} height={legendGlyphSize} style={{ margin: '2px 0' }}>
-                <circle
-                  fill={label.value}
-                  r={legendGlyphSize / 2}
-                  cx={legendGlyphSize / 2}
-                  cy={legendGlyphSize / 2}
-                />
-              </svg>
-              <LegendLabel align="left" margin="0 4px">
-                {label.text}
-              </LegendLabel>
-            </LegendItem>
-          ))
-        }
-      </LegendLinear>
-    </LegendHolder>
+    
     <LegendHolder title="Disponibilidad">
       <LegendThreshold scale={thresholdScale}>
         {(labels) =>

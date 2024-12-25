@@ -1,5 +1,6 @@
 import CountrySelect from "../components/common/select/CountrySelect";
 import Roles from "../components/modules/management/Roles";
+import type { Company } from "./CompanyType";
 import type { FormField } from "./FormType";
 
 export interface RegisterRequest {
@@ -14,12 +15,6 @@ export interface RegisterRequest {
   token: string;
   company?: Company;
   enabled: boolean;
-}
-
-export interface Company {
-  name: string,
-  companyIdentification: string,
-  country: string
 }
 
 export const registerFields: FormField<RegisterRequest , RegisterRequest, RegisterRequest>[] = [

@@ -1,16 +1,3 @@
-
-export interface StatCardProps {
-  title: string;
-  value: string;
-  trend: string;
-}
-
-export interface CompanyStatCardProps {
-  title: string;
-  value: string;
-  icon: JSX.Element;
-}
-
 export interface CompanyResume {
   totalCustomers: number;
   customersTrend: {
@@ -35,9 +22,16 @@ export interface CompanyResume {
     period: string;
   };
   chartData: ChartData[];
+  hotMetric: Hotmetric
 }
 
 export interface ChartData {
   label: string;
   value: number;
+}
+
+export interface Hotmetric {
+  peakHours: string;
+  highTraffic: number;
+  consultations: number;
 }

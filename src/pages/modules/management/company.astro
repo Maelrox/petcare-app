@@ -1,16 +1,8 @@
 ---
-import CompanyAdminForm from '../../../components/modules/management/CompanyForm';
-import AppLayout from '../../../layouts/AppLayout.astro';
-import companyImage from '../../../assets/company_section.jpg';
+import CompanyForm from "../../../components/modules/management/CompanyForm";
+import AppLayout from "../../../layouts/AppLayout.astro";
 ---
 
 <AppLayout title="Company">
-	<div class="p-6 flex justify-between items-stretch h-full flex-wrap">
-		<div class="flex-1 flex items-center">
-			<CompanyAdminForm client:load/>
-		</div>
-		<div class="flex-grow-0 flex items-center">
-			<img src={companyImage.src} class="object-contain h-full" alt="Company" />
-		</div>
-	</div>
+	<CompanyForm client:load />
 </AppLayout>

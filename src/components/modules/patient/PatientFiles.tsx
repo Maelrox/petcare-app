@@ -124,7 +124,7 @@ const PatientFiles: React.FC<PatientFilesProps> = ({ patient }) => {
               className="absolute bottom-1 right-1 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete(file, patient?.patientId || 0);
+                handleDelete(file);
               }}
               aria-label="Delete file"
             >

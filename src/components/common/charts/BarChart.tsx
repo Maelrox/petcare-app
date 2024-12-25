@@ -102,7 +102,7 @@ const BarChartWidget: React.FC<BarChartWidgetProps> = ({
   if (!data || data.length === 0) {
     return (
       <div className={`bg-${backgroundColor} p-4 shadow-md flex-1 h-64 flex items-center justify-center`}>
-        <p className="text-white_brand">No data available</p>
+        <p className="text-white_brand">No data available yet</p>
       </div>
     );
   }

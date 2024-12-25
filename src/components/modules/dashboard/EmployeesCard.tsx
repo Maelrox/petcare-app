@@ -8,9 +8,9 @@ interface EmployeeCardProps {
 
 const EmployeeCard: FC<EmployeeCardProps> = ({ title, icon, data }) => (
   <div className="bg-color_brand shadow-xl p-6 flex flex-col">
-    <div className="flex justify-between items-center mb-4">
-      <h2 className="text-white text-xs font-bold flex items-center">
-        {icon}
+    <div className="flex items-center mb-4">
+      {icon}
+      <h2 className="text-white text-xs font-bold flex items-center ml-2">
         {title}
       </h2>
     </div>

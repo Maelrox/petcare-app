@@ -1,5 +1,5 @@
 import { generateRequestOptions } from "../../components/utils/httpHandler";
-import type { Company } from "../../types/RegisterRequestType";
+import type { Company } from "../../types/CompanyType";
 import type { TransactionResponse } from "../../types/ResponseType";
 import { useFetchData } from "../api/useFetchData";
 

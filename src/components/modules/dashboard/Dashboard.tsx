@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import BarChartWidget from "../../common/charts/BarChart";
 import welcomeImage from "../../../assets/icons/dashboard-welcome.png";
 import { getCompanyResume } from "../../../hooks/modules/useDashboard";
-import type { CompanyResume, CompanyStatCardProps, StatCardProps } from "../../../types/DashboardType";
+import type { CompanyResume } from "../../../types/DashboardType";
 import { HotMetrics } from "../../common/charts/HotMetrics";
 import QuickAction from "../../common/widgets/QuickAction";
 import { BriefcaseBusiness, BookUser, PillBottle, Bone, HeartPulse, Headset } from "lucide-react";
@@ -13,6 +13,9 @@ import EmployeeCard from "./EmployeesCard";
 import { useMeasure } from '@react-hookz/web';
 import ServicesCard from "./ServicesCard";
 import ProductsCard from "./ProductsCard";
+import StatCard from "./StatCard";
+import CompanyCard from "./CompanyCard";
+import SupportCard from "./SupportCard";
 
 const Dashboard = () => {
   const [userName, setUserName] = useState<string>();
@@ -52,47 +55,6 @@ const Dashboard = () => {
     fetchCompanyData();
   }, []);
 
-  const StatCard = ({ title, value, trend }: StatCardProps) => (
-    <div className="bg-color_brand shadow-sm p-6 flex flex-col border-r">
-      <h3 className="text-sm font-medium text-white_brand mb-2">{title}</h3>
-      <p className="text-2xl font-bold text-white_brand">{value}</p>
-      <p className="text-xs text-white_brand mt-1">{trend}</p>
-    </div>
-  );
-
-  const CompanyCard = ({ title, value, icon }: CompanyStatCardProps) => (
-    <div className="bg-gradient-to-br from-rose-600 to-color_brand shadow-xl p-6 flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-white text-xs font-bold flex items-center">
-          {icon}
-          {title}
-        </h2>
-      </div>
-
-      <p className="text-sm font-extrabold text-white mb-3">{value}</p>
-      <p className="text-sm font-extrabold text-white mb-3">Telephone: 12345678</p>
-      <p className="text-sm font-extrabold text-white mb-3">Email: email@company.com</p>
-      <p className="text-sm font-extrabold text-white mb-3">Address: Street #1 B45</p>
-    </div>
-  );
-
-  const SupportCard = ({ title, value, icon }: CompanyStatCardProps) => (
-    <div className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 p-6 shadow-lg flex flex-col">
-      <h2 className="text-white text-xs font-bold flex items-center">
-        {icon}
-        {title}
-      </h2>
-      <p className="text-sm font-extrabold text-white mb-3">{value}</p>
-
-      <div className="flex justify-center">
-        <button className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-semibold py-3 px-6 shadow-md transform transition-all hover:scale-105 hover:shadow-xl relative overflow-hidden group">
-          <span className="absolute inset-0 bg-gradient-to-r from-white opacity-25 transform scale-110 group-hover:animate-shimmer"></span>
-          <span className="relative z-10">Contact Support</span>
-        </button>
-      </div>
-    </div>
-  );
-
   const attentionsExampleData = [
     { date: "2024/12/22", value: 21 },
     { date: "2024/12/23", value: 32 },
@@ -119,7 +81,7 @@ const Dashboard = () => {
                 {userName ? ` ${userName}` : ""}!
               </h1>
               <p className="text-sm text-color_brand mt-1">
-                Free Veterinary Management System 0.9.5
+                Free Veterinary Management System 0.9.6
               </p>
             </div>
           </div>
@@ -153,7 +115,7 @@ const Dashboard = () => {
         <div className="bg-white_brand shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0.5 border-b">
             <div className="bg-color_brand">
-              <HotMetrics />
+              <HotMetrics data={companyData?.hotMetric} />
             </div>
             <div className="bg-color_brand">
               <BarChartWidget
@@ -170,7 +132,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-0.5 border-b">
             <CompanyCard
               title="Company Name"
-              value="Doctor Pet"
+              companyName="Test"
               icon={<BriefcaseBusiness className="w-6 h-6 text-white" />}
             />
             <EmployeeCard

@@ -2,108 +2,82 @@ import React, { useState, useEffect } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import ButtonIcon from '../../common/buttons/ButtonIcon';
 import { SaveIcon } from 'lucide-react';
-import type { Company } from '../../../types/RegisterRequestType';
 import { updateCompany, fetchCompanyData } from '../../../hooks/modules/useCompany';
 import CountrySelect from '../../common/select/CountrySelect';
+import { addToast } from '../../utils/toasterStore';
 
-interface FormData {
+export interface Company {
   country: string;
   companyIdentification: string;
   name: string;
+  email: string;
+  phone: string;
+  address: string;
 }
 
-const CompanyAdminForm: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [formData, setFormData] = useState<FormData>({
-    country: '',
-    companyIdentification: '',
-    name: ''
-  });
+const initialCompanyState: Company = {
+  country: '',
+  companyIdentification: '',
+  name: '',
+  email: '',
+  phone: '',
+  address: ''
+};
+
+const CompanyForm: React.FC = () => {
+  const [company, setCompany] = useState<Company>(initialCompanyState);
 
   useEffect(() => {
     loadCompanyData();
   }, []);
 
   const loadCompanyData = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const company = await fetchCompanyData();
-      if (!company) {
-        throw new Error('No company data received');
-      }
-      setFormData({
-        country: company.country || '',
-        companyIdentification: company.companyIdentification || '',
-        name: company.name || ''
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load company data');
-    } finally {
-      setIsLoading(false);
+    const companyData = await fetchCompanyData();
+    if (!companyData) {
+      addToast('No company data received');
+      return;
     }
+    setCompany(companyData);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+    setCompany((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleCountryChange = (value: string) => {
-    setFormData(prevState => ({ ...prevState, country: value }));
+    setCompany((prevState) => ({
+      ...prevState,
+      country: value
+    }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-    setSuccessMessage(null);
-
-    try {
-      const companyData: Company = {
-        ...formData
-      };
-      const responseMessage = await updateCompany(companyData);
-      if (responseMessage) {
-        setSuccessMessage(responseMessage);
-        await loadCompanyData();
-      }
-    } catch (err) {
-      setError('Failed to update company information');
-    } finally {
-      setIsLoading(false);
+    const responseMessage = await updateCompany(company);
+    if (responseMessage) {
+      addToast(responseMessage);
+      await loadCompanyData();
     }
   };
-
-  if (isLoading) {
-    return <div className="p-12">Loading company information...</div>;
-  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 bg-white p-12 h-full w-full">
       <h1 className="text-2xl text-color_brand font-bold mb-4">Company Info</h1>
-
-      {error && (
-        <p className="text-rose-600">{error}</p>
-      )}
-
-      {successMessage && (
-        <p className="text-color_brand">{successMessage}</p>
-      )}
-
       <h3 className="text-gray-600">
         Update your company info
       </h3>
-
+      
       <div>
         <label htmlFor="country" className="block text-color_brand text-sm font-bold mb-2">
           Country
         </label>
         <div className="max-w-64">
           <CountrySelect
-            value={formData.country}
+            value={company.country}
             onChange={handleCountryChange}
             required
           />
@@ -118,9 +92,8 @@ const CompanyAdminForm: React.FC = () => {
           type="text"
           id="companyIdentification"
           name="companyIdentification"
-          value={formData.companyIdentification}
+          value={company.companyIdentification}
           onChange={handleInputChange}
-          disabled={isLoading}
           className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline disabled:opacity-50"
         />
       </div>
@@ -133,17 +106,58 @@ const CompanyAdminForm: React.FC = () => {
           type="text"
           id="name"
           name="name"
-          value={formData.name}
+          value={company.name}
           onChange={handleInputChange}
-          disabled={isLoading}
           className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline disabled:opacity-50"
         />
       </div>
 
       <div>
-        <ButtonIcon 
-          text="Save" 
-          type="submit" 
+        <label htmlFor="phone" className="block text-color_brand text-sm font-bold mb-2">
+          Phone
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          value={company.phone}
+          onChange={handleInputChange}
+          className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline disabled:opacity-50"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="address" className="block text-color_brand text-sm font-bold mb-2">
+          Address
+        </label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          value={company.address}
+          onChange={handleInputChange}
+          className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline disabled:opacity-50"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-color_brand text-sm font-bold mb-2">
+          Email
+        </label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          value={company.email}
+          onChange={handleInputChange}
+          className="shadow appearance-none border rounded w-full max-w-64 py-2 px-3 text-color_brand mb-3 leading-tight focus:outline-none focus:shadow-outline disabled:opacity-50"
+        />
+      </div>
+
+      <div>
+        <ButtonIcon
+          text="Save"
+          type="submit"
         >
           <SaveIcon size={24} />
         </ButtonIcon>
@@ -152,4 +166,4 @@ const CompanyAdminForm: React.FC = () => {
   );
 };
 
-export default CompanyAdminForm;
+export default CompanyForm;
