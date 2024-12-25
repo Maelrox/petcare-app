@@ -1,4 +1,4 @@
-import { generateRequestOptions } from "../../components/utils/httpHandler";
+import { generateRequestOptions, generateRequestOptionsForFileUpload } from "../../components/utils/httpHandler";
 import type { Company } from "../../types/CompanyType";
 import type { TransactionResponse } from "../../types/ResponseType";
 import { useFetchData } from "../api/useFetchData";
@@ -19,6 +19,15 @@ export const updateCompany = async (company: Company): Promise<string | undefine
   if (options) {
     const response = await useFetchData<TransactionResponse>(BASE_URL + PATH_COMPANY, options)
     return response?.message ? response.message : undefined
+  } else {
+    return undefined
+  }
+};
+
+export const updateCompanyLogo = async (file: File): Promise<Company | undefined> => {
+  const options = generateRequestOptionsForFileUpload("PATCH", file)
+  if (options) {
+    return await useFetchData<Company>(BASE_URL + PATH_COMPANY + "/logo", options)
   } else {
     return undefined
   }

@@ -5,4 +5,5 @@ export interface Company {
   email: string;
   phone: string;
   address: string;
+  logoUrl?: string;
 }

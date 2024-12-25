@@ -18,7 +18,7 @@ const ButtonIcon: React.FC<ButtonProps> = ({ onClick, children, text, bgColor = 
     > 
     {children}
     {text && (
-      <span>{text}</span>
+      <span className={`${color}`}>{text}</span>
     )}
     </button>
   );
