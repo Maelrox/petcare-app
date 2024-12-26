@@ -1,3 +1,5 @@
+import type { Company } from "./CompanyType";
+
 export interface CompanyResume {
   totalCustomers: number;
   customersTrend: {
@@ -22,7 +24,10 @@ export interface CompanyResume {
     period: string;
   };
   chartData: ChartData[];
-  hotMetric: Hotmetric
+  hotMetric: Hotmetric;
+  company: Company;
+  employeeResume: EmployeeResume;
+
 }
 
 export interface ChartData {
@@ -34,4 +39,8 @@ export interface Hotmetric {
   peakHours: string;
   highTraffic: number;
   consultations: number;
+}
+
+export interface EmployeeResume {
+  mapTotals: { [key: string]: number };
 }

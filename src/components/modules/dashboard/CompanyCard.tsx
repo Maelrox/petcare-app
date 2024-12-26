@@ -1,13 +1,14 @@
 import type { FC } from "react";
+import type { Company } from "../../../types/CompanyType";
 
 
 interface CompanyCardProps {
   title: string;
-  companyName?: string;
+  company?: Company;
   icon?: JSX.Element;
 }
 
-const CompanyCard: FC<CompanyCardProps> = ({ title, companyName, icon }) => (
+const CompanyCard: FC<CompanyCardProps> = ({ title, company, icon }) => (
    <div className="bg-gradient-to-br from-rose-600 to-color_brand shadow-xl p-6 flex flex-col">
         <div className="flex items-center mb-4">
           {icon}
@@ -16,10 +17,10 @@ const CompanyCard: FC<CompanyCardProps> = ({ title, companyName, icon }) => (
           </h2>
         </div>
   
-        <p className="text-sm font-extrabold text-white mb-3">{companyName}</p>
-        <p className="text-sm font-extrabold text-white mb-3">Telephone: 12345678</p>
-        <p className="text-sm font-extrabold text-white mb-3">Email: email@company.com</p>
-        <p className="text-sm font-extrabold text-white mb-3">Address: Street #1 B45</p>
+        <p className="text-sm font-extrabold text-white mb-3">{company?.name}</p>
+        <p className="text-sm font-extrabold text-white mb-3">Telephone: {company?.phone}</p>
+        <p className="text-sm font-extrabold text-white mb-3">Email: {company?.email}</p>
+        <p className="text-sm font-extrabold text-white mb-3">Address: {company?.address}</p>
       </div>
 );
 

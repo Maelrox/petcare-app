@@ -26,7 +26,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("userData");
-    console.log(storedData)
     try {
       if (storedData) {
         const userData = JSON.parse(storedData);
@@ -132,12 +131,12 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-0.5 border-b">
             <CompanyCard
               title="Company Name"
-              companyName="Test"
+              company={companyData?.company}
               icon={<BriefcaseBusiness className="w-6 h-6 text-white" />}
             />
             <EmployeeCard
-              title="Total Employees"
-              data={attentionsExampleData}
+              title="Top Employees by Role"
+              data={companyData?.employeeResume}
               icon={<BookUser className="w-6 h-6 text-white" />}
             />
             <AttentionsCard
