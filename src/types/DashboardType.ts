@@ -27,7 +27,7 @@ export interface CompanyResume {
   hotMetric: Hotmetric;
   company: Company;
   employeeResume: EmployeeResume;
-
+  serviceResume: ServiceResume;
 }
 
 export interface ChartData {
@@ -43,4 +43,8 @@ export interface Hotmetric {
 
 export interface EmployeeResume {
   mapTotals: { [key: string]: number };
+}
+
+export interface ServiceResume {
+  mapTotals: string[];
 }

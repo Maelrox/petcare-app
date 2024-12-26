@@ -151,7 +151,7 @@ const Dashboard = () => {
             />
             <ServicesCard
               title={"Services"}
-              data={[]}
+              data={companyData?.serviceResume}
               icon={<HeartPulse className="w-6 h-6 text-white" />} />
             <SupportCard
               title="Support"
