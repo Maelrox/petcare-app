@@ -1,8 +1,11 @@
+import type { Consult } from "./ConsultType";
+import type { Inventory } from "./InventoryType";
+
 export interface BillingDetail {
-    inventoryId?: number;
-    consultationId?: number;
-    name: string;
-    description: string;
-    quantity: number;
-    amount: number;
-  }
+  inventory?: Inventory;
+  consultation?: Consult;
+  name: string;
+  description: string;
+  quantity: number;
+  amount: number;
+}

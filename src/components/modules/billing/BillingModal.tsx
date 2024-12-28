@@ -9,6 +9,7 @@ import Inventories from '../inventory/Inventories';
 import type { Inventory } from '../../../types/InventoryType';
 import { BillingItemCard } from './BillingItemCard';
 import { BillingItemTable } from './BillingItemTable';
+import dayjs from 'dayjs';
 
 interface BillingModalProps {
     isOpen: boolean;
@@ -42,7 +43,7 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
             const consultations = await fetchUnBilledAttentions(ownerId);
             if (consultations) {
                 const billingItems: BillingDetail[] = consultations.map(consult => ({
-                    consultationId: consult.consultationId || 0,
+                    consultation: consult,
                     name: `${consult.serviceName}`,
                     description: `Date: ${new Date(consult.consultationDate).toLocaleDateString()}`,
                     quantity: 1,
@@ -80,6 +81,12 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
             billingDetails: items,
         };
 
+        items.forEach(element => {
+            if (element.consultation) {
+                element.consultation.consultationDate =  dayjs(element.consultation?.consultationDate).format('YYYY-MM-DDTHH:mm');
+            }
+        });
+
         const response = await onSubmit(billingData);
         if (response) {
             onClose();
@@ -93,14 +100,14 @@ const BillingPOSModal: React.FC<BillingModalProps> = ({
 
     const handleInventorySelect = (inventory: Inventory) => {
         const newBillingDetail: BillingDetail = {
-            inventoryId: inventory.inventoryId,
+            inventory: inventory,
             name: inventory.name,
             description: inventory.description || '',
             quantity: 1,
             amount: inventory.price || 0,
         };
 
-        const existingItemIndex = items.findIndex(item => item.inventoryId === inventory.inventoryId);
+        const existingItemIndex = items.findIndex(item => item.inventory?.inventoryId === inventory.inventoryId);
 
         let updatedItems: BillingDetail[];
         if (existingItemIndex >= 0) {
