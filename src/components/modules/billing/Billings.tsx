@@ -5,7 +5,7 @@ import ButtonIcon from "../../common/buttons/ButtonIcon";
 import FilterControls from "../../common/tables/TableFilterControls";
 import { PlusIcon } from "lucide-react";
 import { billingFields, type Billing } from "../../../types/BillingType";
-import { cancellBilling, createBilling, getBilling } from "../../../hooks/modules/useBilling";
+import { cancellBilling, createBilling, downloadInvoice, getBilling } from "../../../hooks/modules/useBilling";
 import BillingModal from "./BillingModal";
 import TransactionStatusTracker from "./TransactionStatusTracker";
 
@@ -41,15 +41,19 @@ function Billings() {
       if (isConfirmed) {
         const response = await cancellBilling(data);
         if (response?.trx) {
-            setCurrentTrx(response.trx);
-            setShowStatusTracker(true);
-            return true;
+          setCurrentTrx(response.trx);
+          setShowStatusTracker(true);
+          return true;
         } else {
           return false;
         }
       }
     }
   };
+
+  const handleDownloadInvoice = async (data: Billing) => {
+    await downloadInvoice(data);
+  }
 
   const handleAddClick = () => {
     setSelectedBilling(null);
@@ -64,9 +68,9 @@ function Billings() {
   const handleSubmit = async (data: Billing) => {
     const response = await createBilling(data);
     if (response?.trx) {
-        setCurrentTrx(response.trx);
-        setShowStatusTracker(true);
-        return true;
+      setCurrentTrx(response.trx);
+      setShowStatusTracker(true);
+      return true;
     } else {
       return false;
     }
@@ -102,6 +106,7 @@ function Billings() {
           totalRows={totalRows.current}
           onPaginationChange={handlePaginationChange}
           handleDelete={handleDelete}
+          handleAdditionalAction={handleDownloadInvoice}
           isLoading={isLoading}
           configFields={billingFields}
         />
