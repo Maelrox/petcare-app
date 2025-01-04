@@ -105,7 +105,7 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white_brand shadow-sm">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0.5 border-b">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-0.5 border-b">
             <div className="bg-color_brand">
               <HotMetrics data={companyData?.hotMetric} />
             </div>
@@ -121,7 +121,7 @@ const Dashboard = () => {
               <QuickAction />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-0.5 border-b">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-0.5 border-b">
             <CompanyCard
               title="Company Name"
               company={companyData?.company}
