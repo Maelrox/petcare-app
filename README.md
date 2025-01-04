@@ -1,13 +1,14 @@
 
-# PetCare App - Astro & React
+# PetCare Suite App - Astro & React
 
-Welcome to the **PetCare App**, a web application built using **Astro** and **React**. This app is designed to help pet owners manage their pets' appointments, health records, and other essential information. The app uses **Astro** for static site generation and **React** for interactive components.
+Welcome to the **PetCare Suite App**, a web application built using **Astro** and **React**. This app is designed to help veterinary clinics or pet shop centers manage their appointments, health records, customers, inventory, services, billings, attention records, team user access, and other essential information. It supports multiple companies, and you will need to register a company at the beginning. After that, you can add new users to the company or register additional companies. Each company has separate data, and all sensitive data is encrypted. The app uses **Astro** for static site generation and **React** for interactive components.
+
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
 [![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
 
-> 🐾 **PetCare App** - Your pet’s well-being starts here!
+> 🐾 **PetCare Suite App** - Your pet’s well-being starts here!
 
 ![PetCare App](./src/assets/main-image-app.png)
 
