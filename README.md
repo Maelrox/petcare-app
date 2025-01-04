@@ -9,7 +9,7 @@ Welcome to the **PetCare App**, a web application built using **Astro** and **Re
 
 > 🐾 **PetCare App** - Your pet’s well-being starts here!
 
-![PetCare App](./src/assets/main.png)
+![PetCare App](./src/assets/main-image-app.png)
 
 ## 🚀 Project Structure
 
