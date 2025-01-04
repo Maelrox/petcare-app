@@ -54,13 +54,6 @@ const Dashboard = () => {
     fetchCompanyData();
   }, []);
 
-  const attentionsExampleData = [
-    { date: "2024/12/22", value: 21 },
-    { date: "2024/12/23", value: 32 },
-    { date: "2024/12/24", value: 14 },
-    { date: "2024/12/25", value: 30 },
-  ];
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -140,13 +133,13 @@ const Dashboard = () => {
               icon={<BookUser className="w-6 h-6 text-white" />}
             />
             <AttentionsCard
-              title="Total Attentions"
-              data={attentionsExampleData}
+              title="Attended Consultations"
+              data={companyData?.attentionResume}
               icon={<PillBottle className="w-6 h-6 text-white" />}
             />
             <ProductsCard
-              title={"Top Product"}
-              data={[]}
+              title={"Hot Products"}
+              data={companyData?.productResume}
               icon={<Bone className="w-6 h-6 text-white" />}
             />
             <ServicesCard

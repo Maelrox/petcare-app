@@ -1,15 +1,4 @@
 import React, { type FC } from 'react';
-import { scaleOrdinal } from '@visx/scale';
-import { LegendOrdinal, LegendItem, LegendLabel } from '@visx/legend';
-
-function LegendHolder({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="pt-25 pl-25 text-white">
-      <div className="title">{title}</div>
-      {children}
-    </div>
-  );
-}
 
 const legendGlyphSize = 15;
 
@@ -20,13 +9,18 @@ interface ServicesCardProps {
   events?: any;
 }
 
+function Holder({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="pt-25 pl-25 text-white">
+      <div className="title">{title}</div>
+      {children}
+    </div>
+  );
+}
+
 const ServicesCard: FC<ServicesCardProps> = ({ title, icon, data, events }) => {
   const colors = ['#66d981', '#71f5ef', '#4899f1', '#7d81f6'];
   const services = data?.mapTotals?.slice(0, 4) || [];
-  const ordinalColorScale = scaleOrdinal<string, string>({
-    domain: services,
-    range: colors.slice(0, services.length),
-  });
 
   return (
     <div className="bg-color_brand overflow-y-auto flex-grow pl-4 h-full pb-10">
@@ -35,30 +29,21 @@ const ServicesCard: FC<ServicesCardProps> = ({ title, icon, data, events }) => {
           {icon}
           {title}
         </h2>
-        <LegendHolder title="">
-          <LegendOrdinal scale={ordinalColorScale} labelFormat={(label) => `${label.toUpperCase()}`}>
-            {(labels) => (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {labels.map((label, i) => (
-                  <LegendItem
-                    key={`legend-quantile-${i}`}
-                    margin="0 5px"
-                    onClick={() => {
-                      if (events) alert(`clicked: ${JSON.stringify(label)}`);
-                    }}
-                  >
-                    <svg width={legendGlyphSize} height={legendGlyphSize}>
-                      <rect fill={label.value} width={legendGlyphSize} height={legendGlyphSize} />
-                    </svg>
-                    <LegendLabel align="left" margin="0 0 0 4px" className="font-bold lowercase ml-2 text-sm">
-                      {label.text}
-                    </LegendLabel>
-                  </LegendItem>
-                ))}
+        <Holder title="">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {services.map((service, i) => (
+              <div
+                key={i}
+                style={{ display: 'flex', alignItems: 'center', cursor: events ? 'pointer' : 'default' }}
+              >
+                <svg width={legendGlyphSize} height={legendGlyphSize}>
+                  <rect fill={colors[i % colors.length]} width={legendGlyphSize} height={legendGlyphSize} />
+                </svg>
+                <span className="font-bold lowercase ml-2 text-sm">{service.toUpperCase()}</span>
               </div>
-            )}
-          </LegendOrdinal>
-        </LegendHolder>
+            ))}
+          </div>
+        </Holder>
       </div>
     </div>
   );

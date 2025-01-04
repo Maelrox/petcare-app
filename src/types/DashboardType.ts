@@ -28,6 +28,8 @@ export interface CompanyResume {
   company: Company;
   employeeResume: EmployeeResume;
   serviceResume: ServiceResume;
+  attentionResume: AttentionResume[];
+  productResume: ProductResume[];
 }
 
 export interface ChartData {
@@ -47,4 +49,14 @@ export interface EmployeeResume {
 
 export interface ServiceResume {
   mapTotals: string[];
+}
+
+export interface AttentionResume {
+  date: string;
+  quantity: number;
+}
+
+export interface ProductResume {
+  name: string;
+  quantity: number;
 }

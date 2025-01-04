@@ -1,100 +1,57 @@
-import React, { type FC } from 'react';
-import { scaleThreshold } from '@visx/scale';
-import {
-  LegendThreshold,
-  LegendItem,
-  LegendLabel,
-} from '@visx/legend';
+import { type FC } from 'react';
+import type { ProductResume } from '../../../types/DashboardType';
 
-const thresholdScale = scaleThreshold({
-  domain: [2, 4, 6, 8, 10],
-  range: ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#756bb1', '#54278f'],
-});
-
-interface PrdouctsCardProps {
+interface ProductsCardProps {
   title: string;
   icon?: JSX.Element;
-  data: { date: string; value: number }[];
-  events?: any;
+  data: ProductResume[] | undefined;
 }
 
-function LegendHolder({ title, children }: { title: string; children: React.ReactNode }) {
+const ProductsCard: FC<ProductsCardProps> = ({ title, icon, data }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div className="bg-gray-800 text-white p-6 shadow-lg">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-bold flex items-center gap-2">
+            {icon}
+            {title}
+          </h2>
+        </div>
+        <p className="text-center text-gray-400">No data available</p>
+      </div>
+    );
+  }
+
+  const sortedData = [...data]
+    .sort((a, b) => b.name.localeCompare(a.name))
+    .slice(0, 5);
+
   return (
-    <div className="legend">
-      <div className="title">{title}</div>
-      {children}
-      <style    >{`
-        .legend {
-          line-height: 0.9em;
-          color: #efefef;
-          font-size: 10px;
-          font-family: arial;
-          padding: 10px 10px;
-          float: left;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          margin: 5px 5px;
-        }
-        .title {
-          font-size: 12px;
-          margin-bottom: 10px;
-          font-weight: 100;
-        }
-      `}</style>
+    <div className="bg-gray-800 text-white p-4 rounded-lg shadow-lg">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-bold flex items-center gap-2">
+          {icon}
+          {title}
+        </h2>
+      </div>
+      <ul className="space-y-4 p-4">
+        {sortedData.map((product, index) => (
+          <li
+            key={index}
+            className="flex items-center justify-between bg-gray-700 rounded-md shadow-md"
+          >
+            <div className="flex items-center gap-1">
+              <span className="bg-rose-600 text-white font-bold text-sm px-3">
+                {index + 1}
+              </span>
+              <span className="text-sm">{product.name}</span>
+            </div>
+            <span className="text-xs text-gray-300 pr-2">{product.quantity} sold</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
-
-const legendGlyphSize = 15;
-
-const ProductsCard: FC<PrdouctsCardProps> = ({ title, icon, data, events }) => (
-  <div className="legends">
-    <div className="flex justify-between items-center mb-4">
-      <h2 className="text-white text-xs font-bold flex items-center gap-2">
-        {icon}
-        {title}
-      </h2>
-    </div>
-    <div>
-      <span className='text-white text-xs text-center font-bold'>20 Shampoo para perro</span>
-    </div>
-    
-    <LegendHolder title="Disponibilidad">
-      <LegendThreshold scale={thresholdScale}>
-        {(labels) =>
-          labels.reverse().map((label, i) => (
-            <LegendItem
-              key={`legend-quantile-${i}`}
-              margin="1px 0"
-              onClick={() => {
-                if (events) alert(`clicked: ${JSON.stringify(label)}`);
-              }}
-            >
-              <svg width={legendGlyphSize} height={legendGlyphSize}>
-                <rect fill={label.value} width={legendGlyphSize} height={legendGlyphSize} />
-              </svg>
-              <LegendLabel align="left" margin="2px 0 0 10px">
-                {label.text}
-              </LegendLabel>
-            </LegendItem>
-          ))
-        }
-      </LegendThreshold>
-    </LegendHolder>
-    
-    <style>{`
-        .legends {
-          font-family: arial;
-          font-weight: 900;
-          background-color: black;
-          padding: 24px 24px 24px 32px;
-          overflow-y: auto;
-          flex-grow: 1;
-        }
-        .chart h2 {
-          margin-left: 10px;
-        }
-      `}</style>
-  </div>
-);
+};
 
 export default ProductsCard;

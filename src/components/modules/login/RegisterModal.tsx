@@ -115,7 +115,16 @@ const RegisterModal: React.FC<RegisterModalProps> = ({
                 roles: ["ADMIN"],
                 token,
                 username: '',
-                enabled: true
+                enabled: true,
+                company: {
+                    country: '',
+                    companyIdentification: '',
+                    name: '',
+                    email: '',
+                    phone: '',
+                    address: ''
+                },
+                country: ""
             };
             await register(registerData);
             onClose();

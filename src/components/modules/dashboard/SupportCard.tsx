@@ -8,7 +8,7 @@ interface SupportCardProps {
 
 const SupportCard: FC<SupportCardProps> = ({ title, value, icon }) => (
   <div className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 p-6 shadow-lg flex flex-col justify-between">
-    <h2 className="text-white text-xs font-bold flex items-center">
+    <h2 className="text-white text-xs font-bold flex items-center gap-2">
       {icon}
       {title}
     </h2>

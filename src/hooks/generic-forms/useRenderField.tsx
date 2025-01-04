@@ -1,7 +1,7 @@
 import type { FormField, SelectOption } from '../../types/FormType';
 import { FileUpload } from '../../components/common/input/FileUpload';
-import { Dropdown } from '../../components/common/select/DropDown';
 import { InputSearchTable } from '../../components/common/input/InputSearchTable';
+import { Dropdown } from '../../components/common/select/Dropdown';
 
 interface UseFormFieldRendererProps<T, U, K> {
   formData: T;
