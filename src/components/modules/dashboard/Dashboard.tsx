@@ -148,7 +148,7 @@ const Dashboard = () => {
               icon={<HeartPulse className="w-6 h-6 text-white" />} />
             <SupportCard
               title="Support"
-              value="Need any help contact our support team"
+              value="Need any help contact our support team support@maelrox.dev"
               icon={<Headset className="w-6 h-6 text-white" />}
             />
           </div>

@@ -15,10 +15,13 @@ const SupportCard: FC<SupportCardProps> = ({ title, value, icon }) => (
     <p className="text-sm font-extrabold text-white mb-3">{value}</p>
 
     <div className="flex justify-center">
-      <button className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-semibold py-3 px-6 shadow-md transform transition-all hover:scale-105 hover:shadow-xl relative overflow-hidden group">
+      <a
+        href="mailto:support@maelrox.dev"
+        className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-semibold py-3 px-6 shadow-md transform transition-all hover:scale-105 hover:shadow-xl relative overflow-hidden group"
+      >
         <span className="absolute inset-0 bg-gradient-to-r from-white opacity-25 transform scale-110 group-hover:animate-shimmer"></span>
         <span className="relative z-10">Contact Support</span>
-      </button>
+      </a>
     </div>
   </div>
 );
